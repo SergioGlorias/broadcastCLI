@@ -8,15 +8,45 @@ importers:
 
   .:
     dependencies:
-      dayjs:
-        specifier: ^1.11.19
-        version: 1.11.19
+      '@lichess-org/types':
+        specifier: ^2.0.94
+        version: 2.0.94
+      '@types/node':
+        specifier: ^24.10.0
+        version: 24.10.0
+      openapi-fetch:
+        specifier: ^0.15.0
+        version: 0.15.0
 
 packages:
 
-  dayjs@1.11.19:
-    resolution: {integrity: sha512-t5EcLVS6QPBNqM2z8fakk/NKel+Xzshgt8FFKAn+qwlD1pzZWxh0nVCrvFK7ZDb6XucZeF9z8C7CBWTRIVApAw==}
+  '@lichess-org/types@2.0.94':
+    resolution: {integrity: sha512-ZwYAYe//Uda2P+fRvmCt73mdo9SHieoQdtouA6Ajvij21aPDCG1x36HyPmQrzlP5ndK9CuqNeTcIFw5TfN8Y1Q==}
+
+  '@types/node@24.10.0':
+    resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
+
+  openapi-fetch@0.15.0:
+    resolution: {integrity: sha512-OjQUdi61WO4HYhr9+byCPMj0+bgste/LtSBEcV6FzDdONTs7x0fWn8/ndoYwzqCsKWIxEZwo4FN/TG1c1rI8IQ==}
+
+  openapi-typescript-helpers@0.0.15:
+    resolution: {integrity: sha512-opyTPaunsklCBpTK8JGef6mfPhLSnyy5a0IN9vKtx3+4aExf+KxEqYwIy3hqkedXIB97u357uLMJsOnm3GVjsw==}
+
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
 snapshots:
 
-  dayjs@1.11.19: {}
+  '@lichess-org/types@2.0.94': {}
+
+  '@types/node@24.10.0':
+    dependencies:
+      undici-types: 7.16.0
+
+  openapi-fetch@0.15.0:
+    dependencies:
+      openapi-typescript-helpers: 0.0.15
+
+  openapi-typescript-helpers@0.0.15: {}
+
+  undici-types@7.16.0: {}
