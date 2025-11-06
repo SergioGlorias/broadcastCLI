@@ -16,6 +16,7 @@ const client = createClient<paths>({
   baseUrl: LICHESS_DOMAIN,
   headers: {
     Authorization: `Bearer ${LICHESS_TOKEN}`,
+    Accept: "application/json",
   },
 });
 
@@ -46,8 +47,8 @@ const setDelayRounds = (
           // @ts-ignore patch param is not yet documented
           query: { patch: 1 },
         },
+        // @ts-ignore name of body properties due patch param is implicit
         body: {
-          name: round.name,
           delay: noDelay ? undefined : delay,
           startsAt:
             round.startsAt && !onlyDelay
@@ -69,6 +70,43 @@ const setDelayRounds = (
         console.error(`Error setting delay for round ${round.id}:`, error);
       });
   });
+
+const setSourceLCC = (
+  rounds: components["schemas"]["BroadcastRoundInfo"][],
+  sourceLCC: string
+) => {
+  let rN = 1;
+  rounds.forEach((round) => {
+    client
+      .POST("/broadcast/round/{broadcastRoundId}/edit", {
+        params: {
+          path: { broadcastRoundId: round.id },
+          // @ts-ignore patch param is not yet documented
+          query: { patch: 1 },
+        },
+        // @ts-ignore name of body properties due patch param is implicit
+        body: {
+          // @ts-ignore property is not yet documented
+          syncSource: "url",
+          syncUrl: `${sourceLCC}/${rN}`,
+        },
+      })
+      .then((response) => {
+        if (response.response.ok)
+          console.log(
+            `Successfully set source LCC for round ${round.id} to ${sourceLCC}/${rN}.`
+          );
+        else
+          console.error(
+            `Failed to set source LCC for round ${round.id}: ${response.response.statusText}`
+          );
+      })
+      .catch((error) => {
+        console.error(`Error setting source LCC for round ${round.id}:`, error);
+      });
+    rN += 1;
+  });
+};
 
 (async () => {
   switch (args[0]) {
@@ -118,6 +156,46 @@ const setDelayRounds = (
       }
       setDelayRounds(broadcast.rounds, parseInt(delay, 10), onlyDelay, noDelay);
       break;
+
+    case "setLCC":
+      const [bId, sourceLCC] = args.slice(1, 3);
+      // check arg --help or -h
+      if (args.includes("--help") || args.includes("-h")) {
+        console.info("Usage: setLCC <broadcastId> <sourceLCCUrl>");
+        console.info(
+          "Sets the source LCC URL for all rounds in the specified broadcast."
+        );
+        process.exit(0);
+      }
+      // Validate required args
+      if (!bId || !sourceLCC) {
+        console.error("Usage: setLCC <broadcastId> <sourceLCCUrl>");
+        console.info("Use --help for more information.");
+        process.exit(1);
+      }
+
+      const bcast = await getBroadcast(bId);
+      if (!bcast?.rounds || bcast.rounds.length === 0) {
+        console.error("No rounds found for the specified broadcast.");
+        process.exit(1);
+      }
+
+      // check sourceLCC is a valid URL
+      let url: URL;
+      try {
+        url = new URL(
+          sourceLCC.startsWith("http")
+            ? sourceLCC
+            : `https://view.livechesscloud.com/${sourceLCC}`
+        );
+      } catch (e) {
+        console.error("sourceLCC must be a valid URL or LCC ID.");
+        process.exit(1);
+      }
+
+      setSourceLCC(bcast.rounds, url.toString());
+      break;
+
     default:
       console.error("Unknown command. Supported commands: delay");
       process.exit(1);
