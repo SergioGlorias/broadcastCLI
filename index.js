@@ -63,7 +63,55 @@ const setDelayRounds = (rounds, delay, onlyDelay, noDelay) =>
       });
   });
 
+const setSourceLCC = (rounds, LCCid) => {
+  let rN = 1;
+  rounds.forEach((round) => {
+    const jsonBody = {
+      syncSource: "url",
+      syncUrl: `https://view.livechesscloud.com/${LCCid}/${rN}`,
+    };
+    fetch(`${LICHESS_DOMAIN}broadcast/round/${round.id}/edit?patch=1`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LICHESS_TOKEN}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(jsonBody),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log(
+            `Successfully set source LCC for round ${round.id} to ${LCCid}.`
+          );
+        } else {
+          console.error(
+            `Failed to set source LCC for round ${round.id}: ${response.statusText}`
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(`Error setting source LCC for round ${round.id}:`, error);
+      });
+    rN += 1;
+  });
+};
+
 (async () => {
+  // args[0] is --help or -h
+  if (args[0] === "--help" || args[0] === "-h") {
+    console.info("Usage: <command> [options]");
+    console.info("Commands:");
+    console.info(
+      "  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]"
+    );
+    console.info(
+      "      Sets the delay for all rounds in the specified broadcast."
+    );
+    console.info("  setLCC <broadcastId> <LCCid>");
+    console.info("      Sets the LiveChessCloud source for all rounds.");
+    process.exit(0);
+  }
   switch (args[0]) {
     case "delay":
       const [broadcastId, delay] = args.slice(1, 3);
@@ -110,8 +158,26 @@ const setDelayRounds = (rounds, delay, onlyDelay, noDelay) =>
       const roundIds = await getBroadcastRounds(broadcastId);
       setDelayRounds(roundIds, parseInt(delay, 10), onlyDelay, noDelay);
       break;
+    case "setLCC":
+      const [bId, LCCid] = args.slice(1, 3);
+      // check arg --help or -h
+      if (args.includes("--help") || args.includes("-h")) {
+        console.info("Usage: setLCC <broadcastId> <LCCid>");
+        console.info("Sets the LiveChessCloud source for all rounds.");
+        process.exit(0);
+      }
+      // Validate required args
+      if (!bId || !LCCid) {
+        console.error("Usage: setLCC <broadcastId> <LCCid>");
+        console.info("Use --help for more information.");
+        process.exit(1);
+      }
+      let lccId = LCCid.startsWith("#") ? LCCid : `#${LCCid}`;
+      const rounds = await getBroadcastRounds(bId);
+      setSourceLCC(rounds, lccId);
+      break;
     default:
-      console.error("Unknown command. Supported commands: delay");
+      console.error("Unknown command. Supported commands: delay, setLCC");
       process.exit(1);
   }
 })();
