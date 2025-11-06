@@ -108,17 +108,22 @@ const setSourceLCC = (
   });
 };
 
+const showHelp = () => [
+  "Usage: <command> [options]",
+  "Commands:",
+  "  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]",
+  "     Sets the delay for all rounds in the specified broadcast.",
+  "     Options:",
+  "       --onlyDelay   Set only the delay without changing the start time.",
+  "       --noDelay     Remove the delay from the rounds.",
+  "  setLCC <broadcastId> <sourceLCCUrl>",
+  "     Sets the source LCC URL for all rounds in the specified broadcast.",
+].forEach((line) => console.info(line));
+
 (async () => {
   // check args[0] is --help or -h
   if (args.length === 0 || args[0] === "--help" || args[0] === "-h") {
-    console.info("Usage: <command> [options]");
-    console.info("Commands:");
-    console.info(
-      "  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]\n     Sets the delay for all rounds in the specified broadcast."
-    );
-    console.info(
-      "  setLCC <broadcastId> <sourceLCCUrl>\n     Sets the source LCC URL for all rounds in the specified broadcast."
-    );
+    showHelp();
     process.exit(0);
   }
   switch (args[0]) {
@@ -126,24 +131,12 @@ const setSourceLCC = (
       const [broadcastId, delay] = args.slice(1, 3);
       // check arg --help or -h
       if (args.includes("--help") || args.includes("-h")) {
-        console.info(
-          "Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]"
-        );
-        console.info(
-          "Sets the delay for all rounds in the specified broadcast."
-        );
-        console.info("Options:");
-        console.info(
-          "  --onlyDelay   Set only the delay without changing the start time."
-        );
-        console.info("  --noDelay     Remove the delay from the rounds.");
+        showHelp();
         process.exit(0);
       }
       // Validate required args
       if (!broadcastId || !delay) {
-        console.error(
-          "Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]"
-        );
+        showHelp();
         console.info("Use --help for more information.");
         process.exit(1);
       }
@@ -173,10 +166,7 @@ const setSourceLCC = (
       const [bId, sourceLCC] = args.slice(1, 3);
       // check arg --help or -h
       if (args.includes("--help") || args.includes("-h")) {
-        console.info("Usage: setLCC <broadcastId> <sourceLCCUrl>");
-        console.info(
-          "Sets the source LCC URL for all rounds in the specified broadcast."
-        );
+        showHelp();
         process.exit(0);
       }
       // Validate required args
