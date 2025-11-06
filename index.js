@@ -1,6 +1,6 @@
 import { argv, env } from "process";
 import dayjs from "dayjs";
-import duration from 'dayjs/plugin/duration.js';
+import duration from "dayjs/plugin/duration.js";
 dayjs().format();
 dayjs.extend(duration);
 
@@ -30,11 +30,14 @@ const getBroadcastRounds = (id) =>
     .then((response) => response.json())
     .then((data) => data.rounds);
 
-const setDelayRounds = (rounds, delay, onlyDelay, noDelay) => 
+const setDelayRounds = (rounds, delay, onlyDelay, noDelay) =>
   rounds.forEach((round) => {
     const jsonBody = {};
     jsonBody.delay = !noDelay ? delay : undefined;
-    jsonBody.startsAt = round.startsAt && !onlyDelay ? dayjs(round.startsAt).add(delay, 'seconds').valueOf() : undefined;
+    jsonBody.startsAt =
+      round.startsAt && !onlyDelay
+        ? dayjs(round.startsAt).add(delay, "seconds").valueOf()
+        : undefined;
     fetch(`${LICHESS_DOMAIN}broadcast/round/${round.id}/edit?patch=1`, {
       method: "POST",
       headers: {
@@ -66,16 +69,24 @@ const setDelayRounds = (rounds, delay, onlyDelay, noDelay) =>
       const [broadcastId, delay] = args.slice(1, 3);
       // check arg --help or -h
       if (args.includes("--help") || args.includes("-h")) {
-        console.info("Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]");
-        console.info("Sets the delay for all rounds in the specified broadcast.");
+        console.info(
+          "Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]"
+        );
+        console.info(
+          "Sets the delay for all rounds in the specified broadcast."
+        );
         console.info("Options:");
-        console.info("  --onlyDelay   Set only the delay without changing the start time.");
+        console.info(
+          "  --onlyDelay   Set only the delay without changing the start time."
+        );
         console.info("  --noDelay     Remove the delay from the rounds.");
         process.exit(0);
       }
       // Validate required args
       if (!broadcastId || !delay) {
-        console.error("Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]");
+        console.error(
+          "Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]"
+        );
         console.info("Use --help for more information.");
         process.exit(1);
       }
