@@ -17,39 +17,57 @@ const client = createClient<paths>({
   headers: {
     Authorization: `Bearer ${LICHESS_TOKEN}`,
   },
-})
+});
 
-const getBroadcast = async (broadcastId: string) => {
-  const { data } = await client.GET("/api/broadcast/{broadcastTournamentId}", {
-    params: {
-      path: { broadcastTournamentId: broadcastId },
-    }
-  })
-
-  return data;
-};
-
-const setDelayRounds = (rounds: components["schemas"]["BroadcastRoundInfo"][], delay: number, onlyDelay: boolean, noDelay: boolean) => 
-  rounds.forEach((round) => {
-    client.POST("/broadcast/round/{broadcastRoundId}/edit", {
+const getBroadcast = (broadcastId: string) =>
+  client
+    .GET("/api/broadcast/{broadcastTournamentId}", {
       params: {
-        path: { broadcastRoundId: round.id },
-        // @ts-ignore patch param is not yet documented
-        query: { patch: 1 },
+        path: { broadcastTournamentId: broadcastId },
       },
-      body: {
-        name: round.name,
-        delay: noDelay ? undefined : delay,
-        startsAt: round.startsAt && !onlyDelay ? round.startsAt + (delay * 1000) : undefined,
-      }
     })
-    .then((response) => {
-      if (response.response.ok) console.log(`Successfully set delay for round ${round.id} to ${delay} seconds.`);
-      else console.error(`Failed to set delay for round ${round.id}: ${response.response.statusText}`);
-    })
+    .then((response) => response.data)
     .catch((error) => {
-      console.error(`Error setting delay for round ${round.id}:`, error);
+      console.error("Error fetching broadcast:", error);
+      return null;
     });
+
+const setDelayRounds = (
+  rounds: components["schemas"]["BroadcastRoundInfo"][],
+  delay: number,
+  onlyDelay: boolean,
+  noDelay: boolean
+) =>
+  rounds.forEach((round) => {
+    client
+      .POST("/broadcast/round/{broadcastRoundId}/edit", {
+        params: {
+          path: { broadcastRoundId: round.id },
+          // @ts-ignore patch param is not yet documented
+          query: { patch: 1 },
+        },
+        body: {
+          name: round.name,
+          delay: noDelay ? undefined : delay,
+          startsAt:
+            round.startsAt && !onlyDelay
+              ? round.startsAt + delay * 1000
+              : undefined,
+        },
+      })
+      .then((response) => {
+        if (response.response.ok)
+          console.log(
+            `Successfully set delay for round ${round.id} to ${delay} seconds.`
+          );
+        else
+          console.error(
+            `Failed to set delay for round ${round.id}: ${response.response.statusText}`
+          );
+      })
+      .catch((error) => {
+        console.error(`Error setting delay for round ${round.id}:`, error);
+      });
   });
 
 (async () => {
@@ -58,25 +76,30 @@ const setDelayRounds = (rounds: components["schemas"]["BroadcastRoundInfo"][], d
       const [broadcastId, delay] = args.slice(1, 3);
       // check arg --help or -h
       if (args.includes("--help") || args.includes("-h")) {
-        console.info("Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]");
-        console.info("Sets the delay for all rounds in the specified broadcast.");
+        console.info(
+          "Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]"
+        );
+        console.info(
+          "Sets the delay for all rounds in the specified broadcast."
+        );
         console.info("Options:");
-        console.info("  --onlyDelay   Set only the delay without changing the start time.");
+        console.info(
+          "  --onlyDelay   Set only the delay without changing the start time."
+        );
         console.info("  --noDelay     Remove the delay from the rounds.");
         process.exit(0);
       }
       // Validate required args
       if (!broadcastId || !delay) {
-        console.error("Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]");
+        console.error(
+          "Usage: delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]"
+        );
         console.info("Use --help for more information.");
         process.exit(1);
       }
+      const delayNum = parseInt(delay, 10);
       // Validate delay is a number between 0s and 1h
-      if (
-        isNaN(parseInt(delay, 10)) &&
-        parseInt(delay, 10) >= 0 &&
-        parseInt(delay, 10) <= 3600
-      ) {
+      if (isNaN(delayNum) && delayNum >= 0 && delayNum <= 3600) {
         console.error("Delay must be a number between 0 and 3600 seconds.");
         process.exit(1);
       }
