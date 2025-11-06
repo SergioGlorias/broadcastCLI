@@ -1,0 +1,17 @@
+{
+  "name": "broadcast-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.20.0",
+  "type": "module",
+  "dependencies": {
+    "dayjs": "^1.11.19"
+  }
+}
