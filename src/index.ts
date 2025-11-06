@@ -109,6 +109,18 @@ const setSourceLCC = (
 };
 
 (async () => {
+  // check args[0] is --help or -h
+  if (args.length === 0 || args[0] === "--help" || args[0] === "-h") {
+    console.info("Usage: <command> [options]");
+    console.info("Commands:");
+    console.info(
+      "  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]\n     Sets the delay for all rounds in the specified broadcast."
+    );
+    console.info(
+      "  setLCC <broadcastId> <sourceLCCUrl>\n     Sets the source LCC URL for all rounds in the specified broadcast."
+    );
+    process.exit(0);
+  }
   switch (args[0]) {
     case "delay":
       const [broadcastId, delay] = args.slice(1, 3);
@@ -197,7 +209,7 @@ const setSourceLCC = (
       break;
 
     default:
-      console.error("Unknown command. Supported commands: delay");
+      console.error("Unknown command. Supported commands: delay, setLCC");
       process.exit(1);
   }
 })();
