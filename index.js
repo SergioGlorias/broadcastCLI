@@ -97,7 +97,7 @@ const setDelayRounds = (rounds, delay, onlyDelay, noDelay) =>
         process.exit(1);
       }
       const roundIds = await getBroadcastRounds(broadcastId);
-      setDelayRounds(roundIds, parseInt(delay, 10, onlyDelay, noDelay));
+      setDelayRounds(roundIds, parseInt(delay, 10), onlyDelay, noDelay);
       break;
     default:
       console.error("Unknown command. Supported commands: delay");
