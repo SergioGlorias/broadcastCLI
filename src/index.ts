@@ -108,17 +108,34 @@ const setSourceLCC = (
   });
 };
 
-const showHelp = () => [
-  "Usage: <command> [options]",
-  "Commands:",
-  "  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]",
-  "     Sets the delay for all rounds in the specified broadcast.",
-  "     Options:",
-  "       --onlyDelay   Set only the delay without changing the start time.",
-  "       --noDelay     Remove the delay from the rounds.",
-  "  setLCC <broadcastId> <sourceLCCUrl>",
-  "     Sets the source LCC URL for all rounds in the specified broadcast.",
-].forEach((line) => console.info(line));
+enum Command {
+  Delay = "delay",
+  SetLCC = "setLCC",
+}
+
+const showHelp = (cmd?: Command) => {
+  const msg = [
+    "Usage: <command> [options]",
+    "Commands:",
+    "  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]",
+    "     Sets the delay for all rounds in the specified broadcast.",
+    "     Options:",
+    "       --onlyDelay   Set only the delay without changing the start time.",
+    "       --noDelay     Remove the delay from the rounds.",
+    "  setLCC <broadcastId> <sourceLCCUrl>",
+    "     Sets the source LCC URL for all rounds in the specified broadcast.",
+  ];
+  switch (cmd) {
+    case Command.Delay:
+      console.info(msg.slice(2, 7).join("\n"));
+      break;
+    case Command.SetLCC:
+      console.info(msg.slice(7, 8).join("\n"));
+      break;
+    default:
+      console.info(msg.join("\n"));
+  }
+};
 
 (async () => {
   // check args[0] is --help or -h
@@ -127,17 +144,16 @@ const showHelp = () => [
     process.exit(0);
   }
   switch (args[0]) {
-    case "delay":
+    case Command.Delay:
       const [broadcastId, delay] = args.slice(1, 3);
       // check arg --help or -h
       if (args.includes("--help") || args.includes("-h")) {
-        showHelp();
+        showHelp(Command.Delay);
         process.exit(0);
       }
       // Validate required args
       if (!broadcastId || !delay) {
-        showHelp();
-        console.info("Use --help for more information.");
+        showHelp(Command.Delay);
         process.exit(1);
       }
       const delayNum = parseInt(delay, 10);
@@ -162,17 +178,16 @@ const showHelp = () => [
       setDelayRounds(broadcast.rounds, parseInt(delay, 10), onlyDelay, noDelay);
       break;
 
-    case "setLCC":
+    case Command.SetLCC:
       const [bId, sourceLCC] = args.slice(1, 3);
       // check arg --help or -h
       if (args.includes("--help") || args.includes("-h")) {
-        showHelp();
+        showHelp(Command.SetLCC);
         process.exit(0);
       }
       // Validate required args
       if (!bId || !sourceLCC) {
-        console.error("Usage: setLCC <broadcastId> <sourceLCCUrl>");
-        console.info("Use --help for more information.");
+        showHelp(Command.SetLCC);
         process.exit(1);
       }
 
