@@ -73,16 +73,24 @@ export const setPGNCommand = async (args: string[]) => {
     process.exit(1);
   }
 
-  const urlRound = (roundNum: number | string) =>
-    sourcePGN.replaceAll("{}", roundNum.toString());
-
+  const urlRound = (roundNum?: number | string) =>
+    roundNum ? sourcePGN.replaceAll("{}", roundNum.toString()) : sourcePGN;
+  let isLCC = false;
   try {
-    const url = new URL(urlRound(1));
+    const url = new URL(urlRound());
     if (!url.protocol.startsWith("http")) throw new Error();
+    isLCC = url.hostname === "view.livechesscloud.com";
+    if (isLCC && url.hash.length > 1 && !url.hash.endsWith("/{}"))
+      throw new Error();
   } catch {
-    console.error(
-      'Invalid URL. Must be http/https with "{}" as round placeholder.'
-    );
+    if (isLCC)
+      console.error(
+        'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".'
+      );
+    else
+      console.error(
+        'Invalid URL. Must be http/https with "{}" as round placeholder.'
+      );
     process.exit(1);
   }
 
