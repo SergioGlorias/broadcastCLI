@@ -1,5 +1,7 @@
 import { components } from "@lichess-org/types";
-import { client, Command, showHelp, getBroadcast, sleep } from "../utils";
+import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
+import { getBroadcast } from "../utils/getInfoBroadcast";
+
 
 const setPGN = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
@@ -45,20 +47,15 @@ const setPGN = async (
 
 export const setPGNCommand = async (args: string[]) => {
   const [bId, sourcePGN] = args.slice(0, 2);
-  // check arg --help or -h
-  if (args.includes("--help") || args.includes("-h")) {
-    showHelp(Command.SetPGN);
-    process.exit(0);
-  }
   // Validate required args
   if (!bId || !sourcePGN) {
-    showHelp(Command.SetPGN);
+    msgCommonErrorHelp("Broadcast ID and source PGN URL are required.");
     process.exit(1);
   }
 
   const bcast = await getBroadcast(bId);
   if (!bcast?.rounds || bcast.rounds.length === 0) {
-    console.error("No rounds found for the specified broadcast.");
+    msgCommonErrorHelp("No rounds found for the specified broadcast.");
     process.exit(1);
   }
 

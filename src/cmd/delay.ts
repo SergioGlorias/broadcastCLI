@@ -1,5 +1,6 @@
 import { components } from "@lichess-org/types";
-import { client, Command, showHelp, getBroadcast, sleep } from "../utils";
+import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
+import { getBroadcast } from "../utils/getInfoBroadcast";
 
 const setDelayRounds = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
@@ -44,20 +45,15 @@ const setDelayRounds = async (
 
 export const delayCommand = async (args: string[]) => {
   const [broadcastId, delay] = args.slice(0, 2);
-  // check arg --help or -h
-  if (args.includes("--help") || args.includes("-h")) {
-    showHelp(Command.Delay);
-    process.exit(0);
-  }
   // Validate required args
   if (!broadcastId || !delay) {
-    showHelp(Command.Delay);
+    msgCommonErrorHelp("Broadcast ID and delay are required.");
     process.exit(1);
   }
   const delayNum = parseInt(delay, 10);
   // Validate delay is a number between 0s and 1h
   if (isNaN(delayNum) && delayNum >= 0 && delayNum <= 3600) {
-    console.error("Delay must be a number between 0 and 3600 seconds.");
+    msgCommonErrorHelp("Delay must be a number between 0 and 3600 seconds.");
     process.exit(1);
   }
   // check arg --onlyDelay

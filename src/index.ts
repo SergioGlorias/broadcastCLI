@@ -1,17 +1,9 @@
 #!/usr/bin/env node
-import { argv } from "process";
-import { showHelp, Command, LICHESS_TOKEN } from "./utils";
+import { LICHESS_TOKEN, args, Command } from "./utils/commandHandler";
+import { showHelp } from "./utils/help";
 import { delayCommand } from "./cmd/delay";
 import { setPGNCommand } from "./cmd/setPGN";
 import { setLichessGamesCommand } from "./cmd/setLichessGames";
-
-// Ensure LICHESS_TOKEN is set
-if (!LICHESS_TOKEN) {
-  console.error("Error: LICHESS_TOKEN environment variable is not set.");
-  process.exit(1);
-}
-
-const args = argv.slice(2);
 
 (async () => {
   // show version for --version or -v
@@ -33,13 +25,31 @@ const args = argv.slice(2);
     [Command.SetLichessGames, setLichessGamesCommand],
   ]);
 
-  const handler = commands.get(command as Command);
-  if (command === Command.SetLCC)
+  const cmd = command as Command | undefined;
+
+  if (!cmd) {
+    console.error(
+      "Unknown command. Supported commands: delay, setLCC, setPGN, setLichessGames"
+    );
+    process.exit(1);
+  }
+
+  const handler = commands.get(cmd);
+  if (cmd === Command.SetLCC)
     console.warn(
       "Warning: 'setLCC' command was removed. Will use 'setPGN' instead."
     );
+  if (args.includes("--help") || args.includes("-h")) {
+    showHelp(cmd);
+    process.exit(0);
+  }
   if (!handler) {
-    console.error("Unknown command. Supported commands: delay, setLCC, setPGN, setLichessGames");
+    console.error("Error: Command handler not found.");
+    process.exit(1);
+  }
+
+  if (!LICHESS_TOKEN) {
+    console.error("Error: LICHESS_TOKEN environment variable is not set.");
     process.exit(1);
   }
   await handler(args);

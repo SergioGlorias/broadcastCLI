@@ -1,5 +1,6 @@
 import { components } from "@lichess-org/types";
-import { client, Command, showHelp, getBroadcastRound } from "../utils";
+import { client, msgCommonErrorHelp } from "../utils/commandHandler";
+import { getBroadcastRound } from "../utils/getInfoBroadcast";
 
 const setLichessGames = (
   round: components["schemas"]["BroadcastRoundInfo"],
@@ -38,14 +39,9 @@ export const setLichessGamesCommand = async (args: string[]) => {
   const bId = args.shift();
   // games ids are max 64 ids
   const games = args.slice(0, 64).join(" ");
-  // check arg --help or -h
-  if (args.includes("--help") || args.includes("-h")) {
-    showHelp(Command.SetLichessGames);
-    process.exit(0);
-  }
   // Validate required args
   if (!bId || !games) {
-    showHelp(Command.SetLichessGames);
+    msgCommonErrorHelp("Broadcast ID and games IDs are required.");
     process.exit(1);
   }
 
