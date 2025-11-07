@@ -1,14 +1,14 @@
 import { components } from "@lichess-org/types";
-import { client, Command, showHelp, getBroadcast } from "../utils";
+import { client, Command, showHelp, getBroadcast, sleep } from "../utils";
 
-const setDelayRounds = (
+const setDelayRounds = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
   delay: number,
   onlyDelay: boolean,
   noDelay: boolean
-) =>
-  rounds.forEach((round) => {
-    client
+) => {
+  for (const round of rounds) {
+    await client
       .POST("/broadcast/round/{broadcastRoundId}/edit", {
         params: {
           path: { broadcastRoundId: round.id },
@@ -37,7 +37,10 @@ const setDelayRounds = (
       .catch((error) => {
         console.error(`Error setting delay for round ${round.id}:`, error);
       });
-  });
+    // sleep 200ms to avoid rate limit issues
+    await sleep(200);
+  }
+};
 
 export const delayCommand = async (args: string[]) => {
   const [broadcastId, delay] = args.slice(0, 2);

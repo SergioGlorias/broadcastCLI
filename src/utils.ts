@@ -71,3 +71,7 @@ export const getBroadcast = (broadcastId: string) =>
       console.error("Error fetching broadcast:", error);
       return null;
     });
+
+// sleep function to unvoid rate limit issues
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms)); 

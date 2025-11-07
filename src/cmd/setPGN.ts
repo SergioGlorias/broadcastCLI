@@ -1,16 +1,16 @@
 import { components } from "@lichess-org/types";
-import { client, Command, showHelp, getBroadcast } from "../utils";
+import { client, Command, showHelp, getBroadcast, sleep } from "../utils";
 
-const setPGN = (
+const setPGN = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
   urlRound: (roundNum: string | number) => string,
   setRoundFilter: boolean,
   setSliceFilter: string | null = null
 ) => {
-  let rN = 1;
-  rounds.forEach((round) => {
+  for (let rN = 1; rN <= rounds.length; rN++) {
+    const round = rounds[rN];
     const url = urlRound(rN);
-    client
+    await client
       .POST("/broadcast/round/{broadcastRoundId}/edit", {
         params: {
           path: { broadcastRoundId: round.id },
@@ -39,8 +39,8 @@ const setPGN = (
       .catch((error) => {
         console.error(`Error setting source LCC for round ${round.id}:`, error);
       });
-    rN += 1;
-  });
+    await sleep(200); // sleep 200ms to avoid rate limit issues
+  }
 };
 
 export const setPGNCommand = async (args: string[]) => {
