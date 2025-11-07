@@ -8,8 +8,8 @@
     "noUnusedParameters": true,
     "lib": ["DOM", "ES2024"],
     "target": "es2024",
-    "moduleResolution": "node",
-    "module": "ESNext",
+    "moduleResolution": "node16",
+    "module": "node20",
     "outDir": "./dist",
     "rootDir": "./src",
   }
