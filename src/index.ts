@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { exit } from 'node:process';
+import { exit } from "node:process";
 import { LICHESS_TOKEN, args, Command, commands } from "./utils/commandHandler";
 import { showHelp, includeHelp } from "./utils/help";
 
@@ -10,23 +10,15 @@ import { showHelp, includeHelp } from "./utils/help";
     console.log(`libroadcast-cli v${version}`);
     exit(0);
   }
-  // check args[0] is --help or -h
+
   if (args.length === 0 || includeHelp(args[0])) {
     showHelp();
     exit(0);
   }
-  const command = args.shift();
 
-  const cmd = command as Command | undefined;
+  const cmd = args.shift() as Command | undefined;
+  const handler = commands.get(cmd!);
 
-  if (!cmd) {
-    console.error(
-      "Unknown command. Supported commands: delay, setLCC, setPGN, setLichessGames"
-    );
-    exit(1);
-  }
-
-  const handler = commands.get(cmd);
   if (cmd === Command.SetLCC)
     console.warn(
       "Warning: 'setLCC' command was removed. Will use 'setPGN' instead."
