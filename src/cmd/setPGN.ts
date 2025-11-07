@@ -29,15 +29,15 @@ const setPGN = async (
       .then((response) => {
         if (response.response.ok)
           console.log(
-            `Successfully set source LCC for round ${round.id} to ${url}.`
+            `Successfully set source for round ${round.id} to ${url}.`
           );
         else
           console.error(
-            `Failed to set source LCC for round ${round.id}: ${response.response.statusText}`
+            `Failed to set source for round ${round.id}: ${response.response.statusText}`
           );
       })
       .catch((error) => {
-        console.error(`Error setting source LCC for round ${round.id}:`, error);
+        console.error(`Error setting source for round ${round.id}:`, error);
       });
     await sleep(200); // sleep 200ms to avoid rate limit issues
   }
