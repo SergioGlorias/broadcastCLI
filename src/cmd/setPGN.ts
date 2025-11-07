@@ -10,7 +10,7 @@ const setPGN = async (
   setSliceFilter: string | null = null
 ) => {
   for (let rN = 1; rN <= rounds.length; rN++) {
-    const round = rounds[rN-1];
+    const round = rounds[rN - 1];
     const url = urlRound(rN);
     await client
       .POST("/broadcast/round/{broadcastRoundId}/edit", {
@@ -69,14 +69,11 @@ export const setPGNCommand = async (args: string[]) => {
     if (isLCC && url.hash.length > 1 && !url.hash.endsWith("/{}"))
       throw new Error();
   } catch {
-    if (isLCC)
-      console.error(
-        'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".'
-      );
-    else
-      console.error(
-        'Invalid URL. Must be http/https with "{}" as round placeholder.'
-      );
+    console.error(
+      isLCC
+        ? 'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".'
+        : 'Invalid URL. Must be http/https with "{}" as round placeholder.'
+    );
     exit(1);
   }
 
