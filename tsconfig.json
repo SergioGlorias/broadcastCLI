@@ -6,9 +6,11 @@
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "lib": ["DOM", "es2018"],
-    "target": "es2018",
+    "lib": ["DOM", "ES2024"],
+    "target": "es2024",
     "moduleResolution": "node",
-    "module": "ESNext"
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
   }
 }

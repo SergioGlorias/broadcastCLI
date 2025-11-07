@@ -1,17 +1,19 @@
 ## Installation
 
 ```bash
-pnpm install
+npm install -g libroadcast-cli
 ```
 
 ## Usage
 
 ```bash
-pnpx tsx src/index.ts delay <broadcastId> <delayInSeconds> [--only-delay] [--no-delay]
+libroadcast
 ```
 
 ```bash
 export LICHESS_TOKEN=lip_yourtoken
 export LICHESS_DOMAIN=http://localhost:8080/
-pnpx tsx src/index.ts delay <broadcastId> <delayInSeconds> [--only-delay] [--no-delay]
+
+libroadcast delay <broadcastId> <delayInSeconds> [--only-delay] [--no-delay]
+libroadcast setLCC <broadcastId> <sourceLCCUrl>
 ```

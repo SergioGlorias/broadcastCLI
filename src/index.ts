@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { argv, env } from "process";
 import createClient from "openapi-fetch";
 import { components, paths } from "@lichess-org/types";
@@ -130,7 +131,7 @@ const showHelp = (cmd?: Command) => {
       console.info(msg.slice(2, 7).join("\n"));
       break;
     case Command.SetLCC:
-      console.info(msg.slice(7, 8).join("\n"));
+      console.info(msg.slice(7, 9).join("\n"));
       break;
     default:
       console.info(msg.join("\n"));
