@@ -1,6 +1,9 @@
 import { env, argv } from "process";
 import createClient from "openapi-fetch";
 import { paths } from "@lichess-org/types";
+import { delayCommand } from "../cmd/delay";
+import { setPGNCommand } from "../cmd/setPGN";
+import { setLichessGamesCommand } from "../cmd/setLichessGames";
 
 export const LICHESS_TOKEN = env.LICHESS_TOKEN;
 const LICHESS_DOMAIN = env.LICHESS_DOMAIN || "https://lichess.org/";
@@ -14,6 +17,13 @@ export enum Command {
   SetPGN = "setPGN",
   SetLichessGames = "setLichessGames",
 }
+
+export const commands = new Map([
+  [Command.Delay, delayCommand],
+  [Command.SetLCC, setPGNCommand],
+  [Command.SetPGN, setPGNCommand],
+  [Command.SetLichessGames, setLichessGamesCommand],
+]);
 
 export const client = createClient<paths>({
   baseUrl: LICHESS_DOMAIN,

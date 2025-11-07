@@ -1,9 +1,6 @@
 #!/usr/bin/env node
-import { LICHESS_TOKEN, args, Command } from "./utils/commandHandler";
+import { LICHESS_TOKEN, args, Command, commands } from "./utils/commandHandler";
 import { showHelp } from "./utils/help";
-import { delayCommand } from "./cmd/delay";
-import { setPGNCommand } from "./cmd/setPGN";
-import { setLichessGamesCommand } from "./cmd/setLichessGames";
 
 (async () => {
   // show version for --version or -v
@@ -18,12 +15,6 @@ import { setLichessGamesCommand } from "./cmd/setLichessGames";
     process.exit(0);
   }
   const command = args.shift();
-  const commands = new Map([
-    [Command.Delay, delayCommand],
-    [Command.SetLCC, setPGNCommand],
-    [Command.SetPGN, setPGNCommand],
-    [Command.SetLichessGames, setLichessGamesCommand],
-  ]);
 
   const cmd = command as Command | undefined;
 
