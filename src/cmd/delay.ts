@@ -1,3 +1,4 @@
+import { exit } from 'node:process';
 import { components } from "@lichess-org/types";
 import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
@@ -48,13 +49,13 @@ export const delayCommand = async (args: string[]) => {
   // Validate required args
   if (!broadcastId || !delay) {
     msgCommonErrorHelp("Broadcast ID and delay are required.");
-    process.exit(1);
+    exit(1);
   }
   const delayNum = parseInt(delay, 10);
   // Validate delay is a number between 0s and 1h
   if (isNaN(delayNum) && delayNum >= 0 && delayNum <= 3600) {
     msgCommonErrorHelp("Delay must be a number between 0 and 3600 seconds.");
-    process.exit(1);
+    exit(1);
   }
   // check arg --onlyDelay
   const onlyDelay = args.includes("--onlyDelay");
@@ -62,12 +63,12 @@ export const delayCommand = async (args: string[]) => {
   const noDelay = args.includes("--noDelay");
   if (onlyDelay && noDelay) {
     console.error("Cannot use --onlyDelay and --noDelay together.");
-    process.exit(1);
+    exit(1);
   }
   const broadcast = await getBroadcast(broadcastId);
   if (!broadcast?.rounds || broadcast.rounds.length === 0) {
     console.error("No rounds found for the specified broadcast.");
-    process.exit(1);
+    exit(1);
   }
   setDelayRounds(broadcast.rounds, parseInt(delay, 10), onlyDelay, noDelay);
 };

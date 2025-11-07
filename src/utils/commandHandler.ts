@@ -1,4 +1,4 @@
-import { env, argv } from "process";
+import { env, argv } from "node:process";
 import createClient from "openapi-fetch";
 import { paths } from "@lichess-org/types";
 import { delayCommand } from "../cmd/delay";

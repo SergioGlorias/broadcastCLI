@@ -1,7 +1,7 @@
+import { exit } from "node:process";
 import { components } from "@lichess-org/types";
 import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
-
 
 const setPGN = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
@@ -50,13 +50,13 @@ export const setPGNCommand = async (args: string[]) => {
   // Validate required args
   if (!bId || !sourcePGN) {
     msgCommonErrorHelp("Broadcast ID and source PGN URL are required.");
-    process.exit(1);
+    exit(1);
   }
 
   const bcast = await getBroadcast(bId);
   if (!bcast?.rounds || bcast.rounds.length === 0) {
     msgCommonErrorHelp("No rounds found for the specified broadcast.");
-    process.exit(1);
+    exit(1);
   }
 
   const urlRound = (roundNum?: number | string) =>
@@ -77,7 +77,7 @@ export const setPGNCommand = async (args: string[]) => {
       console.error(
         'Invalid URL. Must be http/https with "{}" as round placeholder.'
       );
-    process.exit(1);
+    exit(1);
   }
 
   const setRoundFilter = args.includes("--withFilter");

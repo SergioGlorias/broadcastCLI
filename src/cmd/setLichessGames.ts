@@ -1,3 +1,4 @@
+import { exit } from 'node:process';
 import { components } from "@lichess-org/types";
 import { client, msgCommonErrorHelp } from "../utils/commandHandler";
 import { getBroadcastRound } from "../utils/getInfoBroadcast";
@@ -42,13 +43,13 @@ export const setLichessGamesCommand = async (args: string[]) => {
   // Validate required args
   if (!bId || !games) {
     msgCommonErrorHelp("Broadcast ID and games IDs are required.");
-    process.exit(1);
+    exit(1);
   }
 
   const round = await getBroadcastRound(bId);
   if (!round) {
     console.error(`Broadcast round with ID ${bId} not found or has no rounds.`);
-    process.exit(1);
+    exit(1);
   }
 
   setLichessGames(round, games);

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { exit } from 'node:process';
 import { LICHESS_TOKEN, args, Command, commands } from "./utils/commandHandler";
 import { showHelp, includeHelp } from "./utils/help";
 
@@ -7,12 +8,12 @@ import { showHelp, includeHelp } from "./utils/help";
   if (args.includes("--version") || args.includes("-v")) {
     const { version } = require("../package.json");
     console.log(`libroadcast-cli v${version}`);
-    process.exit(0);
+    exit(0);
   }
   // check args[0] is --help or -h
   if (args.length === 0 || includeHelp(args[0])) {
     showHelp();
-    process.exit(0);
+    exit(0);
   }
   const command = args.shift();
 
@@ -22,7 +23,7 @@ import { showHelp, includeHelp } from "./utils/help";
     console.error(
       "Unknown command. Supported commands: delay, setLCC, setPGN, setLichessGames"
     );
-    process.exit(1);
+    exit(1);
   }
 
   const handler = commands.get(cmd);
@@ -32,16 +33,16 @@ import { showHelp, includeHelp } from "./utils/help";
     );
   if (args.find(includeHelp)) {
     showHelp(cmd);
-    process.exit(0);
+    exit(0);
   }
   if (!handler) {
     console.error("Error: Command handler not found.");
-    process.exit(1);
+    exit(1);
   }
 
   if (!LICHESS_TOKEN) {
     console.error("Error: LICHESS_TOKEN environment variable is not set.");
-    process.exit(1);
+    exit(1);
   }
   await handler(args);
 })();
