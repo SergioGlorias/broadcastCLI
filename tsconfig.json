@@ -12,5 +12,6 @@
     "module": "node20",
     "outDir": "./dist",
     "rootDir": "./src",
+    "removeComments": true,
   }
 }
