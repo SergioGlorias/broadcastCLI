@@ -8,7 +8,8 @@ const setPGN = async (
   setSliceFilter: string | null = null
 ) => {
   for (let rN = 1; rN <= rounds.length; rN++) {
-    const round = rounds[rN];
+    const round = rounds[rN-1];
+    console.log(round)
     const url = urlRound(rN);
     await client
       .POST("/broadcast/round/{broadcastRoundId}/edit", {
