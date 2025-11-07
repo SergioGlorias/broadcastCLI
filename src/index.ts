@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { LICHESS_TOKEN, args, Command, commands } from "./utils/commandHandler";
-import { showHelp } from "./utils/help";
+import { showHelp, includeHelp } from "./utils/help";
 
 (async () => {
   // show version for --version or -v
@@ -10,7 +10,7 @@ import { showHelp } from "./utils/help";
     process.exit(0);
   }
   // check args[0] is --help or -h
-  if (args.length === 0 || args[0] === "--help" || args[0] === "-h") {
+  if (args.length === 0 || includeHelp(args[0])) {
     showHelp();
     process.exit(0);
   }
@@ -30,7 +30,7 @@ import { showHelp } from "./utils/help";
     console.warn(
       "Warning: 'setLCC' command was removed. Will use 'setPGN' instead."
     );
-  if (args.includes("--help") || args.includes("-h")) {
+  if (args.find(includeHelp)) {
     showHelp(cmd);
     process.exit(0);
   }

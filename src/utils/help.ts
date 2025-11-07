@@ -43,3 +43,5 @@ export const showHelp = (cmd?: Command) => {
   }
   console.info(range ? msg.slice(...range).join("\n") : msg.join("\n"));
 };
+
+export const includeHelp = (str: string) => ["--help", "-h"].includes(str);
