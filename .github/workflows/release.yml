@@ -4,15 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version tag (e.g. v1.2.3)'
+        description: "Version tag (e.g. v1.2.3)"
         required: true
       description:
-        description: 'Description'
+        description: "Description"
         required: false
-        default: ''
+        default: ""
 
 permissions:
-  id-token: write  # Required for OIDC
+  id-token: write # Required for OIDC
   contents: read
 
 jobs:
