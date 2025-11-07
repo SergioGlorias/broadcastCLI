@@ -44,12 +44,12 @@ export const setPGNCommand = async (args: string[]) => {
   const [bId, sourcePGN] = args.slice(0, 2);
   // check arg --help or -h
   if (args.includes("--help") || args.includes("-h")) {
-    showHelp(Command.SetLCC);
+    showHelp(Command.SetPGN);
     process.exit(0);
   }
   // Validate required args
   if (!bId || !sourcePGN) {
-    showHelp(Command.SetLCC);
+    showHelp(Command.SetPGN);
     process.exit(1);
   }
 
