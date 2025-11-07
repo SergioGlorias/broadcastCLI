@@ -18,6 +18,7 @@ export enum Command {
   Delay = "delay",
   SetLCC = "setLCC",
   SetPGN = "setPGN",
+  SetLichessGames = "setLichessGames",
 }
 
 // Function to show help messages
@@ -38,6 +39,9 @@ export const showHelp = (cmd?: Command) => {
     "     Options:",
     "       --withFilter    Apply round number filtering based on round number.",
     "       --slice <sliceFilter>  Apply slice filtering using the provided filter string.",
+    "  setLichessGames <broadcastRoundId> <gameIds...>",
+    "     Sets the games for the specified broadcast round using Lichess game IDs.",
+    "     Note: Maximum of 64 game IDs can be provided.",
     "",
     "Examples:",
     "  delay bcast123 300 --onlyDelay # Set a 5-minute delay without changing start time",
@@ -48,6 +52,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.Delay]: [3, 8],
     [Command.SetPGN]: [8, 15],
     [Command.SetLCC]: [8, 15], // will remove soon
+    [Command.SetLichessGames]: [15, 18],
   };
 
   const range = cmd ? ranges[cmd] : undefined;
@@ -71,6 +76,19 @@ export const getBroadcast = (broadcastId: string) =>
       console.error("Error fetching broadcast:", error);
       return null;
     });
+
+    export const getBroadcastRound = (roundId: string) =>
+    client
+      .GET("/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}", {
+        params: {
+          path: { broadcastTournamentSlug: "-", broadcastRoundSlug: "-", broadcastRoundId: roundId },
+        },
+      })
+      .then((response) => response.data?.round)
+      .catch((error) => {
+        console.error("Error fetching broadcast round:", error);
+        return null;
+      });
 
 // sleep function to unvoid rate limit issues
 export const sleep = (ms: number) =>

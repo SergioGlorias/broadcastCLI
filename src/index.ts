@@ -3,6 +3,7 @@ import { argv } from "process";
 import { showHelp, Command, LICHESS_TOKEN } from "./utils";
 import { delayCommand } from "./cmd/delay";
 import { setPGNCommand } from "./cmd/setPGN";
+import { setLichessGamesCommand } from "./cmd/setLichessGames";
 
 // Ensure LICHESS_TOKEN is set
 if (!LICHESS_TOKEN) {
@@ -29,6 +30,7 @@ const args = argv.slice(2);
     [Command.Delay, delayCommand],
     [Command.SetLCC, setPGNCommand],
     [Command.SetPGN, setPGNCommand],
+    [Command.SetLichessGames, setLichessGamesCommand],
   ]);
 
   const handler = commands.get(command as Command);
@@ -37,7 +39,7 @@ const args = argv.slice(2);
       "Warning: 'setLCC' command was removed. Will use 'setPGN' instead."
     );
   if (!handler) {
-    console.error("Unknown command. Supported commands: delay, setLCC, setPGN");
+    console.error("Unknown command. Supported commands: delay, setLCC, setPGN, setLichessGames");
     process.exit(1);
   }
   await handler(args);
