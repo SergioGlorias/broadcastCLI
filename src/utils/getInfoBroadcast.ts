@@ -1,4 +1,5 @@
 import { client } from "./commandHandler";
+import cl from "./colors";
 
 export const getBroadcast = (broadcastId: string) =>
   client
@@ -9,7 +10,7 @@ export const getBroadcast = (broadcastId: string) =>
     })
     .then((response) => response.data)
     .catch((error) => {
-      console.error("Error fetching broadcast:", error);
+      console.error(cl.red("Error fetching broadcast:"), error);
       return null;
     });
 
@@ -25,10 +26,10 @@ export const getBroadcastRound = (roundId: string) =>
             broadcastRoundId: roundId,
           },
         },
-      }
+      },
     )
     .then((response) => response.data?.round)
     .catch((error) => {
-      console.error("Error fetching broadcast round:", error);
+      console.error(cl.red("Error fetching broadcast round:"), error);
       return null;
     });

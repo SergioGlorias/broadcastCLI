@@ -1,11 +1,12 @@
-import { exit } from 'node:process';
+import { exit } from "node:process";
 import { components } from "@lichess-org/types";
 import { client, msgCommonErrorHelp } from "../utils/commandHandler";
 import { getBroadcastRound } from "../utils/getInfoBroadcast";
+import cl from "../utils/colors";
 
 const setLichessGames = (
   round: components["schemas"]["BroadcastRoundInfo"],
-  games: string
+  games: string,
 ) =>
   client
     .POST("/broadcast/round/{broadcastRoundId}/edit", {
@@ -24,15 +25,22 @@ const setLichessGames = (
     .then((response) => {
       if (response.response.ok)
         console.log(
-          `Successfully set games for round ${round.id} to ${games}.`
+          cl.green(
+            `Successfully set games for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(games)}.`,
+          ),
         );
       else
         console.error(
-          `Failed to set games for round ${round.id}: ${response.response.statusText}`
+          cl.red(
+            `Failed to set games for round ${cl.whiteBold(round.id)}: ${cl.whiteBold(response.response.statusText)}`,
+          ),
         );
     })
     .catch((error) => {
-      console.error(`Error setting games for round ${round.id}:`, error);
+      console.error(
+        cl.red(`Error setting games for round ${cl.whiteBold(round.id)}:`),
+        error,
+      );
     });
 
 export const setLichessGamesCommand = async (args: string[]) => {
@@ -48,7 +56,11 @@ export const setLichessGamesCommand = async (args: string[]) => {
 
   const round = await getBroadcastRound(bId);
   if (!round) {
-    console.error(`Broadcast round with ID ${bId} not found or has no rounds.`);
+    console.error(
+      cl.red(
+        `Broadcast round with ID ${cl.whiteBold(bId)} not found or has no rounds.`,
+      ),
+    );
     exit(1);
   }
 

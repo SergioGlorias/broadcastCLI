@@ -4,6 +4,7 @@ import { paths } from "@lichess-org/types";
 import { delayCommand } from "../cmd/delay";
 import { setPGNCommand } from "../cmd/setPGN";
 import { setLichessGamesCommand } from "../cmd/setLichessGames";
+import cl from "./colors";
 
 export const LICHESS_TOKEN = env.LICHESS_TOKEN;
 const LICHESS_DOMAIN = env.LICHESS_DOMAIN || "https://lichess.org/";
@@ -38,6 +39,6 @@ export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 export const msgCommonErrorHelp = (msg: string) => {
-  console.error(msg);
-  console.info("Use --help to see usage.");
+  console.error(cl.red(msg));
+  console.info(cl.blue("Use --help to see usage."));
 };

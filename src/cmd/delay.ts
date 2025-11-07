@@ -1,13 +1,14 @@
-import { exit } from 'node:process';
+import { exit } from "node:process";
 import { components } from "@lichess-org/types";
 import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
+import cl from "../utils/colors";
 
 const setDelayRounds = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
   delay: number,
   onlyDelay: boolean,
-  noDelay: boolean
+  noDelay: boolean,
 ) => {
   for (const round of rounds) {
     await client
@@ -29,15 +30,26 @@ const setDelayRounds = async (
       .then((response) => {
         if (response.response.ok)
           console.log(
-            `Successfully set delay for round ${round.id} to ${delay} seconds.`
+            cl.green(
+              `Successfully set delay for round ${cl.whiteBold(
+                round.id,
+              )} to ${cl.whiteBold(delay.toString())} seconds.`,
+            ),
           );
         else
           console.error(
-            `Failed to set delay for round ${round.id}: ${response.response.statusText}`
+            cl.red(
+              `Failed to set delay for round ${cl.whiteBold(round.id)}: ${cl.whiteBold(
+                response.response.statusText,
+              )}`,
+            ),
           );
       })
       .catch((error) => {
-        console.error(`Error setting delay for round ${round.id}:`, error);
+        console.error(
+          cl.red(`Error setting delay for round ${cl.whiteBold(round.id)}:`),
+          error,
+        );
       });
     // sleep 200ms to avoid rate limit issues
     await sleep(200);
@@ -62,12 +74,12 @@ export const delayCommand = async (args: string[]) => {
   // check arg --noDelay
   const noDelay = args.includes("--noDelay");
   if (onlyDelay && noDelay) {
-    console.error("Cannot use --onlyDelay and --noDelay together.");
+    console.error(cl.red("Cannot use --onlyDelay and --noDelay together."));
     exit(1);
   }
   const broadcast = await getBroadcast(broadcastId);
   if (!broadcast?.rounds || broadcast.rounds.length === 0) {
-    console.error("No rounds found for the specified broadcast.");
+    console.error(cl.red("No rounds found for the specified broadcast."));
     exit(1);
   }
   setDelayRounds(broadcast.rounds, parseInt(delay, 10), onlyDelay, noDelay);

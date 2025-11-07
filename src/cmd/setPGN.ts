@@ -2,12 +2,13 @@ import { exit } from "node:process";
 import { components } from "@lichess-org/types";
 import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
+import cl from "../utils/colors";
 
 const setPGN = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
   urlRound: (roundNum: string | number) => string,
   setRoundFilter: boolean,
-  setSliceFilter: string | null = null
+  setSliceFilter: string | null = null,
 ) => {
   for (let rN = 1; rN <= rounds.length; rN++) {
     const round = rounds[rN - 1];
@@ -31,15 +32,26 @@ const setPGN = async (
       .then((response) => {
         if (response.response.ok)
           console.log(
-            `Successfully set source for round ${round.id} to ${url}.`
+            cl.green(
+              `Successfully set source for round ${cl.whiteBold(
+                round.id,
+              )} to ${cl.whiteBold(url)}.`,
+            ),
           );
         else
           console.error(
-            `Failed to set source for round ${round.id}: ${response.response.statusText}`
+            cl.red(
+              `Failed to set source for round ${cl.whiteBold(
+                round.id,
+              )}: ${cl.whiteBold(response.response.statusText)}`,
+            ),
           );
       })
       .catch((error) => {
-        console.error(`Error setting source for round ${round.id}:`, error);
+        console.error(
+          cl.red(`Error setting source for round ${cl.whiteBold(round.id)}:`),
+          error,
+        );
       });
     await sleep(200); // sleep 200ms to avoid rate limit issues
   }
@@ -70,9 +82,11 @@ export const setPGNCommand = async (args: string[]) => {
       throw new Error();
   } catch {
     console.error(
-      isLCC
-        ? 'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".'
-        : 'Invalid URL. Must be http/https with "{}" as round placeholder.'
+      cl.red(
+        isLCC
+          ? 'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".'
+          : 'Invalid URL. Must be http/https with "{}" as round placeholder.',
+      ),
     );
     exit(1);
   }
