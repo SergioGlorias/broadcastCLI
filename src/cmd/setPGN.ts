@@ -62,17 +62,6 @@ export const setPGNCommand = async (args: string[]) => {
     process.exit(1);
   }
 
-  // check if link is from livechessviewer and check if it contains {}
-  if (
-    sourcePGN.includes("view.livechesscloud.com") &&
-    !sourcePGN.endsWith("/{}")
-  ) {
-    console.error(
-      'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".'
-    );
-    process.exit(1);
-  }
-
   const urlRound = (roundNum?: number | string) =>
     roundNum ? sourcePGN.replaceAll("{}", roundNum.toString()) : sourcePGN;
   let isLCC = false;
