@@ -17,12 +17,14 @@ export const client = createClient<paths>({
 export enum Command {
   Delay = "delay",
   SetLCC = "setLCC",
+  SetPGN = "setPGN",
 }
 
 // Function to show help messages
 export const showHelp = (cmd?: Command) => {
   const msg = [
     "Usage: <command> [options]",
+    "",
     "Commands:",
     "  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]",
     "     Sets the delay for all rounds in the specified broadcast.",
@@ -31,17 +33,24 @@ export const showHelp = (cmd?: Command) => {
     "       --noDelay     Remove the delay from the rounds.",
     "  setLCC <broadcastId> <sourceLCCUrl>",
     "     Sets the source LCC URL for all rounds in the specified broadcast.",
+    "  setPGN <broadcastId> <sourcePGNUrl>",
+    "     Sets the source PGN URL for all rounds in the specified broadcast.",
+    "     (optional) Use '{}' in the URL as a placeholder for the round number.",
+    "",
+    "Examples:",
+    "  delay bcast123 300 --onlyDelay # Set a 5-minute delay without changing start time",
+    "  setLCC bcast123 https://view.livechesscloud.com/#47c48351-034a-4860-9b94-087490742803",
+    "  setPGN bcast123 https://example.com/pgns/round-{}/game.pgn",
   ];
-  switch (cmd) {
-    case Command.Delay:
-      console.info(msg.slice(2, 7).join("\n"));
-      break;
-    case Command.SetLCC:
-      console.info(msg.slice(7, 9).join("\n"));
-      break;
-    default:
-      console.info(msg.join("\n"));
-  }
+  
+  const ranges: Record<Command, [number, number]> = {
+    [Command.Delay]: [3, 8],
+    [Command.SetLCC]: [8, 10],
+    [Command.SetPGN]: [10, 13],
+  };
+
+  const range = cmd ? ranges[cmd] : undefined;
+  console.info(range ? msg.slice(...range).join("\n") : msg.join("\n"));
 };
 
 export const getBroadcast = (broadcastId: string) =>
