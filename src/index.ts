@@ -18,13 +18,12 @@ const args = argv.slice(2);
     showHelp();
     process.exit(0);
   }
-  switch (args[0]) {
+  const command = args.shift();
+  switch (command) {
     case Command.Delay:
-      args.shift();
       await delayCommand(args);
       break;
     case Command.SetLCC:
-      args.shift();
       await setLCCCommand(args);
       break;
     default:
