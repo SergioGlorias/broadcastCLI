@@ -41,8 +41,7 @@ export const showHelp = (cmd?: Command) => {
     "",
     "Examples:",
     "  delay bcast123 300 --onlyDelay # Set a 5-minute delay without changing start time",
-    "  setLCC bcast123 https://view.livechesscloud.com/#47c48351-034a-4860-9b94-087490742803",
-    "  setPGN bcast123 https://example.com/pgns/round-{}/game.pgn",
+    "  setPGN bcast123 https://example.com/pgns/round-{}/game.pgn --withFilter --slice \"1-5,7,9-12\"",
   ];
   
   const ranges: Record<Command, [number, number]> = {

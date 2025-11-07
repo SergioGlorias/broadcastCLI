@@ -22,14 +22,15 @@ Commands:
      Options:
        --onlyDelay   Set only the delay without changing the start time.
        --noDelay     Remove the delay from the rounds.
-  setLCC <broadcastId> <sourceLCCUrl>
-     Sets the source LCC URL for all rounds in the specified broadcast.
-  setPGN <broadcastId> <sourcePGNUrl>
+  setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>]
      Sets the source PGN URL for all rounds in the specified broadcast.
      (optional) Use '{}' in the URL as a placeholder for the round number.
+       Note: For livechesscloud URLs, please ensure it ends with "/{}".
+     Options:
+       --withFilter    Apply round number filtering based on round number.
+       --slice <sliceFilter>  Apply slice filtering using the provided filter string.
 
 Examples:
   delay bcast123 300 --onlyDelay # Set a 5-minute delay without changing start time
-  setLCC bcast123 https://view.livechesscloud.com/#47c48351-034a-4860-9b94-087490742803
-  setPGN bcast123 https://example.com/pgns/round-{}/game.pgn
+  setPGN bcast123 https://example.com/pgns/round-{}/game.pgn --withFilter --slice "1-5,7,9-12"  
 ```
