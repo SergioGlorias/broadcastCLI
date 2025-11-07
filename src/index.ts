@@ -2,7 +2,6 @@
 import { argv } from "process";
 import { showHelp, Command, LICHESS_TOKEN } from "./utils";
 import { delayCommand } from "./cmd/delay";
-import { setLCCCommand } from "./cmd/setLCC";
 import { setPGNCommand } from "./cmd/setPGN";
 
 // Ensure LICHESS_TOKEN is set
@@ -28,11 +27,15 @@ const args = argv.slice(2);
   const command = args.shift();
   const commands = new Map([
     [Command.Delay, delayCommand],
-    [Command.SetLCC, setLCCCommand],
+    [Command.SetLCC, setPGNCommand],
     [Command.SetPGN, setPGNCommand],
   ]);
 
   const handler = commands.get(command as Command);
+  if (command === Command.SetLCC)
+    console.warn(
+      "Warning: 'setLCC' command was removed. Will use 'setPGN' instead."
+    );
   if (!handler) {
     console.error("Unknown command. Supported commands: delay, setLCC, setPGN");
     process.exit(1);

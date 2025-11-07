@@ -31,11 +31,13 @@ export const showHelp = (cmd?: Command) => {
     "     Options:",
     "       --onlyDelay   Set only the delay without changing the start time.",
     "       --noDelay     Remove the delay from the rounds.",
-    "  setLCC <broadcastId> <sourceLCCUrl>",
-    "     Sets the source LCC URL for all rounds in the specified broadcast.",
-    "  setPGN <broadcastId> <sourcePGNUrl>",
+    "  setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>]",
     "     Sets the source PGN URL for all rounds in the specified broadcast.",
     "     (optional) Use '{}' in the URL as a placeholder for the round number.",
+    "       Note: For livechesscloud URLs, please ensure it ends with \"/{}\".",
+    "     Options:",
+    "       --withFilter    Apply round number filtering based on round number.",
+    "       --slice <sliceFilter>  Apply slice filtering using the provided filter string.",
     "",
     "Examples:",
     "  delay bcast123 300 --onlyDelay # Set a 5-minute delay without changing start time",
@@ -45,11 +47,16 @@ export const showHelp = (cmd?: Command) => {
   
   const ranges: Record<Command, [number, number]> = {
     [Command.Delay]: [3, 8],
-    [Command.SetLCC]: [8, 10],
-    [Command.SetPGN]: [10, 13],
+    [Command.SetPGN]: [8, 15],
+    [Command.SetLCC]: [8, 15], // will remove soon
   };
 
   const range = cmd ? ranges[cmd] : undefined;
+  if (cmd === Command.SetLCC) {
+    console.warn(
+      "Warning: 'setLCC' command was removed. Use 'setPGN' command instead."
+    );
+  }
   console.info(range ? msg.slice(...range).join("\n") : msg.join("\n"));
 };
 
