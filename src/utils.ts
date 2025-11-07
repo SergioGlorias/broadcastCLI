@@ -46,6 +46,7 @@ export const showHelp = (cmd?: Command) => {
     "Examples:",
     "  delay bcast123 300 --onlyDelay # Set a 5-minute delay without changing start time",
     "  setPGN bcast123 https://example.com/pgns/round-{}/game.pgn --withFilter --slice \"1-5,7,9-12\"",
+    "  setLichessGames round456 gameId1 gameId2 gameId3 # Set specific games for the round",
   ];
   
   const ranges: Record<Command, [number, number]> = {
