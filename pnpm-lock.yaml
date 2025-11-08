@@ -14,6 +14,9 @@ importers:
       '@types/node':
         specifier: ^24.10.0
         version: 24.10.0
+      ms:
+        specifier: 3.0.0-canary.202508261828
+        version: 3.0.0-canary.202508261828
       openapi-fetch:
         specifier: ^0.15.0
         version: 0.15.0
@@ -32,6 +35,10 @@ packages:
 
   '@types/node@24.10.0':
     resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
+
+  ms@3.0.0-canary.202508261828:
+    resolution: {integrity: sha512-NotsCoUCIUkojWCzQff4ttdCfIPoA1UGZsyQbi7KmqkNRfKCrvga8JJi2PknHymHOuor0cJSn/ylj52Cbt2IrQ==}
+    engines: {node: '>=18'}
 
   openapi-fetch@0.15.0:
     resolution: {integrity: sha512-OjQUdi61WO4HYhr9+byCPMj0+bgste/LtSBEcV6FzDdONTs7x0fWn8/ndoYwzqCsKWIxEZwo4FN/TG1c1rI8IQ==}
@@ -59,6 +66,8 @@ snapshots:
   '@types/node@24.10.0':
     dependencies:
       undici-types: 7.16.0
+
+  ms@3.0.0-canary.202508261828: {}
 
   openapi-fetch@0.15.0:
     dependencies:

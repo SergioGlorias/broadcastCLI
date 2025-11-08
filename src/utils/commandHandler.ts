@@ -4,6 +4,7 @@ import { paths } from "@lichess-org/types";
 import { delayCommand } from "../cmd/delay";
 import { setPGNCommand } from "../cmd/setPGN";
 import { setLichessGamesCommand } from "../cmd/setLichessGames";
+import { fixScheduleCommand } from "../cmd/fixSchedule";
 import cl from "./colors";
 
 export const LICHESS_TOKEN = env.LICHESS_TOKEN;
@@ -14,16 +15,16 @@ export const args = argv.slice(2);
 // Commands names
 export enum Command {
   Delay = "delay",
-  SetLCC = "setLCC",
   SetPGN = "setPGN",
   SetLichessGames = "setLichessGames",
+  FixSchedule = "fixSchedule",
 }
 
 export const commands = new Map([
   [Command.Delay, delayCommand],
-  [Command.SetLCC, setPGNCommand],
   [Command.SetPGN, setPGNCommand],
   [Command.SetLichessGames, setLichessGamesCommand],
+  [Command.FixSchedule, fixScheduleCommand],
 ]);
 
 export const client = createClient<paths>({

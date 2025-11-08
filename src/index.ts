@@ -19,10 +19,6 @@ import { showHelp, includeHelp } from "./utils/help";
   const cmd = args.shift() as Command | undefined;
   const handler = commands.get(cmd!);
 
-  if (cmd === Command.SetLCC)
-    console.warn(
-      "Warning: 'setLCC' command was removed. Will use 'setPGN' instead."
-    );
   if (args.find(includeHelp)) {
     showHelp(cmd);
     exit(0);

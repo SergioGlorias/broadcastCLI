@@ -15,6 +15,7 @@
   "dependencies": {
     "@lichess-org/types": "^2.0.94",
     "@types/node": "^24.10.0",
+    "ms": "3.0.0-canary.202508261828",
     "openapi-fetch": "^0.15.0"
   },
   "devDependencies": {

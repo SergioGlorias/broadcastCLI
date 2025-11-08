@@ -25,6 +25,12 @@ const msg = [
   `     ${cl.gray("Sets the games for the specified broadcast round using Lichess game IDs.")}`,
   `     ${cl.bold("Note:")} ${cl.gray("Maximum of 64 game IDs can be provided.")}`,
   ``,
+  `  ${cl.underItalic("fixSchedule <broadcastId> <timeDiff> [--rounds <roundsToFix>]")}`,
+  `     ${cl.gray("Fixes the schedule of rounds in the specified broadcast by applying a time difference.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray('The time difference should be in a format like "1h", "30m", "15s", etc.')}`,
+  `     ${cl.bold("Options:")}`,
+  `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
+  ``,
   ``,
   `${cl.boldYellow("Examples:")}`,
   `   ${cl.gray("# Set a 5-minute delay without changing start time")}`,
@@ -39,16 +45,11 @@ export const showHelp = (cmd?: Command) => {
   const ranges: Record<Command, [number, number]> = {
     [Command.Delay]: [4, 10],
     [Command.SetPGN]: [11, 18],
-    [Command.SetLCC]: [11, 18], // will remove soon
     [Command.SetLichessGames]: [19, 22],
+    [Command.FixSchedule]: [23, 30],
   };
 
   const range = cmd ? ranges[cmd] : undefined;
-  if (cmd === Command.SetLCC) {
-    console.warn(
-      "Warning: 'setLCC' command was removed. Use 'setPGN' command instead.",
-    );
-  }
   console.info(range ? msg.slice(...range).join("\n") : msg.join("\n"));
 };
 
