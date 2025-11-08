@@ -2,12 +2,13 @@
 import { exit } from "node:process";
 import { LICHESS_TOKEN, args, Command, commands } from "./utils/commandHandler";
 import { showHelp, includeHelp } from "./utils/help";
+import cl from "./utils/colors";
 
 (async () => {
   // show version for --version or -v
   if (args.includes("--version") || args.includes("-v")) {
     const { version } = require("../package.json");
-    console.log(`libroadcast-cli v${version}`);
+    console.log(`${cl.whiteBold("libroadcast-cli")} ${cl.underItalic(`v${version}`)}`);
     exit(0);
   }
 
@@ -24,12 +25,12 @@ import { showHelp, includeHelp } from "./utils/help";
     exit(0);
   }
   if (!handler) {
-    console.error("Error: Command handler not found.");
+    console.error(`${cl.red("Error:")} Command handler not found.`);
     exit(1);
   }
 
   if (!LICHESS_TOKEN) {
-    console.error("Error: LICHESS_TOKEN environment variable is not set.");
+    console.error(`${cl.red("Error:")} ${cl.whiteBold("LICHESS_TOKEN")} environment variable is not set.`);
     exit(1);
   }
   await handler(args);
