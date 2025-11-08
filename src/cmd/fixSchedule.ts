@@ -88,11 +88,18 @@ const translateRoundsToFix = (arg: string): number[] => {
 
 export const fixScheduleCommand = async (args: string[]) => {
   const [broadcastId, timeDiffStr] = args.slice(0, 2);
+  if (!broadcastId || !timeDiffStr) {
+    msgCommonErrorHelp("Broadcast ID and time difference are required.");
+    exit(1);
+  }
+
   const timeDiff = ms(timeDiffStr);
 
   if (isNaN(timeDiff)) {
-    msgCommonErrorHelp(
-      "Time difference must be a valid duration string (e.g., '1h', '30m', '15s')."
+    console.error(
+      cl.red(
+        "Error: Time difference must be a valid duration string (e.g., '1h', '30m', '15s')."
+      )
     );
     exit(1);
   }
