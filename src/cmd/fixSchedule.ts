@@ -8,7 +8,7 @@ import { parse as ms } from "ms";
 const fixScheduleRounds = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
   timeDiff: number,
-  roundsToFix?: number[]
+  roundsToFix?: number[],
 ) => {
   //if roundsToFix is provided, filter rounds to only those
   if (roundsToFix && roundsToFix.length > 0) {
@@ -34,22 +34,22 @@ const fixScheduleRounds = async (
         if (response.response.ok)
           console.log(
             cl.green(
-              `Successfully fixed schedule for round ${cl.whiteBold(round.id)}.`
-            )
+              `Successfully fixed schedule for round ${cl.whiteBold(round.id)}.`,
+            ),
           );
         else
           console.error(
             cl.red(
               `Failed to fix schedule for round ${cl.whiteBold(round.id)}: ${cl.whiteBold(
-                response.response.statusText
-              )}`
-            )
+                response.response.statusText,
+              )}`,
+            ),
           );
       })
       .catch((error) => {
         console.error(
           cl.red(`Error fixing schedule for round ${cl.whiteBold(round.id)}:`),
-          error
+          error,
         );
       });
     // sleep 200ms to avoid rate limit issues
@@ -98,15 +98,15 @@ export const fixScheduleCommand = async (args: string[]) => {
   if (isNaN(timeDiff)) {
     console.error(
       cl.red(
-        "Error: Time difference must be a valid duration string (e.g., '1h', '30m', '15s')."
-      )
+        "Error: Time difference must be a valid duration string (e.g., '1h', '30m', '15s').",
+      ),
     );
     exit(1);
   }
   console.log(
     `Applying time difference of ${cl.whiteBold(timeDiffStr)} (${cl.whiteBold(
-      timeDiff.toString()
-    )} ms) to broadcast ${cl.whiteBold(broadcastId)}.`
+      timeDiff.toString(),
+    )} ms) to broadcast ${cl.whiteBold(broadcastId)}.`,
   );
   // parse arg --rounds
   const roundsArgIndex = args.findIndex((arg) => arg === "--rounds");
@@ -121,9 +121,9 @@ export const fixScheduleCommand = async (args: string[]) => {
     console.error(
       cl.red(
         `Broadcast with ID ${cl.whiteBold(
-          broadcastId
-        )} not found or has no rounds.`
-      )
+          broadcastId,
+        )} not found or has no rounds.`,
+      ),
     );
     exit(1);
   }
