@@ -23,7 +23,7 @@ Commands:
      Note:  The delay is specified in seconds. (max 3600 seconds = 1 hour)
      Options:
        --onlyDelay   Set only the delay without changing the start time.
-       --noDelay     Remove the delay from the rounds.
+       --noDelay     Do not modify the delay, only adjust the start time.
 
   setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>]
      Sets the source PGN URL for all rounds in the specified broadcast.
