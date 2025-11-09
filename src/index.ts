@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 import { exit } from "node:process";
-import { LICHESS_TOKEN, args, Command, commands } from "./utils/commandHandler";
+import {
+  LICHESS_TOKEN,
+  args,
+  Command,
+  commands,
+} from "./utils/commandHandler";
 import { showHelp, includeHelp } from "./utils/help";
 import cl from "./utils/colors";
 
@@ -8,7 +13,9 @@ import cl from "./utils/colors";
   // show version for --version or -v
   if (args.includes("--version") || args.includes("-v")) {
     const { version } = require("../package.json");
-    console.log(`${cl.whiteBold("libroadcast-cli")} ${cl.underItalic(`v${version}`)}`);
+    console.log(
+      `${cl.whiteBold("libroadcast-cli")} ${cl.underItalic(`v${version}`)}`
+    );
     exit(0);
   }
 
@@ -29,8 +36,10 @@ import cl from "./utils/colors";
     exit(1);
   }
 
-  if (!LICHESS_TOKEN) {
-    console.error(`${cl.red("Error:")} ${cl.whiteBold("LICHESS_TOKEN")} environment variable is not set.`);
+  if (!LICHESS_TOKEN?.trim() || !LICHESS_TOKEN.startsWith("lip_")) {
+    console.error(
+      `${cl.red("Error:")} ${cl.whiteBold("LICHESS_TOKEN")} environment variable is not set, empty, or invalid (must start with 'lip_').`
+    );
     exit(1);
   }
   await handler(args);

@@ -1,6 +1,6 @@
 import { exit } from "node:process";
 import { components } from "@lichess-org/types";
-import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
+import { client, msgCommonErrorHelp, sleep, handleApiResponse } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
 
@@ -13,8 +13,8 @@ const setPGN = async (
   for (let rN = 1; rN <= rounds.length; rN++) {
     const round = rounds[rN - 1];
     const url = urlRound(rN);
-    await client
-      .POST("/broadcast/round/{broadcastRoundId}/edit", {
+    await handleApiResponse(
+      client.POST("/broadcast/round/{broadcastRoundId}/edit", {
         params: {
           path: { broadcastRoundId: round.id },
           // @ts-ignore patch param is not yet documented
@@ -26,33 +26,12 @@ const setPGN = async (
           syncSource: "url",
           syncUrl: url,
           onlyRound: setRoundFilter ? rN : undefined,
-          slices: setSliceFilter ? setSliceFilter : undefined,
+          slices: setSliceFilter || undefined,
         },
-      })
-      .then((response) => {
-        if (response.response.ok)
-          console.log(
-            cl.green(
-              `Successfully set source for round ${cl.whiteBold(
-                round.id,
-              )} to ${cl.whiteBold(url)}.`,
-            ),
-          );
-        else
-          console.error(
-            cl.red(
-              `Failed to set source for round ${cl.whiteBold(
-                round.id,
-              )}: ${cl.whiteBold(response.response.statusText)}`,
-            ),
-          );
-      })
-      .catch((error) => {
-        console.error(
-          cl.red(`Error setting source for round ${cl.whiteBold(round.id)}:`),
-          error,
-        );
-      });
+      }),
+      `Successfully set source for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(url)}.`,
+      `Error setting source for round ${cl.whiteBold(round.id)}`
+    );
     await sleep(200); // sleep 200ms to avoid rate limit issues
   }
 };
@@ -93,11 +72,7 @@ export const setPGNCommand = async (args: string[]) => {
 
   const setRoundFilter = args.includes("--withFilter");
   const sliceIndex = args.indexOf("--slice");
-  let setSliceFilter: string | null = null;
-  //check if --slices is provided with a value in string format
-  if (sliceIndex !== -1 && args.length > sliceIndex + 1) {
-    setSliceFilter = args[sliceIndex + 1];
-  }
+  const setSliceFilter = sliceIndex !== -1 ? args[sliceIndex + 1] || null : null;
 
-  setPGN(bcast.rounds, urlRound, setRoundFilter, setSliceFilter);
+  await setPGN(bcast.rounds, urlRound, setRoundFilter, setSliceFilter);
 };

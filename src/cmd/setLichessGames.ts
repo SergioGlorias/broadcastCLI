@@ -1,6 +1,6 @@
 import { exit } from "node:process";
 import { components } from "@lichess-org/types";
-import { client, msgCommonErrorHelp } from "../utils/commandHandler";
+import { client, msgCommonErrorHelp, handleApiResponse } from "../utils/commandHandler";
 import { getBroadcastRound } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
 
@@ -8,8 +8,8 @@ const setLichessGames = (
   round: components["schemas"]["BroadcastRoundInfo"],
   games: string,
 ) =>
-  client
-    .POST("/broadcast/round/{broadcastRoundId}/edit", {
+  handleApiResponse(
+    client.POST("/broadcast/round/{broadcastRoundId}/edit", {
       params: {
         path: { broadcastRoundId: round.id },
         // @ts-ignore patch param is not yet documented
@@ -21,27 +21,10 @@ const setLichessGames = (
         syncSource: "ids",
         syncIds: games,
       },
-    })
-    .then((response) => {
-      if (response.response.ok)
-        console.log(
-          cl.green(
-            `Successfully set games for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(games)}.`,
-          ),
-        );
-      else
-        console.error(
-          cl.red(
-            `Failed to set games for round ${cl.whiteBold(round.id)}: ${cl.whiteBold(response.response.statusText)}`,
-          ),
-        );
-    })
-    .catch((error) => {
-      console.error(
-        cl.red(`Error setting games for round ${cl.whiteBold(round.id)}:`),
-        error,
-      );
-    });
+    }),
+    `Successfully set games for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(games)}.`,
+    `Error setting games for round ${cl.whiteBold(round.id)}`
+  );
 
 export const setLichessGamesCommand = async (args: string[]) => {
   // const [bId, sourcePGN] = args.slice(0, 2);
@@ -64,5 +47,5 @@ export const setLichessGamesCommand = async (args: string[]) => {
     exit(1);
   }
 
-  setLichessGames(round, games);
+  await setLichessGames(round, games);
 };

@@ -43,3 +43,23 @@ export const msgCommonErrorHelp = (msg: string) => {
   console.error(cl.red(msg));
   console.info(cl.blue("Use --help to see usage."));
 };
+
+// Helper to handle API responses consistently
+export const handleApiResponse = async <T extends { response: { ok: boolean; statusText: string } }>(
+  promise: Promise<T>,
+  successMsg: string,
+  errorContext: string
+): Promise<void> => {
+  try {
+    const response = await promise;
+    if (response.response.ok) {
+      console.log(cl.green(successMsg));
+    } else {
+      console.error(
+        cl.red(`${errorContext}: ${cl.whiteBold(response.response.statusText)}`)
+      );
+    }
+  } catch (error) {
+    console.error(cl.red(errorContext), error);
+  }
+};

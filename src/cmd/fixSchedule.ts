@@ -1,6 +1,6 @@
 import { exit } from "node:process";
 import { components } from "@lichess-org/types";
-import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
+import { client, msgCommonErrorHelp, sleep, handleApiResponse } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
 import { parse as ms } from "ms";
@@ -10,16 +10,14 @@ const fixScheduleRounds = async (
   timeDiff: number,
   roundsToFix?: number[],
 ) => {
-  //if roundsToFix is provided, filter rounds to only those
-  if (roundsToFix && roundsToFix.length > 0) {
-    rounds = rounds.filter((_, i) => roundsToFix.includes(i + 1));
-  }
-
-  rounds = rounds.filter((el) => el.startsAt !== undefined);
+  // Filter rounds based on criteria
+  rounds = rounds
+    .filter((_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1))
+    .filter((el) => el.startsAt !== undefined);
 
   for (const round of rounds) {
-    await client
-      .POST("/broadcast/round/{broadcastRoundId}/edit", {
+    await handleApiResponse(
+      client.POST("/broadcast/round/{broadcastRoundId}/edit", {
         params: {
           path: { broadcastRoundId: round.id },
           // @ts-ignore patch param is not yet documented
@@ -29,29 +27,10 @@ const fixScheduleRounds = async (
         body: {
           startsAt: round.startsAt! + timeDiff,
         },
-      })
-      .then((response) => {
-        if (response.response.ok)
-          console.log(
-            cl.green(
-              `Successfully fixed schedule for round ${cl.whiteBold(round.id)}.`,
-            ),
-          );
-        else
-          console.error(
-            cl.red(
-              `Failed to fix schedule for round ${cl.whiteBold(round.id)}: ${cl.whiteBold(
-                response.response.statusText,
-              )}`,
-            ),
-          );
-      })
-      .catch((error) => {
-        console.error(
-          cl.red(`Error fixing schedule for round ${cl.whiteBold(round.id)}:`),
-          error,
-        );
-      });
+      }),
+      `Successfully fixed schedule for round ${cl.whiteBold(round.id)}.`,
+      `Error fixing schedule for round ${cl.whiteBold(round.id)}`
+    );
     // sleep 200ms to avoid rate limit issues
     await sleep(200);
   }
@@ -68,6 +47,7 @@ const translateRoundsToFix = (arg: string): number[] => {
   for (const part of parts) {
     if (part.endsWith("+")) {
       const start = parseInt(part.slice(0, -1), 10);
+      if (isNaN(start)) continue;  // adicionar validação
       for (let i = start; i <= 64; i++) {
         rounds.push(i);
       }
@@ -75,11 +55,13 @@ const translateRoundsToFix = (arg: string): number[] => {
       const [startStr, endStr] = part.split("-");
       const start = parseInt(startStr, 10);
       const end = parseInt(endStr, 10);
+      if (isNaN(start) || isNaN(end)) continue;  // adicionar validação
       for (let i = start; i <= end; i++) {
         rounds.push(i);
       }
     } else {
       const roundNum = parseInt(part, 10);
+      if (isNaN(roundNum)) continue;  // adicionar validação
       rounds.push(roundNum);
     }
   }

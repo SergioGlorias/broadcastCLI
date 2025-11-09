@@ -1,6 +1,6 @@
 import { exit } from "node:process";
 import { components } from "@lichess-org/types";
-import { client, msgCommonErrorHelp, sleep } from "../utils/commandHandler";
+import { client, msgCommonErrorHelp, sleep, handleApiResponse } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
 
@@ -11,8 +11,8 @@ const setDelayRounds = async (
   noDelay: boolean,
 ) => {
   for (const round of rounds) {
-    await client
-      .POST("/broadcast/round/{broadcastRoundId}/edit", {
+    await handleApiResponse(
+      client.POST("/broadcast/round/{broadcastRoundId}/edit", {
         params: {
           path: { broadcastRoundId: round.id },
           // @ts-ignore patch param is not yet documented
@@ -26,31 +26,10 @@ const setDelayRounds = async (
               ? round.startsAt + delay * 1000
               : undefined,
         },
-      })
-      .then((response) => {
-        if (response.response.ok)
-          console.log(
-            cl.green(
-              `Successfully set delay for round ${cl.whiteBold(
-                round.id,
-              )} to ${cl.whiteBold(delay.toString())} seconds.`,
-            ),
-          );
-        else
-          console.error(
-            cl.red(
-              `Failed to set delay for round ${cl.whiteBold(round.id)}: ${cl.whiteBold(
-                response.response.statusText,
-              )}`,
-            ),
-          );
-      })
-      .catch((error) => {
-        console.error(
-          cl.red(`Error setting delay for round ${cl.whiteBold(round.id)}:`),
-          error,
-        );
-      });
+      }),
+      `Successfully set delay for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(delay.toString())} seconds.`,
+      `Error setting delay for round ${cl.whiteBold(round.id)}`
+    );
     // sleep 200ms to avoid rate limit issues
     await sleep(200);
   }
@@ -65,7 +44,7 @@ export const delayCommand = async (args: string[]) => {
   }
   const delayNum = parseInt(delay, 10);
   // Validate delay is a number between 0s and 1h
-  if (isNaN(delayNum) && delayNum >= 0 && delayNum <= 3600) {
+  if (isNaN(delayNum) || delayNum < 0 || delayNum > 3600) {
     msgCommonErrorHelp("Delay must be a number between 0 and 3600 seconds.");
     exit(1);
   }
@@ -82,5 +61,5 @@ export const delayCommand = async (args: string[]) => {
     console.error(cl.red("No rounds found for the specified broadcast."));
     exit(1);
   }
-  setDelayRounds(broadcast.rounds, parseInt(delay, 10), onlyDelay, noDelay);
+  await setDelayRounds(broadcast.rounds, delayNum, onlyDelay, noDelay);
 };
