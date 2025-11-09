@@ -27,7 +27,6 @@ const setLichessGames = (
   );
 
 export const setLichessGamesCommand = async (args: string[]) => {
-  // const [bId, sourcePGN] = args.slice(0, 2);
   const bId = args.shift();
   // games ids are max 64 ids
   const games = args.slice(0, 64).join(" ");

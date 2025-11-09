@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 import { exit } from "node:process";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   LICHESS_TOKEN,
   args,
@@ -12,9 +14,11 @@ import cl from "./utils/colors";
 (async () => {
   // show version for --version or -v
   if (args.includes("--version") || args.includes("-v")) {
-    const { version } = require("../package.json");
+    const packageJson = JSON.parse(
+      readFileSync(join(__dirname, "../package.json"), "utf-8")
+    );
     console.log(
-      `${cl.whiteBold("libroadcast-cli")} ${cl.underItalic(`v${version}`)}`
+      `${cl.whiteBold("libroadcast-cli")} ${cl.underItalic(`v${packageJson.version}`)}`
     );
     exit(0);
   }

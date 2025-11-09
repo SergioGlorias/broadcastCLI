@@ -15,6 +15,11 @@ const fixScheduleRounds = async (
     .filter((_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1))
     .filter((el) => el.startsAt !== undefined);
 
+  if (rounds.length === 0) {
+    console.error(cl.red("No rounds to fix after applying filters."));
+    exit(1);
+  }
+
   for (const round of rounds) {
     await handleApiResponse(
       client.POST("/broadcast/round/{broadcastRoundId}/edit", {
@@ -47,7 +52,7 @@ const translateRoundsToFix = (arg: string): number[] => {
   for (const part of parts) {
     if (part.endsWith("+")) {
       const start = parseInt(part.slice(0, -1), 10);
-      if (isNaN(start)) continue;  // adicionar validação
+      if (isNaN(start)) continue;
       for (let i = start; i <= 64; i++) {
         rounds.push(i);
       }
@@ -55,17 +60,17 @@ const translateRoundsToFix = (arg: string): number[] => {
       const [startStr, endStr] = part.split("-");
       const start = parseInt(startStr, 10);
       const end = parseInt(endStr, 10);
-      if (isNaN(start) || isNaN(end)) continue;  // adicionar validação
+      if (isNaN(start) || isNaN(end)) continue;
       for (let i = start; i <= end; i++) {
         rounds.push(i);
       }
     } else {
       const roundNum = parseInt(part, 10);
-      if (isNaN(roundNum)) continue;  // adicionar validação
+      if (isNaN(roundNum)) continue;
       rounds.push(roundNum);
     }
   }
-  return rounds;
+  return [...new Set(rounds)];
 };
 
 export const fixScheduleCommand = async (args: string[]) => {

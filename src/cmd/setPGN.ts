@@ -10,8 +10,8 @@ const setPGN = async (
   setRoundFilter: boolean,
   setSliceFilter: string | null = null,
 ) => {
-  for (let rN = 1; rN <= rounds.length; rN++) {
-    const round = rounds[rN - 1];
+  for (const [index, round] of rounds.entries()) {
+    const rN = index + 1;
     const url = urlRound(rN);
     await handleApiResponse(
       client.POST("/broadcast/round/{broadcastRoundId}/edit", {
@@ -52,20 +52,22 @@ export const setPGNCommand = async (args: string[]) => {
 
   const urlRound = (roundNum?: number | string) =>
     roundNum ? sourcePGN.replaceAll("{}", roundNum.toString()) : sourcePGN;
-  let isLCC = false;
+  
   try {
     const url = new URL(urlRound());
-    if (!url.protocol.startsWith("http")) throw new Error();
-    isLCC = url.hostname === "view.livechesscloud.com";
-    if (isLCC && url.hash.length > 1 && !url.hash.endsWith("/{}"))
-      throw new Error();
-  } catch {
+    if (!url.protocol.startsWith("http")) {
+      throw new Error("Invalid protocol");
+    }
+    const isLCC = url.hostname === "view.livechesscloud.com";
+    if (isLCC && url.hash.length > 1 && !url.hash.endsWith("/{}")) {
+      console.error(
+        cl.red('Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".')
+      );
+      exit(1);
+    }
+  } catch (error) {
     console.error(
-      cl.red(
-        isLCC
-          ? 'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".'
-          : 'Invalid URL. Must be http/https with "{}" as round placeholder.',
-      ),
+      cl.red('Invalid URL. Must be http/https with "{}" as round placeholder.')
     );
     exit(1);
   }

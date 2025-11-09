@@ -8,7 +8,7 @@ import { fixScheduleCommand } from "../cmd/fixSchedule";
 import cl from "./colors";
 
 export const LICHESS_TOKEN = env.LICHESS_TOKEN;
-const LICHESS_DOMAIN = env.LICHESS_DOMAIN || "https://lichess.org/";
+const LICHESS_DOMAIN = (env.LICHESS_DOMAIN || "https://lichess.org").replace(/\/$/, "") + "/";
 
 export const args = argv.slice(2);
 

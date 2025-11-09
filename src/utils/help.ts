@@ -7,7 +7,7 @@ const helpDelay = [
   `     ${cl.bold("Note:")}  ${cl.gray("The delay is specified in seconds. (max 3600 seconds = 1 hour)")}`,
   `     ${cl.bold("Options:")}`,
   `       --onlyDelay   ${cl.gray("Set only the delay without changing the start time.")}`,
-  `       --noDelay     ${cl.gray("Remove the delay from the rounds.")}`,
+  `       --noDelay     ${cl.gray("Do not modify the delay, only adjust the start time.")}`,
 ].join("\n");
 
 const helpSetPGN = [
