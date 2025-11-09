@@ -1,6 +1,11 @@
 import { exit } from "node:process";
 import { components } from "@lichess-org/types";
-import { client, msgCommonErrorHelp, sleep, handleApiResponse } from "../utils/commandHandler";
+import {
+  client,
+  msgCommonErrorHelp,
+  sleep,
+  handleApiResponse,
+} from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
 
@@ -28,7 +33,7 @@ const setDelayRounds = async (
         },
       }),
       `Successfully set delay for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(delay.toString())} seconds.`,
-      `Error setting delay for round ${cl.whiteBold(round.id)}`
+      `Error setting delay for round ${cl.whiteBold(round.id)}`,
     );
     // sleep 200ms to avoid rate limit issues
     await sleep(200);

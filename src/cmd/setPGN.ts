@@ -1,6 +1,11 @@
 import { exit } from "node:process";
 import { components } from "@lichess-org/types";
-import { client, msgCommonErrorHelp, sleep, handleApiResponse } from "../utils/commandHandler";
+import {
+  client,
+  msgCommonErrorHelp,
+  sleep,
+  handleApiResponse,
+} from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
 
@@ -30,7 +35,7 @@ const setPGN = async (
         },
       }),
       `Successfully set source for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(url)}.`,
-      `Error setting source for round ${cl.whiteBold(round.id)}`
+      `Error setting source for round ${cl.whiteBold(round.id)}`,
     );
     await sleep(200); // sleep 200ms to avoid rate limit issues
   }
@@ -52,7 +57,7 @@ export const setPGNCommand = async (args: string[]) => {
 
   const urlRound = (roundNum?: number | string) =>
     roundNum ? sourcePGN.replaceAll("{}", roundNum.toString()) : sourcePGN;
-  
+
   try {
     const url = new URL(urlRound());
     if (!url.protocol.startsWith("http")) {
@@ -61,20 +66,23 @@ export const setPGNCommand = async (args: string[]) => {
     const isLCC = url.hostname === "view.livechesscloud.com";
     if (isLCC && url.hash.length > 1 && !url.hash.endsWith("/{}")) {
       console.error(
-        cl.red('Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".')
+        cl.red(
+          'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".',
+        ),
       );
       exit(1);
     }
   } catch (error) {
     console.error(
-      cl.red('Invalid URL. Must be http/https with "{}" as round placeholder.')
+      cl.red('Invalid URL. Must be http/https with "{}" as round placeholder.'),
     );
     exit(1);
   }
 
   const setRoundFilter = args.includes("--withFilter");
   const sliceIndex = args.indexOf("--slice");
-  const setSliceFilter = sliceIndex !== -1 ? args[sliceIndex + 1] || null : null;
+  const setSliceFilter =
+    sliceIndex !== -1 ? args[sliceIndex + 1] || null : null;
 
   await setPGN(bcast.rounds, urlRound, setRoundFilter, setSliceFilter);
 };

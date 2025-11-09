@@ -8,7 +8,8 @@ import { fixScheduleCommand } from "../cmd/fixSchedule";
 import cl from "./colors";
 
 export const LICHESS_TOKEN = env.LICHESS_TOKEN;
-const LICHESS_DOMAIN = (env.LICHESS_DOMAIN || "https://lichess.org").replace(/\/$/, "") + "/";
+const LICHESS_DOMAIN =
+  (env.LICHESS_DOMAIN || "https://lichess.org").replace(/\/$/, "") + "/";
 
 export const args = argv.slice(2);
 
@@ -45,10 +46,12 @@ export const msgCommonErrorHelp = (msg: string) => {
 };
 
 // Helper to handle API responses consistently
-export const handleApiResponse = async <T extends { response: { ok: boolean; statusText: string } }>(
+export const handleApiResponse = async <
+  T extends { response: { ok: boolean; statusText: string } },
+>(
   promise: Promise<T>,
   successMsg: string,
-  errorContext: string
+  errorContext: string,
 ): Promise<void> => {
   try {
     const response = await promise;
@@ -56,7 +59,9 @@ export const handleApiResponse = async <T extends { response: { ok: boolean; sta
       console.log(cl.green(successMsg));
     } else {
       console.error(
-        cl.red(`${errorContext}: ${cl.whiteBold(response.response.statusText)}`)
+        cl.red(
+          `${errorContext}: ${cl.whiteBold(response.response.statusText)}`,
+        ),
       );
     }
   } catch (error) {

@@ -1,6 +1,11 @@
 import { exit } from "node:process";
 import { components } from "@lichess-org/types";
-import { client, msgCommonErrorHelp, sleep, handleApiResponse } from "../utils/commandHandler";
+import {
+  client,
+  msgCommonErrorHelp,
+  sleep,
+  handleApiResponse,
+} from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
 import { parse as ms } from "ms";
@@ -34,7 +39,7 @@ const fixScheduleRounds = async (
         },
       }),
       `Successfully fixed schedule for round ${cl.whiteBold(round.id)}.`,
-      `Error fixing schedule for round ${cl.whiteBold(round.id)}`
+      `Error fixing schedule for round ${cl.whiteBold(round.id)}`,
     );
     // sleep 200ms to avoid rate limit issues
     await sleep(200);

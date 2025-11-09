@@ -1,6 +1,10 @@
 import { exit } from "node:process";
 import { components } from "@lichess-org/types";
-import { client, msgCommonErrorHelp, handleApiResponse } from "../utils/commandHandler";
+import {
+  client,
+  msgCommonErrorHelp,
+  handleApiResponse,
+} from "../utils/commandHandler";
 import { getBroadcastRound } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
 
@@ -23,7 +27,7 @@ const setLichessGames = (
       },
     }),
     `Successfully set games for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(games)}.`,
-    `Error setting games for round ${cl.whiteBold(round.id)}`
+    `Error setting games for round ${cl.whiteBold(round.id)}`,
   );
 
 export const setLichessGamesCommand = async (args: string[]) => {
