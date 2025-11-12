@@ -1,11 +1,13 @@
 import { env, argv } from "node:process";
 import createClient from "openapi-fetch";
+import cl from "./colors";
+
 import { paths } from "@lichess-org/types";
 import { delayCommand } from "../cmd/delay";
 import { setPGNCommand } from "../cmd/setPGN";
 import { setLichessGamesCommand } from "../cmd/setLichessGames";
 import { fixScheduleCommand } from "../cmd/fixSchedule";
-import cl from "./colors";
+import { startsPreviousCommand } from "../cmd/startsPrevious";
 
 export const LICHESS_TOKEN = env.LICHESS_TOKEN;
 const LICHESS_DOMAIN =
@@ -19,6 +21,7 @@ export enum Command {
   SetPGN = "setPGN",
   SetLichessGames = "setLichessGames",
   FixSchedule = "fixSchedule",
+  StartsPrevious = "startsPrevious",
 }
 
 export const commands = new Map([
@@ -26,6 +29,7 @@ export const commands = new Map([
   [Command.SetPGN, setPGNCommand],
   [Command.SetLichessGames, setLichessGamesCommand],
   [Command.FixSchedule, fixScheduleCommand],
+  [Command.StartsPrevious, startsPreviousCommand],
 ]);
 
 export const client = createClient<paths>({

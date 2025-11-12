@@ -34,6 +34,11 @@ const helpFixSchedule = [
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
 
+const helpStartsPrevious = [
+  `  ${cl.underItalic("startsPrevious <broadcastId> <startsPrevious>")}`,
+  `     ${cl.gray("Sets the startsAfterPrevious flag for all rounds in the specified broadcast.")}`,
+].join("\n");
+
 const msg = [
   `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
   ``,
@@ -47,6 +52,8 @@ const msg = [
   ``,
   helpFixSchedule,
   ``,
+  helpStartsPrevious,
+  ``,
   ``,
   `${cl.boldYellow("Examples:")}`,
   `   ${cl.gray("# Set a 5-minute delay without changing start time")}`,
@@ -57,6 +64,8 @@ const msg = [
   `     $ ${cl.underItalic("setLichessGames")} ${cl.italic("round456 gameId1 gameId2 gameId3")}`,
   `   ${cl.gray("# Fix schedule of rounds 1 to 4 and all rounds after 8 by adding 15 minutes")}`,
   `     $ ${cl.underItalic("fixSchedule")} ${cl.italic("bcast123 15m --rounds 1-4,8+")}`,
+  `  ${cl.gray("# Set startsAfterPrevious to true for all rounds in a broadcast")}`,
+  `     $ ${cl.underItalic("startsPrevious")} ${cl.italic("bcast123 true")}`,
 ];
 
 export const showHelp = (cmd?: Command) => {
@@ -65,6 +74,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.SetPGN]: helpSetPGN,
     [Command.SetLichessGames]: helpSetLichessGames,
     [Command.FixSchedule]: helpFixSchedule,
+    [Command.StartsPrevious]: helpStartsPrevious,
   };
 
   const range = cmd ? ranges[cmd] : undefined;
