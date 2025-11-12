@@ -13,7 +13,10 @@ const setStartsPrevious = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],
   startsPrevious: boolean,
 ) => {
-  for (const round of rounds) {
+  const roundfilter = rounds.filter(
+    (r) => r.startsAfterPrevious !== startsPrevious && !r.startsAt,
+  );
+  for (const round of roundfilter) {
     await handleApiResponse(
       client.POST("/broadcast/round/{broadcastRoundId}/edit", {
         params: {
