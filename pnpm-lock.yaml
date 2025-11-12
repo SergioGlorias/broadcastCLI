@@ -13,7 +13,7 @@ importers:
         version: 2.0.95
       '@types/node':
         specifier: ^24.10.0
-        version: 24.10.0
+        version: 24.10.1
       ms:
         specifier: 3.0.0-canary.202508261828
         version: 3.0.0-canary.202508261828
@@ -33,8 +33,8 @@ packages:
   '@lichess-org/types@2.0.95':
     resolution: {integrity: sha512-CulqmY8AAt8hjbGL3cP7ZkIxMEBzUF0tUxk7i2Ps9eIiBE6NNESa31saGhuRX3Uly62YDbNcbO8gmpI8bwZaFg==}
 
-  '@types/node@24.10.0':
-    resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
+  '@types/node@24.10.1':
+    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
 
   ms@3.0.0-canary.202508261828:
     resolution: {integrity: sha512-NotsCoUCIUkojWCzQff4ttdCfIPoA1UGZsyQbi7KmqkNRfKCrvga8JJi2PknHymHOuor0cJSn/ylj52Cbt2IrQ==}
@@ -63,7 +63,7 @@ snapshots:
 
   '@lichess-org/types@2.0.95': {}
 
-  '@types/node@24.10.0':
+  '@types/node@24.10.1':
     dependencies:
       undici-types: 7.16.0
 
