@@ -18,9 +18,11 @@ const setPGN = async (
 ) => {
   for (const [index, round] of rounds.entries()) {
     const rN = index + 1;
-    const urls = urlsRound(gamesNum, rN).filter((_, i) =>
-      setSliceFilter ? setSliceFilter.includes(i + 1) : true,
-    ).join("\n");
+    const urls = urlsRound(gamesNum, rN)
+      .filter((_, i) =>
+        setSliceFilter ? setSliceFilter.includes(i + 1) : true,
+      )
+      .join("\n");
     await handleApiResponse(
       client.POST("/broadcast/round/{broadcastRoundId}/edit", {
         params: {
@@ -79,7 +81,9 @@ export const setPGNMultiCommand = async (args: string[]) => {
   const [bId, sourcePGNs, gamesN] = args.slice(0, 3);
   // Validate required args
   if (!bId || !sourcePGNs || !gamesN) {
-    msgCommonErrorHelp("Broadcast ID, source PGN URLs, and number of games are required.");
+    msgCommonErrorHelp(
+      "Broadcast ID, source PGN URLs, and number of games are required.",
+    );
     exit(1);
   }
 
@@ -105,27 +109,24 @@ export const setPGNMultiCommand = async (args: string[]) => {
   }
 
   const urlRound = (gamesN: number, roundNum?: number | string) => {
-    let rN = roundNum ? sourcePGNs.replaceAll("{r}", roundNum.toString()) : sourcePGNs;
+    let rN = roundNum
+      ? sourcePGNs.replaceAll("{r}", roundNum.toString())
+      : sourcePGNs;
     let urls = [];
     for (let i = 1; i <= gamesN; i++) {
       urls.push(rN.replaceAll("{g}", i.toString()));
     }
     return urls;
-  }
-    
+  };
 
   try {
-    const url = new URL(urlRound(gamesNum,1)[0]);
+    const url = new URL(urlRound(gamesNum, 1)[0]);
     if (!url.protocol.startsWith("http")) {
       throw new Error("Invalid protocol");
     }
     const isLCC = url.hostname === "view.livechesscloud.com";
     if (isLCC) {
-      console.error(
-        cl.red(
-          'Invalid URL.',
-        ),
-      );
+      console.error(cl.red("Invalid URL."));
       exit(1);
     }
   } catch (error) {
@@ -139,8 +140,15 @@ export const setPGNMultiCommand = async (args: string[]) => {
 
   const sliceIndex = args.indexOf("--onlyGames");
   const setSliceFilter =
-    sliceIndex !== -1 ? translateGamesToAdd(args[sliceIndex + 1] || "", gamesNum) : null;
-    
+    sliceIndex !== -1
+      ? translateGamesToAdd(args[sliceIndex + 1] || "", gamesNum)
+      : null;
 
-  await setPGN(bcast.rounds, urlRound, gamesNum, setRoundFilter, setSliceFilter);
+  await setPGN(
+    bcast.rounds,
+    urlRound,
+    gamesNum,
+    setRoundFilter,
+    setSliceFilter,
+  );
 };
