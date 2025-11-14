@@ -21,7 +21,6 @@ const setLichessGames = (
       },
       // @ts-ignore name of body properties due patch param is implicit
       body: {
-        // @ts-ignore property is not yet documented
         syncSource: "ids",
         syncIds: games,
       },
