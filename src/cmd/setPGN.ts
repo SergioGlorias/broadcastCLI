@@ -27,7 +27,6 @@ const setPGN = async (
         },
         // @ts-ignore name of body properties due patch param is implicit
         body: {
-          // @ts-ignore property is not yet documented
           syncSource: "url",
           syncUrl: url,
           onlyRound: setRoundFilter ? rN : undefined,
