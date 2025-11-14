@@ -5,6 +5,7 @@ import cl from "./colors";
 import { paths } from "@lichess-org/types";
 import { delayCommand } from "../cmd/delay";
 import { setPGNCommand } from "../cmd/setPGN";
+import { setPGNMultiCommand } from "../cmd/setPGNMulti";
 import { setLichessGamesCommand } from "../cmd/setLichessGames";
 import { fixScheduleCommand } from "../cmd/fixSchedule";
 import { startsPreviousCommand } from "../cmd/startsPrevious";
@@ -19,6 +20,7 @@ export const args = argv.slice(2);
 export enum Command {
   Delay = "delay",
   SetPGN = "setPGN",
+  SetPGNMulti = "setPGNMulti",
   SetLichessGames = "setLichessGames",
   FixSchedule = "fixSchedule",
   StartsPrevious = "startsPrevious",
@@ -27,6 +29,7 @@ export enum Command {
 export const commands = new Map([
   [Command.Delay, delayCommand],
   [Command.SetPGN, setPGNCommand],
+  [Command.SetPGNMulti, setPGNMultiCommand],
   [Command.SetLichessGames, setLichessGamesCommand],
   [Command.FixSchedule, fixScheduleCommand],
   [Command.StartsPrevious, startsPreviousCommand],

@@ -20,6 +20,17 @@ const helpSetPGN = [
   `       --slice <sliceFilter>   ${cl.gray("Apply slice filtering using the provided filter string.")}`,
 ].join("\n");
 
+const helpSetPGNMulti = [
+  `  ${cl.underItalic("setPGNMulti <broadcastId> <sourcePGNUrl> <gamesNum> [--withFilter] [--onlyGames <sliceFilter>]")}`,
+  `     ${cl.gray("Sets the source PGN URLs for all rounds in the specified broadcast.")}`,
+  `     ${cl.gray("Use {r} in the URL as a placeholder for the round number and {g} for the game number.")}`,
+  `     ${cl.gray("Use the gamesNum parameter to specify how many games per round.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray('For broadcasts with multiple rounds, the source PGN URLs must include the "{g}" placeholder for round numbers.')}`,
+  `     ${cl.bold("Options:")}`,
+  `       --withFilter            ${cl.gray("Apply round number filtering based on round number.")}`,
+  `       --onlyGames <sliceFilter>   ${cl.gray("Apply slice filtering using the provided filter string.")}`,
+].join("\n");
+
 const helpSetLichessGames = [
   `  ${cl.underItalic("setLichessGames <broadcastRoundId> <gameIds...>")}`,
   `     ${cl.gray("Sets the games for the specified broadcast round using Lichess game IDs.")}`,
@@ -48,6 +59,8 @@ const msg = [
   ``,
   helpSetPGN,
   ``,
+  helpSetPGNMulti,
+  ``,
   helpSetLichessGames,
   ``,
   helpFixSchedule,
@@ -60,6 +73,8 @@ const msg = [
   `     $ ${cl.underItalic("delay")} ${cl.italic("bcast123 300 --onlyDelay")}`,
   `   ${cl.gray("# Set source PGN URL with round and slice filters")}`,
   `     $ ${cl.underItalic("setPGN")} ${cl.italic('bcast123 https://example.com/pgns/round-{}/game.pgn --withFilter --slice "1-5,7,9-12"')}`,
+  `  ${cl.gray("# Set source PGN URLs for multiple games per round")}`,
+  `     $ ${cl.underItalic("setPGNMulti")} ${cl.italic('bcast123 https://example.com/pgns/round-{r}/game-{g}.pgn 12 --withFilter --onlyGames "1-5,7,9-12"')}`,
   `   ${cl.gray("# Set Lichess games for a broadcast round")}`,
   `     $ ${cl.underItalic("setLichessGames")} ${cl.italic("round456 gameId1 gameId2 gameId3")}`,
   `   ${cl.gray("# Fix schedule of rounds 1 to 4 and all rounds after 8 by adding 15 minutes")}`,
@@ -72,6 +87,7 @@ export const showHelp = (cmd?: Command) => {
   const ranges: Record<Command, string> = {
     [Command.Delay]: helpDelay,
     [Command.SetPGN]: helpSetPGN,
+    [Command.SetPGNMulti]: helpSetPGNMulti,
     [Command.SetLichessGames]: helpSetLichessGames,
     [Command.FixSchedule]: helpFixSchedule,
     [Command.StartsPrevious]: helpStartsPrevious,
