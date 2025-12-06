@@ -75,3 +75,35 @@ export const handleApiResponse = async <
     console.error(cl.red(errorContext), error);
   }
 };
+
+// if per example: 8+ is provided, all round numbers after round 8 will be selected
+// if 1-4 is provided, only rounds 1 to 4 will be selected
+// if 3,5,7 is provided, only rounds 3,5 and 7 will be selected
+// if 1-4,6,8+ is provided, rounds 1 to 4, round 6 and all rounds after round 8 will be selected
+export const translateRoundsToFix = (arg: string): number[] => {
+  const rounds: number[] = [];
+  const parts = arg.split(",");
+
+  for (const part of parts) {
+    if (part.endsWith("+")) {
+      const start = parseInt(part.slice(0, -1), 10);
+      if (isNaN(start)) continue;
+      for (let i = start; i <= 64; i++) {
+        rounds.push(i);
+      }
+    } else if (part.includes("-")) {
+      const [startStr, endStr] = part.split("-");
+      const start = parseInt(startStr, 10);
+      const end = parseInt(endStr, 10);
+      if (isNaN(start) || isNaN(end)) continue;
+      for (let i = start; i <= end; i++) {
+        rounds.push(i);
+      }
+    } else {
+      const roundNum = parseInt(part, 10);
+      if (isNaN(roundNum)) continue;
+      rounds.push(roundNum);
+    }
+  }
+  return [...new Set(rounds)];
+};

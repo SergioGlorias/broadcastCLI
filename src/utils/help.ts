@@ -16,8 +16,9 @@ const helpSetPGN = [
   `     ${cl.italic("(optional)")} ${cl.gray('Use "{}" in the URL as a placeholder for the round number.')}`,
   `     ${cl.bold("Note:")} ${cl.gray('For livechesscloud URLs, please ensure it ends with "/{}".')}`,
   `     ${cl.bold("Options:")}`,
-  `       --withFilter            ${cl.gray("Apply round number filtering based on round number.")}`,
-  `       --slice <sliceFilter>   ${cl.gray("Apply slice filtering using the provided filter string.")}`,
+  `       --withFilter             ${cl.gray("Apply round number filtering based on round number.")}`,
+  `       --slice <sliceFilter>    ${cl.gray("Apply slice filtering using the provided filter string.")}`,
+  `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
 
 const helpSetPGNMulti = [
@@ -27,8 +28,9 @@ const helpSetPGNMulti = [
   `     ${cl.gray("Use the gamesNum parameter to specify how many games per round.")}`,
   `     ${cl.bold("Note:")} ${cl.gray('For broadcasts with multiple rounds, the source PGN URLs must include the "{g}" placeholder for round numbers.')}`,
   `     ${cl.bold("Options:")}`,
-  `       --withFilter            ${cl.gray("Apply round number filtering based on round number.")}`,
+  `       --withFilter                ${cl.gray("Apply round number filtering based on round number.")}`,
   `       --onlyGames <sliceFilter>   ${cl.gray("Apply slice filtering using the provided filter string.")}`,
+  `       --rounds <roundsToFix>    ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
 
 const helpSetLichessGames = [

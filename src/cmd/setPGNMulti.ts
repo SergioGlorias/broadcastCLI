@@ -5,6 +5,7 @@ import {
   msgCommonErrorHelp,
   sleep,
   handleApiResponse,
+  translateRoundsToFix,
 } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -15,7 +16,13 @@ const setPGN = async (
   gamesNum: number,
   setRoundFilter: boolean,
   setSliceFilter: number[] | null = null,
+  roundsToFix?: number[],
 ) => {
+  // Filter rounds based on criteria
+  rounds = rounds
+    .filter((_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1))
+    .filter((el) => el.startsAt !== undefined);
+
   for (const [index, round] of rounds.entries()) {
     const rN = index + 1;
     const urls = urlsRound(gamesNum, rN)
@@ -138,6 +145,14 @@ export const setPGNMultiCommand = async (args: string[]) => {
 
   const setRoundFilter = args.includes("--withFilter");
 
+  // parse arg --rounds
+  const roundsArgIndex = args.findIndex((arg) => arg === "--rounds");
+  let roundsToFix: number[] | undefined = undefined;
+  if (roundsArgIndex !== -1 && roundsArgIndex + 1 < args.length) {
+    const roundsArg = args[roundsArgIndex + 1];
+    roundsToFix = roundsArg ? translateRoundsToFix(roundsArg) : undefined;
+  }
+
   const sliceIndex = args.indexOf("--onlyGames");
   const setSliceFilter =
     sliceIndex !== -1
@@ -150,5 +165,6 @@ export const setPGNMultiCommand = async (args: string[]) => {
     gamesNum,
     setRoundFilter,
     setSliceFilter,
+    roundsToFix,
   );
 };
