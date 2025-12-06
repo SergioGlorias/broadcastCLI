@@ -18,13 +18,15 @@ const setPGN = async (
   setSliceFilter: number[] | null = null,
   roundsToFix?: number[],
 ) => {
-  // Filter rounds based on criteria
-  rounds = rounds
+  const roundsWithIndex = rounds.map((el, i) => ({ ...el, index: i }));
+  let filteredRounds = roundsWithIndex
     .filter((_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1))
     .filter((el) => el.startsAt !== undefined);
 
-  for (const [index, round] of rounds.entries()) {
-    const rN = index + 1;
+  if (filteredRounds.length === 0) filteredRounds = roundsWithIndex;
+
+  for (const [_, round] of filteredRounds.entries()) {
+    const rN = round.index + 1;
     const urls = urlsRound(gamesNum, rN)
       .filter((_, i) =>
         setSliceFilter ? setSliceFilter.includes(i + 1) : true,
