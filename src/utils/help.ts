@@ -30,7 +30,7 @@ const helpSetPGNMulti = [
   `     ${cl.bold("Options:")}`,
   `       --withFilter                ${cl.gray("Apply round number filtering based on round number.")}`,
   `       --onlyGames <sliceFilter>   ${cl.gray("Apply slice filtering using the provided filter string.")}`,
-  `       --rounds <roundsToFix>    ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
+  `       --rounds <roundsToFix>      ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
 
 const helpSetLichessGames = [
