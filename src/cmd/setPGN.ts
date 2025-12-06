@@ -15,7 +15,7 @@ const setPGN = async (
   urlRound: (roundNum: string | number) => string,
   setRoundFilter: boolean,
   setSliceFilter: string | null = null,
-  roundsToFix?: number[]
+  roundsToFix?: number[],
 ) => {
   // Filter rounds based on criteria
   const roundsWithIndex = rounds.map((el, i) => ({ ...el, index: i }));
@@ -44,7 +44,7 @@ const setPGN = async (
         },
       }),
       `Successfully set source for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(url)}.`,
-      `Error setting source for round ${cl.whiteBold(round.id)}`
+      `Error setting source for round ${cl.whiteBold(round.id)}`,
     );
     await sleep(200); // sleep 200ms to avoid rate limit issues
   }
@@ -76,14 +76,14 @@ export const setPGNCommand = async (args: string[]) => {
     if (isLCC && url.hash.length > 1 && !url.hash.endsWith("/{}")) {
       console.error(
         cl.red(
-          'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".'
-        )
+          'Invalid URL. For livechesscloud URLs, please ensure it ends with "/{}".',
+        ),
       );
       exit(1);
     }
   } catch (error) {
     console.error(
-      cl.red('Invalid URL. Must be http/https with "{}" as round placeholder.')
+      cl.red('Invalid URL. Must be http/https with "{}" as round placeholder.'),
     );
     exit(1);
   }
@@ -106,6 +106,6 @@ export const setPGNCommand = async (args: string[]) => {
     urlRound,
     setRoundFilter,
     setSliceFilter,
-    roundsToFix
+    roundsToFix,
   );
 };
