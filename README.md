@@ -18,14 +18,15 @@ Usage: <command> [options]
 
 
 Commands:
-  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]
+  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>] 
      Sets the delay for all rounds in the specified broadcast.
      Note:  The delay is specified in seconds. (max 3600 seconds = 1 hour)
      Options:
        --onlyDelay   Set only the delay without changing the start time.
        --noDelay     Do not modify the delay, only adjust the start time.
+       --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
-  setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>]
+  setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]
      Sets the source PGN URL for all rounds in the specified broadcast.
      (optional) Use "{}" in the URL as a placeholder for the round number.
      Note: For livechesscloud URLs, please ensure it ends with "/{}".
@@ -34,7 +35,7 @@ Commands:
        --slice <sliceFilter>    Apply slice filtering using the provided filter string.
        --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
-  setPGNMulti <broadcastId> <sourcePGNUrl> <gamesNum> [--withFilter] [--onlyGames <sliceFilter>]
+  setPGNMulti <broadcastId> <sourcePGNUrl> <gamesNum> [--withFilter] [--onlyGames <sliceFilter>] [--rounds <roundsToFix>]
      Sets the source PGN URLs for all rounds in the specified broadcast.
      Use {r} in the URL as a placeholder for the round number and {g} for the game number.
      Use the gamesNum parameter to specify how many games per round.
@@ -56,6 +57,13 @@ Commands:
 
   startsPrevious <broadcastId> <startsPrevious>
      Sets the startsAfterPrevious flag for all rounds in the specified broadcast.
+
+  period <broadcastId> <periodInSeconds>
+     Sets the period between polling for all rounds in the specified broadcast.
+     Required: Your Lichess token needs the web:mod scope to use this command. (Broadcast/Study Admin perm required)
+     Note: The period is specified in seconds.
+     Options:
+       --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
 
 Examples:
