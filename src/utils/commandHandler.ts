@@ -1,4 +1,4 @@
-import { env, argv } from "node:process";
+import { argv } from "node:process";
 import createClient from "openapi-fetch";
 import cl from "./colors";
 
@@ -13,24 +13,12 @@ import { periodCommand } from "../cmd/period";
 import { loginCommand } from "../cmd/login";
 import { getStoredCredentials } from "./credentials";
 
-// Get token from env or stored credentials
 const getToken = (): string | undefined => {
-  // Environment variable takes precedence
-  if (env.LICHESS_TOKEN) {
-    return env.LICHESS_TOKEN;
-  }
-  // Fall back to stored credentials
   const stored = getStoredCredentials();
   return stored?.lichessToken;
 };
 
-// Get domain from env or stored credentials
 const getDomain = (): string => {
-  // Environment variable takes precedence
-  if (env.LICHESS_DOMAIN) {
-    return env.LICHESS_DOMAIN.replace(/\/$/, "") + "/";
-  }
-  // Fall back to stored credentials
   const stored = getStoredCredentials();
   if (stored?.lichessDomain) {
     return stored.lichessDomain.replace(/\/$/, "") + "/";
