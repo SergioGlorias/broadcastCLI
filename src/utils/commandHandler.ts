@@ -120,6 +120,7 @@ export const checkTokenScopes = async (modRequired?: boolean) => {
         "Content-Type": "text/plain",
       },
       body: LICHESS_TOKEN!,
+      bodySerializer: (body: string) => body,
     })
     .then((response) => response.data)
     .then((data) => data?.[LICHESS_TOKEN!]!.scopes?.split(","))
