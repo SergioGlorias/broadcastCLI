@@ -22,6 +22,7 @@ jobs:
       contents: write
       id-token: write
     steps:
+      - uses: actions/checkout@v6
       - run: |
           [[ "${{ github.event.inputs.version }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-.*)?$ ]] || \
           (echo "Version must start with 'v' and match 'v<major>.<minor>.<patch>'" && exit 1)
