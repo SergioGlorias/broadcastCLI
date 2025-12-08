@@ -2,16 +2,17 @@ import { Command } from "./commandHandler";
 import cl from "./colors";
 
 const helpDelay = [
-  `  ${cl.underItalic("delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay]")}`,
+  `  ${cl.underItalic("delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>]")} `,
   `     ${cl.gray("Sets the delay for all rounds in the specified broadcast.")}`,
   `     ${cl.bold("Note:")}  ${cl.gray("The delay is specified in seconds. (max 3600 seconds = 1 hour)")}`,
   `     ${cl.bold("Options:")}`,
   `       --onlyDelay   ${cl.gray("Set only the delay without changing the start time.")}`,
   `       --noDelay     ${cl.gray("Do not modify the delay, only adjust the start time.")}`,
+  `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
 
 const helpSetPGN = [
-  `  ${cl.underItalic("setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>]")}`,
+  `  ${cl.underItalic("setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]")}`,
   `     ${cl.gray("Sets the source PGN URL for all rounds in the specified broadcast.")}`,
   `     ${cl.italic("(optional)")} ${cl.gray('Use "{}" in the URL as a placeholder for the round number.')}`,
   `     ${cl.bold("Note:")} ${cl.gray('For livechesscloud URLs, please ensure it ends with "/{}".')}`,
@@ -22,7 +23,7 @@ const helpSetPGN = [
 ].join("\n");
 
 const helpSetPGNMulti = [
-  `  ${cl.underItalic("setPGNMulti <broadcastId> <sourcePGNUrl> <gamesNum> [--withFilter] [--onlyGames <sliceFilter>]")}`,
+  `  ${cl.underItalic("setPGNMulti <broadcastId> <sourcePGNUrl> <gamesNum> [--withFilter] [--onlyGames <sliceFilter>] [--rounds <roundsToFix>]")}`,
   `     ${cl.gray("Sets the source PGN URLs for all rounds in the specified broadcast.")}`,
   `     ${cl.gray("Use {r} in the URL as a placeholder for the round number and {g} for the game number.")}`,
   `     ${cl.gray("Use the gamesNum parameter to specify how many games per round.")}`,

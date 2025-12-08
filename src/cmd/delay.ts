@@ -5,6 +5,7 @@ import {
   msgCommonErrorHelp,
   sleep,
   handleApiResponse,
+  translateRoundsToFix,
 } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -14,8 +15,16 @@ const setDelayRounds = async (
   delay: number,
   onlyDelay: boolean,
   noDelay: boolean,
+  roundsToFix?: number[],
 ) => {
-  for (const round of rounds) {
+  // Filter rounds based on criteria
+  let filteredRounds = rounds.filter(
+    (_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1),
+  );
+  
+  if (filteredRounds.length === 0) filteredRounds = rounds;
+
+  for (const round of filteredRounds) {
     await handleApiResponse(
       client.POST("/broadcast/round/{broadcastRoundId}/edit", {
         params: {
@@ -61,10 +70,19 @@ export const delayCommand = async (args: string[]) => {
     console.error(cl.red("Cannot use --onlyDelay and --noDelay together."));
     exit(1);
   }
+
+  // parse arg --rounds
+    const roundsArgIndex = args.findIndex((arg) => arg === "--rounds");
+    let roundsToFix: number[] | undefined = undefined;
+    if (roundsArgIndex !== -1 && roundsArgIndex + 1 < args.length) {
+      const roundsArg = args[roundsArgIndex + 1];
+      roundsToFix = roundsArg ? translateRoundsToFix(roundsArg) : undefined;
+    }
+
   const broadcast = await getBroadcast(broadcastId);
   if (!broadcast?.rounds || broadcast.rounds.length === 0) {
     console.error(cl.red("No rounds found for the specified broadcast."));
     exit(1);
   }
-  await setDelayRounds(broadcast.rounds, delayNum, onlyDelay, noDelay);
-};
+  await setDelayRounds(broadcast.rounds, delayNum, onlyDelay, noDelay, roundsToFix);
+}
