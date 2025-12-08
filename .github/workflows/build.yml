@@ -1,4 +1,4 @@
-name: Lint
+name: Build
 
 permissions:
   contents: read
@@ -8,7 +8,7 @@ on:
     paths:
       - "**.ts"
       - "**.json"
-      - ".github/workflows/lint.yml"
+      - ".github/workflows/build.yml"
       - ".node-version"
   pull_request:
     branches:
@@ -16,12 +16,13 @@ on:
     paths:
       - "**.ts"
       - "**.json"
-      - ".github/workflows/lint.yml"
+      - ".github/workflows/build.yml"
       - ".node-version"
+
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: ./.github/actions/setup-node
-      - name: Run Prettier Lint
-        run: pnpm run lint
+      - name: Build
+        run: pnpm run build
