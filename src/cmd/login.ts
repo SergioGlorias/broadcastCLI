@@ -45,7 +45,7 @@ export const loginCommand = async (args: string[]): Promise<void> => {
       console.log(cl.whiteBold("Lichess Token Login"));
       console.log(
         cl.blue(
-          "Please enter your Lichess token (you can generate one at https://lichess.org/account/oauth/token)",
+          "Please enter your Lichess token (you can generate one at https://lichess.org/account/oauth/token/create?scopes[]=study:write&scopes[]=study:read&scopes[]=web:mod&description=Broadcast+CLI)",
         ),
       );
       console.log("");
