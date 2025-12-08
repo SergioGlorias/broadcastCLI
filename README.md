@@ -7,10 +7,9 @@ npm install -g libroadcast-cli
 ## Usage
 
 ```bash
-export LICHESS_TOKEN=lip_yourtoken
-export LICHESS_DOMAIN=http://localhost:8080/ # optional
+libroadcast login
 
-libroadcast
+libroadcast <command> [options]
 ```
 
 ```bash
@@ -18,6 +17,12 @@ Usage: <command> [options]
 
 
 Commands:
+  login [--logout]
+     Save your Lichess token and domain for future use.
+     This allows you to use the CLI without setting environment variables.
+     Options:
+       --logout (-lo)   Clear saved credentials and log out.
+
   delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>] 
      Sets the delay for all rounds in the specified broadcast.
      Note:  The delay is specified in seconds. (max 3600 seconds = 1 hour)
@@ -67,6 +72,12 @@ Commands:
 
 
 Examples:
+   # Login with your Lichess token (interactive)
+     $ login
+   # Login with token as argument
+     $ login lip_yourtoken https://lichess.org
+   # Logout and clear saved credentials
+     $ login --logout
    # Set a 5-minute delay without changing start time
      $ delay bcast123 300 --onlyDelay
    # Set source PGN URL with round and slice filters
@@ -79,4 +90,5 @@ Examples:
      $ fixSchedule bcast123 15m --rounds 1-4,8+
   # Set startsAfterPrevious to true for all rounds in a broadcast
      $ startsPrevious bcast123 true
+
 ```

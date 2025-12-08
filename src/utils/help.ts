@@ -7,8 +7,6 @@ const helpLogin = [
   `     ${cl.gray("This allows you to use the CLI without setting environment variables.")}`,
   `     ${cl.bold("Options:")}`,
   `       --logout (-lo)   ${cl.gray("Clear saved credentials and log out.")}`,
-  `     ${cl.blue("Note:")} ${cl.gray("Your token must start with 'lip_' to be valid.")}`,
-  `     ${cl.blue("Note:")} ${cl.gray("Environment variables always take precedence over saved credentials.")}`,
 ].join("\n");
 
 const helpDelay = [
