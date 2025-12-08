@@ -48,9 +48,6 @@ import cl from "./utils/colors";
 
   if (!LICHESS_TOKEN?.trim() || !LICHESS_TOKEN.startsWith("lip_")) {
     console.error(
-      `${cl.red("Error:")} ${cl.whiteBold("LICHESS_TOKEN")} environment variable is not set, empty, or invalid (must start with 'lip_'), and no saved credentials found.`
-    );
-    console.error(
       `${cl.blue("Use the 'login' command to save your credentials: ")}${cl.whiteBold("libroadcast login")}`
     );
     exit(1);

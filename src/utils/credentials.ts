@@ -1,4 +1,10 @@
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import {
+  existsSync,
+  readFileSync,
+  writeFileSync,
+  mkdirSync,
+  unlinkSync,
+} from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
 
@@ -53,8 +59,7 @@ export const saveCredentials = (credentials: Credentials): void => {
 export const clearCredentials = (): void => {
   try {
     if (existsSync(CREDENTIALS_FILE)) {
-      const fs = require("node:fs");
-      fs.unlinkSync(CREDENTIALS_FILE);
+      unlinkSync(CREDENTIALS_FILE);
     }
   } catch (error) {
     // Ignore errors when clearing

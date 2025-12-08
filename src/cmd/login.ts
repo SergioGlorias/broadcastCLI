@@ -23,9 +23,10 @@ export const loginCommand = async (args: string[]): Promise<void> => {
   }
 
   try {
-    // Check if token is provided as argument
-    let token = args[0];
-    let domain = args[1] || "https://lichess.org";
+    // Filter out flags to get positional arguments
+    const positionalArgs = args.filter((arg) => !arg.startsWith("-"));
+    let token = positionalArgs[0];
+    let domain = positionalArgs[1] || "https://lichess.org";
 
     // If no token provided as argument, prompt interactively
     if (!token) {
@@ -45,7 +46,8 @@ export const loginCommand = async (args: string[]): Promise<void> => {
       console.log(cl.whiteBold("Lichess Token Login"));
       console.log(
         cl.blue(
-          "Please enter your Lichess token (you can generate one at https://lichess.org/account/oauth/token/create?scopes[]=study:write&scopes[]=study:read&scopes[]=web:mod&description=Broadcast+CLI)",
+          "Please enter your Lichess token \n" +
+            "You can generate one at https://lichess.org/account/oauth/token/create?scopes[]=study:write&scopes[]=study:read&scopes[]=web:mod&description=Broadcast+CLI",
         ),
       );
       console.log("");
