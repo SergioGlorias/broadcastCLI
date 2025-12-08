@@ -123,10 +123,13 @@ export const checkTokenScopes = async (modRequired?: boolean) => {
       bodySerializer: (body: string) => body,
     })
     .then((response) => response.data)
-    .then((data) => data?.[LICHESS_TOKEN!]!.scopes?.split(","))
+    .then((data) => {
+      let scopes = data?.[LICHESS_TOKEN!]?.scopes;
+      return scopes ? scopes.split(",") : [];
+    })
     .then((scopes) => {
       const missingScopes = requiredScopes.filter(
-        (scope) => !scopes?.includes(scope),
+        (scope) => !scopes.includes(scope),
       );
       if (missingScopes.length > 0) {
         console.error(
