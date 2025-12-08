@@ -3,3 +3,4 @@ tsconfig.json
 !dist/
 .github/
 .node-version
+cmdhelp.txt
