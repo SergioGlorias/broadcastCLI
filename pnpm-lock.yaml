@@ -9,10 +9,10 @@ importers:
   .:
     dependencies:
       '@lichess-org/types':
-        specifier: ^2.0.96
+        specifier: ^2.0.106
         version: 2.0.106
       '@types/node':
-        specifier: ^24.10.0
+        specifier: ^24.10.1
         version: 24.10.1
       ms:
         specifier: 3.0.0-canary.202508261828
