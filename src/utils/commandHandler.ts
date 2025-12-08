@@ -107,3 +107,30 @@ export const translateRoundsToFix = (arg: string): number[] => {
   }
   return [...new Set(rounds)];
 };
+
+export const checkTokenScopes = async (modRequired?: boolean) => {
+  const requiredScopes = ["study:read", "study:write"];
+  if (modRequired) requiredScopes.push("web:mod");
+  await client
+    .POST("/api/token/test", {
+      headers: {
+        "Content-Type": "text/plain",
+      },
+      body: LICHESS_TOKEN!,
+    })
+    .then((response) => response.data)
+    .then((data) => data?.[LICHESS_TOKEN!]!.scopes?.split(","))
+    .then((scopes) => {
+      const missingScopes = requiredScopes.filter(
+        (scope) => !scopes?.includes(scope),
+      );
+      if (missingScopes.length > 0) {
+        console.error(
+          cl.red(
+            `Error: Missing required token scopes: ${missingScopes.join(", ")}`,
+          ),
+        );
+        process.exit(1);
+      }
+    });
+};
