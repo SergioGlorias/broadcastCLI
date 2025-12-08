@@ -6,6 +6,7 @@ import {
   sleep,
   handleApiResponse,
   translateRoundsToFix,
+  checkTokenScopes,
 } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -87,6 +88,7 @@ const translateGamesToAdd = (arg: string, gamesN: number): number[] | null => {
 };
 
 export const setPGNMultiCommand = async (args: string[]) => {
+  await checkTokenScopes();
   const [bId, sourcePGNs, gamesN] = args.slice(0, 3);
   // Validate required args
   if (!bId || !sourcePGNs || !gamesN) {

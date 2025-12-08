@@ -4,6 +4,7 @@ import {
   client,
   msgCommonErrorHelp,
   handleApiResponse,
+  checkTokenScopes,
 } from "../utils/commandHandler";
 import { getBroadcastRound } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -30,6 +31,7 @@ const setLichessGames = (
   );
 
 export const setLichessGamesCommand = async (args: string[]) => {
+  await checkTokenScopes();
   const bId = args.shift();
   // games ids are max 64 ids
   const games = args.slice(0, 64).join(" ");

@@ -6,6 +6,7 @@ import {
   sleep,
   handleApiResponse,
   translateRoundsToFix,
+  checkTokenScopes,
 } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -50,6 +51,7 @@ const setDelayRounds = async (
 };
 
 export const delayCommand = async (args: string[]) => {
+  await checkTokenScopes();
   const [broadcastId, delay] = args.slice(0, 2);
   // Validate required args
   if (!broadcastId || !delay) {

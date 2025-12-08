@@ -6,6 +6,7 @@ import {
   sleep,
   handleApiResponse,
   translateRoundsToFix,
+  checkTokenScopes,
 } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -51,6 +52,7 @@ const setPGN = async (
 };
 
 export const setPGNCommand = async (args: string[]) => {
+  await checkTokenScopes();
   const [bId, sourcePGN] = args.slice(0, 2);
   // Validate required args
   if (!bId || !sourcePGN) {

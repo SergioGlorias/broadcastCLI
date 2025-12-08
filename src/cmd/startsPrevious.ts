@@ -5,6 +5,7 @@ import {
   msgCommonErrorHelp,
   sleep,
   handleApiResponse,
+  checkTokenScopes,
 } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -38,6 +39,7 @@ const setStartsPrevious = async (
 };
 
 export const startsPreviousCommand = async (args: string[]) => {
+  await checkTokenScopes();
   const [broadcastId, startsPrevious] = args.slice(0, 2);
   // Validate required args
   if (!broadcastId || !startsPrevious) {

@@ -6,6 +6,7 @@ import {
   sleep,
   handleApiResponse,
   translateRoundsToFix,
+  checkTokenScopes,
 } from "../utils/commandHandler";
 import { getBroadcast } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -48,6 +49,7 @@ const fixScheduleRounds = async (
 };
 
 export const fixScheduleCommand = async (args: string[]) => {
+  await checkTokenScopes();
   const [broadcastId, timeDiffStr] = args.slice(0, 2);
   if (!broadcastId || !timeDiffStr) {
     msgCommonErrorHelp("Broadcast ID and time difference are required.");
