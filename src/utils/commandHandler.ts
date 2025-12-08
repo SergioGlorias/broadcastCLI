@@ -9,6 +9,7 @@ import { setPGNMultiCommand } from "../cmd/setPGNMulti";
 import { setLichessGamesCommand } from "../cmd/setLichessGames";
 import { fixScheduleCommand } from "../cmd/fixSchedule";
 import { startsPreviousCommand } from "../cmd/startsPrevious";
+import { periodCommand } from "../cmd/period";
 
 export const LICHESS_TOKEN = env.LICHESS_TOKEN;
 const LICHESS_DOMAIN =
@@ -24,6 +25,7 @@ export enum Command {
   SetLichessGames = "setLichessGames",
   FixSchedule = "fixSchedule",
   StartsPrevious = "startsPrevious",
+  Period = "period",
 }
 
 export const commands = new Map([
@@ -33,6 +35,7 @@ export const commands = new Map([
   [Command.SetLichessGames, setLichessGamesCommand],
   [Command.FixSchedule, fixScheduleCommand],
   [Command.StartsPrevious, startsPreviousCommand],
+  [Command.Period, periodCommand],
 ]);
 
 export const client = createClient<paths>({

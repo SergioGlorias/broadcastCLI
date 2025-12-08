@@ -53,6 +53,15 @@ const helpStartsPrevious = [
   `     ${cl.gray("Sets the startsAfterPrevious flag for all rounds in the specified broadcast.")}`,
 ].join("\n");
 
+const helpSetPeriod = [
+  `  ${cl.underItalic("period <broadcastId> <periodInSeconds>")}`,
+  `     ${cl.gray("Sets the period between polling for all rounds in the specified broadcast.")}`,
+  `     ${cl.redBold("Required:")} ${cl.gray(`Your Lichess token needs the ${cl.whiteBold("web:mod")} scope to use this command. (Broadcast/Study Admin perm required)`)}`,
+  `     ${cl.bold("Note:")} ${cl.gray("The period is specified in seconds.")}`,
+  `     ${cl.bold("Options:")}`,
+  `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
+].join("\n");
+
 const msg = [
   `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
   ``,
@@ -69,6 +78,8 @@ const msg = [
   helpFixSchedule,
   ``,
   helpStartsPrevious,
+  ``,
+  helpSetPeriod,
   ``,
   ``,
   `${cl.boldYellow("Examples:")}`,
@@ -94,6 +105,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.SetLichessGames]: helpSetLichessGames,
     [Command.FixSchedule]: helpFixSchedule,
     [Command.StartsPrevious]: helpStartsPrevious,
+    [Command.Period]: helpSetPeriod,
   };
 
   const range = cmd ? ranges[cmd] : undefined;
