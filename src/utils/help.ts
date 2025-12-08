@@ -1,6 +1,16 @@
 import { Command } from "./commandHandler";
 import cl from "./colors";
 
+const helpLogin = [
+  `  ${cl.underItalic("login [--logout]")}`,
+  `     ${cl.gray("Save your Lichess token and domain for future use.")}`,
+  `     ${cl.gray("This allows you to use the CLI without setting environment variables.")}`,
+  `     ${cl.bold("Options:")}`,
+  `       --logout (-lo)   ${cl.gray("Clear saved credentials and log out.")}`,
+  `     ${cl.blue("Note:")} ${cl.gray("Your token must start with 'lip_' to be valid.")}`,
+  `     ${cl.blue("Note:")} ${cl.gray("Environment variables always take precedence over saved credentials.")}`,
+].join("\n");
+
 const helpDelay = [
   `  ${cl.underItalic("delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>]")} `,
   `     ${cl.gray("Sets the delay for all rounds in the specified broadcast.")}`,
@@ -67,6 +77,8 @@ const msg = [
   ``,
   ``,
   `${cl.boldYellow("Commands:")}`,
+  helpLogin,
+  ``,
   helpDelay,
   ``,
   helpSetPGN,
@@ -83,6 +95,12 @@ const msg = [
   ``,
   ``,
   `${cl.boldYellow("Examples:")}`,
+  `   ${cl.gray("# Login with your Lichess token (interactive)")}`,
+  `     $ ${cl.underItalic("login")}`,
+  `   ${cl.gray("# Login with token as argument")}`,
+  `     $ ${cl.underItalic("login")} ${cl.italic("lip_yourtoken https://lichess.org")}`,
+  `   ${cl.gray("# Logout and clear saved credentials")}`,
+  `     $ ${cl.underItalic("login")} ${cl.italic("--logout")}`,
   `   ${cl.gray("# Set a 5-minute delay without changing start time")}`,
   `     $ ${cl.underItalic("delay")} ${cl.italic("bcast123 300 --onlyDelay")}`,
   `   ${cl.gray("# Set source PGN URL with round and slice filters")}`,
@@ -99,6 +117,7 @@ const msg = [
 
 export const showHelp = (cmd?: Command) => {
   const ranges: Record<Command, string> = {
+    [Command.Login]: helpLogin,
     [Command.Delay]: helpDelay,
     [Command.SetPGN]: helpSetPGN,
     [Command.SetPGNMulti]: helpSetPGNMulti,

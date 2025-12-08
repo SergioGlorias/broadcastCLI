@@ -10,15 +10,42 @@ import { setLichessGamesCommand } from "../cmd/setLichessGames";
 import { fixScheduleCommand } from "../cmd/fixSchedule";
 import { startsPreviousCommand } from "../cmd/startsPrevious";
 import { periodCommand } from "../cmd/period";
+import { loginCommand } from "../cmd/login";
+import { getStoredCredentials } from "./credentials";
 
-export const LICHESS_TOKEN = env.LICHESS_TOKEN;
-const LICHESS_DOMAIN =
-  (env.LICHESS_DOMAIN || "https://lichess.org").replace(/\/$/, "") + "/";
+// Get token from env or stored credentials
+const getToken = (): string | undefined => {
+  // Environment variable takes precedence
+  if (env.LICHESS_TOKEN) {
+    return env.LICHESS_TOKEN;
+  }
+  // Fall back to stored credentials
+  const stored = getStoredCredentials();
+  return stored?.lichessToken;
+};
+
+// Get domain from env or stored credentials
+const getDomain = (): string => {
+  // Environment variable takes precedence
+  if (env.LICHESS_DOMAIN) {
+    return env.LICHESS_DOMAIN.replace(/\/$/, "") + "/";
+  }
+  // Fall back to stored credentials
+  const stored = getStoredCredentials();
+  if (stored?.lichessDomain) {
+    return stored.lichessDomain.replace(/\/$/, "") + "/";
+  }
+  return "https://lichess.org/";
+};
+
+export const LICHESS_TOKEN = getToken();
+const LICHESS_DOMAIN = getDomain();
 
 export const args = argv.slice(2);
 
 // Commands names
 export enum Command {
+  Login = "login",
   Delay = "delay",
   SetPGN = "setPGN",
   SetPGNMulti = "setPGNMulti",
@@ -29,6 +56,7 @@ export enum Command {
 }
 
 export const commands = new Map([
+  [Command.Login, loginCommand],
   [Command.Delay, delayCommand],
   [Command.SetPGN, setPGNCommand],
   [Command.SetPGNMulti, setPGNMultiCommand],
@@ -114,30 +142,39 @@ export const translateRoundsToFix = (arg: string): number[] => {
 export const checkTokenScopes = async (modRequired?: boolean) => {
   const requiredScopes = ["study:read", "study:write"];
   if (modRequired) requiredScopes.push("web:mod");
-  await client
-    .POST("/api/token/test", {
+
+  // Try to get scopes from stored credentials first
+  const stored = getStoredCredentials();
+  let scopes: string[] = [];
+
+  if (stored?.scopes) {
+    // Use cached scopes from credentials
+    scopes = stored.scopes;
+  } else {
+    // Fetch scopes from API if not cached
+    const response = await client.POST("/api/token/test", {
       headers: {
         "Content-Type": "text/plain",
       },
       body: LICHESS_TOKEN!,
       bodySerializer: (body: string) => body,
-    })
-    .then((response) => response.data)
-    .then((data) => {
-      let scopes = data?.[LICHESS_TOKEN!]?.scopes;
-      return scopes ? scopes.split(",") : [];
-    })
-    .then((scopes) => {
-      const missingScopes = requiredScopes.filter(
-        (scope) => !scopes.includes(scope),
-      );
-      if (missingScopes.length > 0) {
-        console.error(
-          cl.red(
-            `Error: Missing required token scopes: ${missingScopes.join(", ")}`,
-          ),
-        );
-        process.exit(1);
-      }
     });
+
+    const data = await response.data;
+    const scopesStr = data?.[LICHESS_TOKEN!]?.scopes;
+    scopes = scopesStr ? scopesStr.split(",").map((s: string) => s.trim()) : [];
+  }
+
+  const missingScopes = requiredScopes.filter(
+    (scope) => !scopes.includes(scope),
+  );
+
+  if (missingScopes.length > 0) {
+    console.error(
+      cl.red(
+        `Error: Missing required token scopes: ${missingScopes.join(", ")}`,
+      ),
+    );
+    process.exit(1);
+  }
 };
