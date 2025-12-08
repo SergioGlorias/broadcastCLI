@@ -19,9 +19,9 @@ const setPGN = async (
   roundsToFix?: number[],
 ) => {
   const roundsWithIndex = rounds.map((el, i) => ({ ...el, index: i }));
-  let filteredRounds = roundsWithIndex
-    .filter((_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1))
-    .filter((el) => el.startsAt !== undefined);
+  let filteredRounds = roundsWithIndex.filter(
+    (_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1),
+  );
 
   if (filteredRounds.length === 0) filteredRounds = roundsWithIndex;
 
