@@ -127,11 +127,6 @@ export const loginCommand = async (args: string[]): Promise<void> => {
         "✓ Credentials saved successfully! You can now use the CLI without setting environment variables.",
       ),
     );
-    console.log(
-      cl.blue(
-        "Note: Environment variables will always take precedence over saved credentials.",
-      ),
-    );
   } catch (error) {
     console.error(cl.red("Error during login:"), error);
     exit(1);

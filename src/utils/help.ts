@@ -103,13 +103,13 @@ const msg = [
   `     $ ${cl.underItalic("delay")} ${cl.italic("bcast123 300 --onlyDelay")}`,
   `   ${cl.gray("# Set source PGN URL with round and slice filters")}`,
   `     $ ${cl.underItalic("setPGN")} ${cl.italic('bcast123 https://example.com/pgns/round-{}/game.pgn --withFilter --slice "1-5,7,9-12"')}`,
-  `  ${cl.gray("# Set source PGN URLs for multiple games per round")}`,
+  `   ${cl.gray("# Set source PGN URLs for multiple games per round")}`,
   `     $ ${cl.underItalic("setPGNMulti")} ${cl.italic('bcast123 https://example.com/pgns/round-{r}/game-{g}.pgn 12 --withFilter --onlyGames "1-5,7,9-12"')}`,
   `   ${cl.gray("# Set Lichess games for a broadcast round")}`,
   `     $ ${cl.underItalic("setLichessGames")} ${cl.italic("round456 gameId1 gameId2 gameId3")}`,
   `   ${cl.gray("# Fix schedule of rounds 1 to 4 and all rounds after 8 by adding 15 minutes")}`,
   `     $ ${cl.underItalic("fixSchedule")} ${cl.italic("bcast123 15m --rounds 1-4,8+")}`,
-  `  ${cl.gray("# Set startsAfterPrevious to true for all rounds in a broadcast")}`,
+  `   ${cl.gray("# Set startsAfterPrevious to true for all rounds in a broadcast")}`,
   `     $ ${cl.underItalic("startsPrevious")} ${cl.italic("bcast123 true")}`,
 ];
 
