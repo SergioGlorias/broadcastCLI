@@ -14,7 +14,7 @@
   "type": "commonjs",
   "dependencies": {
     "@lichess-org/types": "^2.0.106",
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.0.0",
     "ms": "3.0.0-canary.202508261828",
     "openapi-fetch": "^0.15.0"
   },
