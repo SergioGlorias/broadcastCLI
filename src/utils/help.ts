@@ -121,6 +121,10 @@ const msg = [
   `     $ ${cl.underItalic("fixSchedule")} ${cl.italic("bcast123 15m --rounds 1-4,8+")}`,
   `   ${cl.gray("# Set startsAfterPrevious to true for all rounds in a broadcast")}`,
   `     $ ${cl.underItalic("startsPrevious")} ${cl.italic("bcast123 true")}`,
+  `   ${cl.gray("# Set polling period to 10 seconds for all rounds in a broadcast")}`,
+  `     $ ${cl.underItalic("period")} ${cl.italic("bcast123 10")}`,
+  `   ${cl.gray("# Set custom scoring for all rounds in a broadcast")}`,
+  `     $ ${cl.underItalic("score")} ${cl.italic("bcast123 1.0 0.5 1.0 0.5")}`,
 ];
 
 export const showHelp = (cmd?: Command) => {

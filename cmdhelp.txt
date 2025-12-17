@@ -55,6 +55,12 @@ Commands:
      Options:
        --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
+  score <broadcastId> <whiteWin> <whiteDraw> <blackWin> <blackDraw> [--rounds <roundsToFix>]
+     Sets the custom scoring for all rounds in the specified broadcast.
+     Note: Scores must be numbers between 0 and 10.
+     Options:
+       --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
+
 
 Examples:
    # Login with your Lichess token (interactive)
@@ -67,11 +73,15 @@ Examples:
      $ delay bcast123 300 --onlyDelay
    # Set source PGN URL with round and slice filters
      $ setPGN bcast123 https://example.com/pgns/round-{}/game.pgn --withFilter --slice "1-5,7,9-12"
-  # Set source PGN URLs for multiple games per round
+   # Set source PGN URLs for multiple games per round
      $ setPGNMulti bcast123 https://example.com/pgns/round-{r}/game-{g}.pgn 12 --withFilter --onlyGames "1-5,7,9-12"
    # Set Lichess games for a broadcast round
      $ setLichessGames round456 gameId1 gameId2 gameId3
    # Fix schedule of rounds 1 to 4 and all rounds after 8 by adding 15 minutes
      $ fixSchedule bcast123 15m --rounds 1-4,8+
-  # Set startsAfterPrevious to true for all rounds in a broadcast
+   # Set startsAfterPrevious to true for all rounds in a broadcast
      $ startsPrevious bcast123 true
+   # Set polling period to 10 seconds for all rounds in a broadcast
+     $ period bcast123 10
+   # Set custom scoring for all rounds in a broadcast
+     $ score bcast123 1.0 0.5 1.0 0.5
