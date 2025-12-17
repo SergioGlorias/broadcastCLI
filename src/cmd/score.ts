@@ -109,10 +109,10 @@ export const scoreCommand = async (args: string[]) => {
   }
   await setScoreRounds(
     broadcast.rounds,
-    whiteWin,
-    whiteDraw,
     blackWin,
     blackDraw,
+    whiteWin,
+    whiteDraw,
     roundsToFix,
   );
 };
