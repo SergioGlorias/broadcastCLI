@@ -70,6 +70,14 @@ const helpSetPeriod = [
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
 
+const helpScore = [
+  `  ${cl.underItalic("score <broadcastId> <whiteWin> <whiteDraw> <blackWin> <blackDraw> [--rounds <roundsToFix>]")}`,
+  `     ${cl.gray("Sets the custom scoring for all rounds in the specified broadcast.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray("Scores must be numbers between 0 and 10.")}`,
+  `     ${cl.bold("Options:")}`,
+  `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
+].join("\n");
+
 const msg = [
   `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
   ``,
@@ -90,6 +98,8 @@ const msg = [
   helpStartsPrevious,
   ``,
   helpSetPeriod,
+  ``,
+  helpScore,
   ``,
   ``,
   `${cl.boldYellow("Examples:")}`,
@@ -123,6 +133,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.FixSchedule]: helpFixSchedule,
     [Command.StartsPrevious]: helpStartsPrevious,
     [Command.Period]: helpSetPeriod,
+    [Command.Score]: helpScore,
   };
 
   const range = cmd ? ranges[cmd] : undefined;
