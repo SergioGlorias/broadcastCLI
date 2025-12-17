@@ -74,7 +74,7 @@ export const scoreCommand = async (args: string[]) => {
     blackWinStr,
     blackDrawStr,
   ].map((scoreStr) => parseFloat(scoreStr));
-  
+
   // Validate scores
   if ([whiteWin, whiteDraw, blackWin, blackDraw].some(isNaN)) {
     msgCommonErrorHelp(
