@@ -76,6 +76,12 @@ Commands:
      Options:
        --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
+  push <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]
+     Upload a PGN file from a local path or URL to the specified broadcast round.
+     Note: The PGN file must be accessible from the provided path or URL.
+     Options:
+       --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
+
 
 Examples:
    # Login with your Lichess token (interactive)
@@ -100,4 +106,6 @@ Examples:
      $ period bcast123 10
    # Set custom scoring for all rounds in a broadcast
      $ score bcast123 1.0 0.5 1.0 0.5
+   # Push a PGN file in loop mode every 60 seconds
+     $ push round456 /path/to/localfile.pgn --loop 60
 ```
