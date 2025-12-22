@@ -78,6 +78,14 @@ const helpScore = [
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
 
+const helpPush = [
+  `  ${cl.underItalic("push <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]")}`,
+  `     ${cl.gray("Upload a PGN file from a local path or URL to the specified broadcast round.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray("The PGN file must be accessible from the provided path or URL.")}`,
+  `     ${cl.bold("Options:")}`,
+  `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
+].join("\n");
+
 const msg = [
   `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
   ``,
@@ -100,6 +108,8 @@ const msg = [
   helpSetPeriod,
   ``,
   helpScore,
+  ``,
+  helpPush,
   ``,
   ``,
   `${cl.boldYellow("Examples:")}`,
@@ -125,6 +135,8 @@ const msg = [
   `     $ ${cl.underItalic("period")} ${cl.italic("bcast123 10")}`,
   `   ${cl.gray("# Set custom scoring for all rounds in a broadcast")}`,
   `     $ ${cl.underItalic("score")} ${cl.italic("bcast123 1.0 0.5 1.0 0.5")}`,
+  `   ${cl.gray("# Push a PGN file in loop mode every 60 seconds")}`,
+  `     $ ${cl.underItalic("push")} ${cl.italic("round456 /path/to/localfile.pgn --loop 60")}`,
 ];
 
 export const showHelp = (cmd?: Command) => {
@@ -138,6 +150,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.StartsPrevious]: helpStartsPrevious,
     [Command.Period]: helpSetPeriod,
     [Command.Score]: helpScore,
+    [Command.Push]: helpPush,
   };
 
   const range = cmd ? ranges[cmd] : undefined;
