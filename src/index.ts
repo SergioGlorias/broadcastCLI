@@ -14,7 +14,7 @@ import cl from "./utils/colors";
   // show version for --version or -v
   if (args.includes("--version") || args.includes("-v")) {
     console.log(
-      `${cl.whiteBold("libroadcast-cli")} ${cl.underItalic(`v${packageJson.version}`)}`
+      `${cl.whiteBold(packageJson.name)} ${cl.underItalic(`v${packageJson.version}`)}`
     );
     exit(0);
   }
