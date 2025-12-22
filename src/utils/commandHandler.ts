@@ -37,7 +37,7 @@ const LICHESS_DOMAIN = getDomain();
 export const args = argv.slice(2);
 
 export const packageJson = JSON.parse(
-  readFileSync(join(__dirname, "../../package.json"), "utf-8")
+  readFileSync(join(__dirname, "../../package.json"), "utf-8"),
 );
 
 // Commands names
@@ -91,7 +91,7 @@ export const handleApiResponse = async <
 >(
   promise: Promise<T>,
   successMsg: string,
-  errorContext: string
+  errorContext: string,
 ): Promise<void> => {
   try {
     const response = await promise;
@@ -99,7 +99,9 @@ export const handleApiResponse = async <
       console.log(cl.green(successMsg));
     } else {
       console.error(
-        cl.red(`${errorContext}: ${cl.whiteBold(response.response.statusText)}`)
+        cl.red(
+          `${errorContext}: ${cl.whiteBold(response.response.statusText)}`,
+        ),
       );
     }
   } catch (error) {
@@ -166,14 +168,14 @@ export const checkTokenScopes = async (modRequired?: boolean) => {
   }
 
   const missingScopes = requiredScopes.filter(
-    (scope) => !scopes.includes(scope)
+    (scope) => !scopes.includes(scope),
   );
 
   if (missingScopes.length > 0) {
     console.error(
       cl.red(
-        `Error: Missing required token scopes: ${missingScopes.join(", ")}`
-      )
+        `Error: Missing required token scopes: ${missingScopes.join(", ")}`,
+      ),
     );
     process.exit(1);
   }
