@@ -2,6 +2,9 @@ import { argv } from "node:process";
 import createClient from "openapi-fetch";
 import cl from "./colors";
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { paths } from "@lichess-org/types";
 import { delayCommand } from "../cmd/delay";
 import { setPGNCommand } from "../cmd/setPGN";
@@ -32,6 +35,10 @@ export const LICHESS_TOKEN = getToken();
 const LICHESS_DOMAIN = getDomain();
 
 export const args = argv.slice(2);
+
+export const packageJson = JSON.parse(
+  readFileSync(join(__dirname, "../../package.json"), "utf-8")
+);
 
 // Commands names
 export enum Command {
@@ -65,6 +72,7 @@ export const client = createClient<paths>({
   headers: {
     Authorization: `Bearer ${LICHESS_TOKEN}`,
     Accept: "application/json",
+    "User-Agent": packageJson.name + "/" + packageJson.version,
   },
 });
 
@@ -83,7 +91,7 @@ export const handleApiResponse = async <
 >(
   promise: Promise<T>,
   successMsg: string,
-  errorContext: string,
+  errorContext: string
 ): Promise<void> => {
   try {
     const response = await promise;
@@ -91,9 +99,7 @@ export const handleApiResponse = async <
       console.log(cl.green(successMsg));
     } else {
       console.error(
-        cl.red(
-          `${errorContext}: ${cl.whiteBold(response.response.statusText)}`,
-        ),
+        cl.red(`${errorContext}: ${cl.whiteBold(response.response.statusText)}`)
       );
     }
   } catch (error) {
@@ -160,14 +166,14 @@ export const checkTokenScopes = async (modRequired?: boolean) => {
   }
 
   const missingScopes = requiredScopes.filter(
-    (scope) => !scopes.includes(scope),
+    (scope) => !scopes.includes(scope)
   );
 
   if (missingScopes.length > 0) {
     console.error(
       cl.red(
-        `Error: Missing required token scopes: ${missingScopes.join(", ")}`,
-      ),
+        `Error: Missing required token scopes: ${missingScopes.join(", ")}`
+      )
     );
     process.exit(1);
   }
