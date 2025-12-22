@@ -7,6 +7,7 @@ import {
   msgCommonErrorHelp,
   sleep,
   checkTokenScopes,
+  packageJson
 } from "../utils/commandHandler";
 import { getBroadcastRound } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
@@ -56,7 +57,12 @@ const readPGNFromURL = async (pgnURL: string) => {
   // url can be a file path or a web URL
   if (pgnURL.startsWith("http://") || pgnURL.startsWith("https://")) {
     // Fetch from web URL
-    const response = await fetch(pgnURL);
+    const response = await fetch(pgnURL, {
+      method: "GET",
+      headers: {
+        "User-Agent": packageJson.name + "/" + packageJson.version,
+      },
+    });
     if (!response.ok) {
       console.error(
         cl.red(`Failed to fetch PGN from URL: ${response.statusText}`),
