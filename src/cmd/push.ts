@@ -7,7 +7,7 @@ import {
   msgCommonErrorHelp,
   sleep,
   checkTokenScopes,
-  packageJson
+  packageJson,
 } from "../utils/commandHandler";
 import { getBroadcastRound } from "../utils/getInfoBroadcast";
 import cl from "../utils/colors";
