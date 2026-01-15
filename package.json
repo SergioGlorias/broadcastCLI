@@ -19,7 +19,7 @@
     "openapi-fetch": "^0.15.0"
   },
   "devDependencies": {
-    "prettier": "3.7.4",
+    "prettier": "3.8.0",
     "typescript": "^5.9.3"
   },
   "engines": {
