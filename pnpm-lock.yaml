@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@lichess-org/types':
         specifier: ^2.0.109
-        version: 2.0.110
+        version: 2.0.115
       '@types/node':
         specifier: ~24.10.4
         version: 24.10.4
@@ -37,8 +37,8 @@ packages:
     resolution: {integrity: sha512-ECvpsyZYknoRD0peG1K+UkX5llld3TyK1Ot9Cq2epSoWK19nyzpGKVl98sadSmohu5wHNuiDl+Ex9SVdcIjiFg==}
     engines: {node: '>= 22'}
 
-  '@lichess-org/types@2.0.110':
-    resolution: {integrity: sha512-FUcnfHR0vur6VOg8FP4Tnxb8PU3ZjO2qSx+Tn2C+eoqATTg9sMCAv5EUcjuYI6syj1QjkyuT2auzg1TdcrxHyA==}
+  '@lichess-org/types@2.0.115':
+    resolution: {integrity: sha512-m2XyUCaYlCGYKvQ0YlDgkx1BDevRj3cjcBzzzHTHobTqNRW4GuNSl010ooqwK/y+UNtfq6guW54TBdnn8QR1lw==}
 
   '@types/node@24.10.4':
     resolution: {integrity: sha512-vnDVpYPMzs4wunl27jHrfmwojOGKya0xyM3sH+UE5iv5uPS6vX7UIoh6m+vQc5LGBq52HBKPIn/zcSZVzeDEZg==}
@@ -73,7 +73,7 @@ snapshots:
 
   '@badrap/result@0.3.1': {}
 
-  '@lichess-org/types@2.0.110': {}
+  '@lichess-org/types@2.0.115': {}
 
   '@types/node@24.10.4':
     dependencies:
