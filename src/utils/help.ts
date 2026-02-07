@@ -86,6 +86,14 @@ const helpPush = [
   `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
 ].join("\n");
 
+const helpPushFilterID = [
+  `  ${cl.underItalic("pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>]")}`,
+  `     ${cl.gray("Upload a PGN file from a local path or URL to the specified broadcast round, filtering games by FIDE ID.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray("The PGN file must be accessible from the provided path or URL.")}`,
+  `     ${cl.bold("Options:")}`,
+  `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
+].join("\n");
+
 const msg = [
   `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
   ``,
@@ -110,6 +118,8 @@ const msg = [
   helpScore,
   ``,
   helpPush,
+  ``,
+  helpPushFilterID,
   ``,
   ``,
   `${cl.boldYellow("Examples:")}`,
@@ -137,7 +147,10 @@ const msg = [
   `     $ ${cl.underItalic("score")} ${cl.italic("bcast123 1.0 0.5 1.0 0.5")}`,
   `   ${cl.gray("# Push a PGN file in loop mode every 60 seconds")}`,
   `     $ ${cl.underItalic("push")} ${cl.italic("round456 /path/to/localfile.pgn --loop 60")}`,
-];
+  `   ${cl.gray("# Push a PGN file from URL filtering by FIDE IDs in loop mode every 120 seconds")}`,
+  `     $ ${cl.underItalic("pushFilterID")} ${cl.italic('round456 https://example.com/games.pgn 12345 67890 --loop 120')}`,
+]
+
 
 export const showHelp = (cmd?: Command) => {
   const ranges: Record<Command, string> = {
@@ -151,6 +164,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.Period]: helpSetPeriod,
     [Command.Score]: helpScore,
     [Command.Push]: helpPush,
+    [Command.PushFilterID]: helpPushFilterID,
   };
 
   const range = cmd ? ranges[cmd] : undefined;

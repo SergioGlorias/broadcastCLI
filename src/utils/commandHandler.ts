@@ -15,6 +15,7 @@ import { startsPreviousCommand } from "../cmd/startsPrevious";
 import { periodCommand } from "../cmd/period";
 import { scoreCommand } from "../cmd/score";
 import { pushCommand } from "../cmd/push";
+import { pushFilterIDCommand } from "../cmd/pushFilterID";
 import { loginCommand } from "../cmd/login";
 import { getStoredCredentials } from "./credentials";
 
@@ -52,6 +53,7 @@ export enum Command {
   Period = "period",
   Score = "score",
   Push = "push",
+  PushFilterID = "pushFilterID",
 }
 
 export const commands = new Map([
@@ -65,6 +67,7 @@ export const commands = new Map([
   [Command.Period, periodCommand],
   [Command.Score, scoreCommand],
   [Command.Push, pushCommand],
+  [Command.PushFilterID, pushFilterIDCommand],
 ]);
 
 export const client = createClient<paths>({
