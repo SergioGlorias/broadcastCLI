@@ -59,14 +59,15 @@ const filterPgnByIds = (pgn: string, filterIds: number[]) => {
   const filteredGames = parsed.filter((game) => {
     const whiteFideId = game.headers.get("WhiteFideId");
     const blackFideId = game.headers.get("BlackFideId");
-    
+
     if (filterIds.length > 1) {
       // If even number of filter IDs, treat them as pairs of white and black IDs
       for (let i = 0; i < filterIds.length; i += 2) {
         const whiteId = filterIds[i];
         const blackId = filterIds[i + 1];
         if (
-          (whiteFideId === String(whiteId) && blackFideId === String(blackId)) ||
+          (whiteFideId === String(whiteId) &&
+            blackFideId === String(blackId)) ||
           (whiteFideId === String(blackId) && blackFideId === String(whiteId))
         ) {
           return true;
@@ -81,9 +82,9 @@ const filterPgnByIds = (pgn: string, filterIds: number[]) => {
       );
     }
   });
-  
+
   return filteredGames.map((game) => makePgn(game)).join("\n\n");
-}
+};
 
 const readPGNFromURL = async (pgnURL: string, filterIds: number[]) => {
   // url can be a file path or a web URL
@@ -128,7 +129,7 @@ const loop = async (
   roundInfo: components["schemas"]["BroadcastRoundInfo"],
   pgnPath: string,
   loopTimer: number,
-  filterIds: number[]
+  filterIds: number[],
 ) => {
   while (true) {
     const pgnContent = await readPGNFromURL(pgnPath, filterIds);
@@ -146,7 +147,9 @@ export const pushFilterIDCommand = async (args: string[]) => {
     .map((arg) => parseInt(arg, 10));
   // Validate required args
   if (!roundId || !pgnPath || filterIds.length === 0) {
-    msgCommonErrorHelp("Round ID, PGN, and at least one filter ID are required.");
+    msgCommonErrorHelp(
+      "Round ID, PGN, and at least one filter ID are required.",
+    );
     exit(1);
   }
 

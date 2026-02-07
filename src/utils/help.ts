@@ -148,9 +148,8 @@ const msg = [
   `   ${cl.gray("# Push a PGN file in loop mode every 60 seconds")}`,
   `     $ ${cl.underItalic("push")} ${cl.italic("round456 /path/to/localfile.pgn --loop 60")}`,
   `   ${cl.gray("# Push a PGN file from URL filtering by FIDE IDs in loop mode every 120 seconds")}`,
-  `     $ ${cl.underItalic("pushFilterID")} ${cl.italic('round456 https://example.com/games.pgn 12345 67890 --loop 120')}`,
-]
-
+  `     $ ${cl.underItalic("pushFilterID")} ${cl.italic("round456 https://example.com/games.pgn 12345 67890 --loop 120")}`,
+];
 
 export const showHelp = (cmd?: Command) => {
   const ranges: Record<Command, string> = {
