@@ -117,3 +117,12 @@ Examples:
    # Push a PGN file from URL filtering by FIDE IDs in loop mode every 120 seconds
      $ pushFilterID round456 https://example.com/games.pgn 12345 67890 --loop 120
 ```
+
+### Test Docker Build Locally
+
+```bash
+docker build -t broadcast-cli .
+
+docker run --rm -it broadcast-cli bash
+  > libroadcast
+```
