@@ -10,7 +10,11 @@ import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
 import cl from "../utils/colors.js";
 import { loopChecker, pushPGN, readPGNFromURL } from "../utils/pushTools.js";
 
-const filterPgnByIds = (pgn: string, filterIds: number[], firstOngoing: boolean) => {
+const filterPgnByIds = (
+  pgn: string,
+  filterIds: number[],
+  firstOngoing: boolean,
+) => {
   const parsed = parsePgn(pgn);
   let filteredGames = parsed.filter((game) => {
     const whiteFideId = game.headers.get("WhiteFideId");
@@ -108,7 +112,7 @@ export const pushFilterIDCommand = async (args: string[]) => {
     exit(1);
   }
 
-  const firstOngoing = args.includes("--firstOngoing")
+  const firstOngoing = args.includes("--firstOngoing");
 
   const loopTimer = loopChecker(args);
 
