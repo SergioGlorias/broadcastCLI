@@ -57,5 +57,6 @@ jobs:
     permissions:
       packages: write
       id-token: write
+      contents: read
     uses: ./.github/workflows/image.yml
     secrets: inherit
