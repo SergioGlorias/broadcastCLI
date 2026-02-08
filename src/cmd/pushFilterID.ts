@@ -35,16 +35,21 @@ const pushPGN = async (
       ),
     );
     console.table(
-      res?.games.map((game, i) => {
-        return {
-          "Game #": i + 1,
-          "White Player": game.tags["White"] || "Unknown",
-          "Black Player": game.tags["Black"] || "Unknown",
-          Result: game.tags["Result"] || "Unknown",
-          "Ply Count": game.moves ?? "Unknown",
-          Error: game.error || "None",
-        };
-      }),
+      res?.games
+        .map((game, i) => {
+          return {
+            id: i + 1,
+            "White Player": game.tags["White"] || "Unknown",
+            "Black Player": game.tags["Black"] || "Unknown",
+            Result: game.tags["Result"] || "Unknown",
+            "Ply Count": game.moves ?? "Unknown",
+            Error: game.error || "None",
+          };
+        })
+        .reduce((acc: Record<number, object>, { id, ...rest }) => {
+          acc[id] = rest;
+          return acc;
+        }, {}),
     );
   } catch (error) {
     console.error(
