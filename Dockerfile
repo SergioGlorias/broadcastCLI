@@ -8,6 +8,7 @@ RUN npm install --global pnpm && \
     pnpm install && \
     pnpm build && \
     npm install --global . && \
+    npm install pm2 -g && \
     touch /var/log/libroadcast
 
-CMD ["tail", "-f", "/var/log/libroadcast"]
+CMD ["pm2", "logs"]
