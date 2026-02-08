@@ -7,7 +7,7 @@ import {
 } from "../utils/commandHandler.js";
 import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
 import cl from "../utils/colors.js";
-import { pushPGN, readPGNFromURL } from "../utils/pushTools.js";
+import { pushPGN, readPGNFromURL, loopChecker } from "../utils/pushTools.js";
 
 let lastPGN = "";
 
@@ -42,17 +42,7 @@ export const pushCommand = async (args: string[]) => {
     exit(1);
   }
 
-  // parse arg --loop <timerInSeconds>
-  const loopArgIndex = args.findIndex((arg) => arg === "--loop");
-  let loopTimer: number | undefined = undefined;
-  if (loopArgIndex !== -1 && loopArgIndex + 1 < args.length) {
-    const loopTimerStr = args[loopArgIndex + 1];
-    loopTimer = parseInt(loopTimerStr, 10);
-    if (isNaN(loopTimer) || loopTimer <= 0) {
-      console.error(cl.red("Loop timer must be a positive integer."));
-      exit(1);
-    }
-  }
+  const loopTimer = loopChecker(args);
 
   if (loopTimer) {
     console.log(

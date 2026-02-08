@@ -3,6 +3,7 @@ import { client, packageJson } from "./commandHandler.js";
 import cl from "./colors.js";
 import path from "node:path";
 import { readFile } from "node:fs/promises";
+import { exit } from "node:process";
 
 export const pushPGN = async (
   round: components["schemas"]["BroadcastRoundInfo"],
@@ -81,4 +82,19 @@ export const readPGNFromURL = async (pgnURL: string) => {
     if (!stats) return undefined;
     return stats.toString();
   }
+};
+
+export const loopChecker = (args: string[]) => {
+  // parse arg --loop <timerInSeconds>
+  const loopArgIndex = args.findIndex((arg) => arg === "--loop");
+  let loopTimer: number | undefined = undefined;
+  if (loopArgIndex !== -1 && loopArgIndex + 1 < args.length) {
+    const loopTimerStr = args[loopArgIndex + 1];
+    loopTimer = parseInt(loopTimerStr, 10);
+    if (isNaN(loopTimer) || loopTimer <= 0) {
+      console.error(cl.red("Loop timer must be a positive integer."));
+      exit(1);
+    }
+  }
+  return loopTimer;
 };
