@@ -4,3 +4,4 @@ tsconfig.json
 .github/
 .node-version
 cmdhelp.txt
+Dockerfile
