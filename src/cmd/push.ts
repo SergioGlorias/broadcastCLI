@@ -1,89 +1,15 @@
 import { exit } from "node:process";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import { components } from "@lichess-org/types";
 import {
-  client,
   msgCommonErrorHelp,
   sleep,
   checkTokenScopes,
-  packageJson,
 } from "../utils/commandHandler.js";
 import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
 import cl from "../utils/colors.js";
+import { pushPGN, readPGNFromURL } from "../utils/pushTools.js";
 
-const pushPGN = async (
-  round: components["schemas"]["BroadcastRoundInfo"],
-  pgn: string,
-) => {
-  try {
-    const res = await client
-      .POST("/api/broadcast/round/{broadcastRoundId}/push", {
-        params: {
-          path: { broadcastRoundId: round.id },
-        },
-        // @ts-ignore name of body properties due patch param is implicit
-        body: pgn,
-        bodySerializer: (body: string) => body,
-      })
-      .then((response) => response.data);
-
-    console.log(
-      cl.green(
-        `✓ Successfully pushed PGN for round ${cl.whiteBold(round.id)}.`,
-      ),
-    );
-    console.table(
-      res?.games.map((game, i) => {
-        return {
-          "Game #": i + 1,
-          "White Player": game.tags["White"] || "Unknown",
-          "Black Player": game.tags["Black"] || "Unknown",
-          Result: game.tags["Result"] || "Unknown",
-          "Ply Count": game.moves || "Unknown",
-          Error: game.error || "None",
-        };
-      }),
-    );
-  } catch (error) {
-    console.error(
-      cl.red(`Error pushing PGN for round ${cl.whiteBold(round.id)}:`),
-      error,
-    );
-  }
-};
-
-const readPGNFromURL = async (pgnURL: string) => {
-  // url can be a file path or a web URL
-  if (pgnURL.startsWith("http://") || pgnURL.startsWith("https://")) {
-    // Fetch from web URL
-    const response = await fetch(pgnURL, {
-      method: "GET",
-      headers: {
-        "User-Agent": packageJson.name + "/" + packageJson.version,
-      },
-    });
-    if (!response.ok) {
-      console.error(
-        cl.red(`Failed to fetch PGN from URL: ${response.statusText}`),
-      );
-      return undefined;
-    }
-    const pgnText = await response.text();
-    return pgnText;
-  } else {
-    // Assume it's a file path
-    const resolvedPath = path.resolve(pgnURL);
-    const stats = await readFile(resolvedPath, { encoding: "utf-8" }).catch(
-      (err) => {
-        console.error(cl.red(`Failed to read PGN file: ${err.message}`));
-        return undefined;
-      },
-    );
-    if (!stats) return undefined;
-    return stats.toString();
-  }
-};
+let lastPGN = "";
 
 const loop = async (
   roundInfo: components["schemas"]["BroadcastRoundInfo"],
@@ -92,7 +18,10 @@ const loop = async (
 ) => {
   while (true) {
     const pgnContent = await readPGNFromURL(pgnPath);
-    if (pgnContent) await pushPGN(roundInfo, pgnContent);
+    if (pgnContent && pgnContent !== lastPGN) {
+      await pushPGN(roundInfo, pgnContent);
+      lastPGN = pgnContent;
+    }
     await sleep(loopTimer * 1000);
   }
 };

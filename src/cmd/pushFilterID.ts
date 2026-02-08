@@ -1,63 +1,14 @@
 import { exit } from "node:process";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import { components } from "@lichess-org/types";
 import {
-  client,
   msgCommonErrorHelp,
   sleep,
   checkTokenScopes,
-  packageJson,
 } from "../utils/commandHandler.js";
 import { parsePgn, makePgn } from "chessops/pgn";
 import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
 import cl from "../utils/colors.js";
-
-const pushPGN = async (
-  round: components["schemas"]["BroadcastRoundInfo"],
-  pgn: string,
-) => {
-  try {
-    const res = await client
-      .POST("/api/broadcast/round/{broadcastRoundId}/push", {
-        params: {
-          path: { broadcastRoundId: round.id },
-        },
-        // @ts-ignore name of body properties due patch param is implicit
-        body: pgn,
-        bodySerializer: (body: string) => body,
-      })
-      .then((response) => response.data);
-
-    console.log(
-      cl.green(
-        `✓ Successfully pushed PGN for round ${cl.whiteBold(round.id)}.`,
-      ),
-    );
-    console.table(
-      res?.games
-        .map((game, i) => {
-          return {
-            id: i + 1,
-            "White Player": game.tags["White"] || "Unknown",
-            "Black Player": game.tags["Black"] || "Unknown",
-            Result: game.tags["Result"] || "Unknown",
-            "Ply Count": game.moves ?? "Unknown",
-            Error: game.error || "None",
-          };
-        })
-        .reduce((acc: Record<number, object>, { id, ...rest }) => {
-          acc[id] = rest;
-          return acc;
-        }, {}),
-    );
-  } catch (error) {
-    console.error(
-      cl.red(`Error pushing PGN for round ${cl.whiteBold(round.id)}:`),
-      error,
-    );
-  }
-};
+import { pushPGN, readPGNFromURL } from "../utils/pushTools.js";
 
 const filterPgnByIds = (pgn: string, filterIds: number[]) => {
   const parsed = parsePgn(pgn);
@@ -91,45 +42,6 @@ const filterPgnByIds = (pgn: string, filterIds: number[]) => {
   return filteredGames.map((game) => makePgn(game)).join("\n\n");
 };
 
-const readPGNFromURL = async (pgnURL: string, filterIds: number[]) => {
-  // url can be a file path or a web URL
-  if (pgnURL.startsWith("http://") || pgnURL.startsWith("https://")) {
-    // Fetch from web URL
-    const response = await fetch(pgnURL, {
-      method: "GET",
-      headers: {
-        "User-Agent": packageJson.name + "/" + packageJson.version,
-      },
-    });
-    if (!response.ok) {
-      console.error(
-        cl.red(`Failed to fetch PGN from URL: ${response.statusText}`),
-      );
-      return undefined;
-    }
-    const pgnText = await response.text();
-
-    const filteredPgn = filterPgnByIds(pgnText, filterIds);
-    if (!filteredPgn) {
-      console.error(cl.red(`No games found matching the provided filter IDs.`));
-      return undefined;
-    }
-
-    return filteredPgn;
-  } else {
-    // Assume it's a file path
-    const resolvedPath = path.resolve(pgnURL);
-    const stats = await readFile(resolvedPath, { encoding: "utf-8" }).catch(
-      (err) => {
-        console.error(cl.red(`Failed to read PGN file: ${err.message}`));
-        return undefined;
-      },
-    );
-    if (!stats) return undefined;
-    return stats.toString();
-  }
-};
-
 let lastPGN = "";
 
 const loop = async (
@@ -139,10 +51,23 @@ const loop = async (
   filterIds: number[],
 ) => {
   while (true) {
-    const pgnContent = await readPGNFromURL(pgnPath, filterIds);
-    if (pgnContent && pgnContent !== lastPGN) {
-      await pushPGN(roundInfo, pgnContent);
-      lastPGN = pgnContent;
+    const pgnContent = await readPGNFromURL(pgnPath);
+
+    if (!pgnContent) {
+      console.error(
+        cl.red(
+          `Failed to read PGN content. Retrying in ${loopTimer} seconds...`,
+        ),
+      );
+      await sleep(loopTimer * 1000);
+      continue;
+    }
+
+    const filteredPgn = filterPgnByIds(pgnContent, filterIds);
+
+    if (filteredPgn && filteredPgn !== lastPGN) {
+      await pushPGN(roundInfo, filteredPgn);
+      lastPGN = filteredPgn;
     }
     await sleep(loopTimer * 1000);
   }
@@ -191,7 +116,15 @@ export const pushFilterIDCommand = async (args: string[]) => {
     console.log(cl.blue("Press Ctrl+C to stop."));
     await loop(roundInfo, pgnPath, loopTimer, filterIds);
   } else {
-    const pgnContent = await readPGNFromURL(pgnPath, filterIds);
-    if (pgnContent) await pushPGN(roundInfo, pgnContent);
+    const pgnContent = await readPGNFromURL(pgnPath);
+
+    if (!pgnContent) {
+      console.error(cl.red(`Failed to read PGN content.`));
+      exit(1);
+    }
+
+    const filteredPgn = filterPgnByIds(pgnContent, filterIds);
+
+    if (filteredPgn) await pushPGN(roundInfo, filteredPgn);
   }
 };
