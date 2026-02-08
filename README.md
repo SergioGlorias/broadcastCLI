@@ -7,12 +7,6 @@ npm install -g libroadcast-cli
 ## Usage
 
 ```bash
-libroadcast login
-
-libroadcast <command> [options]
-```
-
-```bash
 Usage: <command> [options]
 
 
@@ -82,11 +76,12 @@ Commands:
      Options:
        --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
 
-  pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>]
+  pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>] [--firstOngoing]
      Upload a PGN file from a local path or URL to the specified broadcast round, filtering games by FIDE ID.
      Note: The PGN file must be accessible from the provided path or URL.
      Options:
        --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
+       --firstOngoing               Push the first ongoing games in each round.
 
 
 Examples:

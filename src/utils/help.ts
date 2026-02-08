@@ -87,11 +87,12 @@ const helpPush = [
 ].join("\n");
 
 const helpPushFilterID = [
-  `  ${cl.underItalic("pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>]")}`,
+  `  ${cl.underItalic("pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>] [--firstOngoing]")}`,
   `     ${cl.gray("Upload a PGN file from a local path or URL to the specified broadcast round, filtering games by FIDE ID.")}`,
   `     ${cl.bold("Note:")} ${cl.gray("The PGN file must be accessible from the provided path or URL.")}`,
   `     ${cl.bold("Options:")}`,
   `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
+  `       --firstOngoing               ${cl.gray("Push the first ongoing games in each round.")}`,
 ].join("\n");
 
 const msg = [
