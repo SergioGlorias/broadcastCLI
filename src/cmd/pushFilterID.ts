@@ -10,9 +10,9 @@ import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
 import cl from "../utils/colors.js";
 import { loopChecker, pushPGN, readPGNFromURL } from "../utils/pushTools.js";
 
-const filterPgnByIds = (pgn: string, filterIds: number[]) => {
+const filterPgnByIds = (pgn: string, filterIds: number[], firstOngoing: boolean) => {
   const parsed = parsePgn(pgn);
-  const filteredGames = parsed.filter((game) => {
+  let filteredGames = parsed.filter((game) => {
     const whiteFideId = game.headers.get("WhiteFideId");
     const blackFideId = game.headers.get("BlackFideId");
 
@@ -39,6 +39,18 @@ const filterPgnByIds = (pgn: string, filterIds: number[]) => {
     }
   });
 
+  if (firstOngoing) {
+    const ongoingGames = filteredGames.filter((game) => {
+      const result = game.headers.get("Result");
+      return !result || result === "*";
+    });
+    const gamesFinished = filteredGames.filter((game) => {
+      const result = game.headers.get("Result");
+      return result && result !== "*";
+    });
+    filteredGames = [...ongoingGames, ...gamesFinished];
+  }
+
   return filteredGames.map((game) => makePgn(game)).join("\n\n");
 };
 
@@ -49,6 +61,7 @@ const loop = async (
   pgnPath: string,
   loopTimer: number,
   filterIds: number[],
+  firstOngoing: boolean,
 ) => {
   while (true) {
     const pgnContent = await readPGNFromURL(pgnPath);
@@ -63,7 +76,7 @@ const loop = async (
       continue;
     }
 
-    const filteredPgn = filterPgnByIds(pgnContent, filterIds);
+    const filteredPgn = filterPgnByIds(pgnContent, filterIds, firstOngoing);
 
     if (filteredPgn && filteredPgn !== lastPGN) {
       await pushPGN(roundInfo, filteredPgn);
@@ -95,6 +108,8 @@ export const pushFilterIDCommand = async (args: string[]) => {
     exit(1);
   }
 
+  const firstOngoing = args.includes("--firstOngoing")
+
   const loopTimer = loopChecker(args);
 
   if (loopTimer) {
@@ -104,7 +119,7 @@ export const pushFilterIDCommand = async (args: string[]) => {
       ),
     );
     console.log(cl.blue("Press Ctrl+C to stop."));
-    await loop(roundInfo, pgnPath, loopTimer, filterIds);
+    await loop(roundInfo, pgnPath, loopTimer, filterIds, firstOngoing);
   } else {
     const pgnContent = await readPGNFromURL(pgnPath);
 
@@ -113,7 +128,7 @@ export const pushFilterIDCommand = async (args: string[]) => {
       exit(1);
     }
 
-    const filteredPgn = filterPgnByIds(pgnContent, filterIds);
+    const filteredPgn = filterPgnByIds(pgnContent, filterIds, firstOngoing);
 
     if (filteredPgn) await pushPGN(roundInfo, filteredPgn);
   }
