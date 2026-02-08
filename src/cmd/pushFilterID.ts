@@ -41,7 +41,7 @@ const pushPGN = async (
           "White Player": game.tags["White"] || "Unknown",
           "Black Player": game.tags["Black"] || "Unknown",
           Result: game.tags["Result"] || "Unknown",
-          "Ply Count": game.moves || "Unknown",
+          "Ply Count": game.moves ?? "Unknown",
           Error: game.error || "None",
         };
       }),
@@ -125,6 +125,8 @@ const readPGNFromURL = async (pgnURL: string, filterIds: number[]) => {
   }
 };
 
+let lastPGN = "";
+
 const loop = async (
   roundInfo: components["schemas"]["BroadcastRoundInfo"],
   pgnPath: string,
@@ -133,7 +135,10 @@ const loop = async (
 ) => {
   while (true) {
     const pgnContent = await readPGNFromURL(pgnPath, filterIds);
-    if (pgnContent) await pushPGN(roundInfo, pgnContent);
+    if (pgnContent && pgnContent !== lastPGN) {
+      await pushPGN(roundInfo, pgnContent);
+      lastPGN = pgnContent;
+    }
     await sleep(loopTimer * 1000);
   }
 };
