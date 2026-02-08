@@ -1,6 +1,6 @@
 {
   "name": "libroadcast-cli",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "CLI to help with broadcast maintenance on Lichess",
   "main": "dist/index.js",
   "keywords": [
