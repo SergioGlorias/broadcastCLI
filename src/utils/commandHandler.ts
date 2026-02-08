@@ -22,7 +22,9 @@ import { getStoredCredentials } from "./credentials.js";
 
 const getToken = (): string | undefined => {
   const stored = getStoredCredentials();
-  return stored?.lichessToken;
+  const envToken = process.env.LICHESS_TOKEN;
+
+  return envToken || stored?.lichessToken;
 };
 
 const getDomain = (): string => {
