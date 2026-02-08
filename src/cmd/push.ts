@@ -8,9 +8,9 @@ import {
   sleep,
   checkTokenScopes,
   packageJson,
-} from "../utils/commandHandler";
-import { getBroadcastRound } from "../utils/getInfoBroadcast";
-import cl from "../utils/colors";
+} from "../utils/commandHandler.js";
+import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
+import cl from "../utils/colors.js";
 
 const pushPGN = async (
   round: components["schemas"]["BroadcastRoundInfo"],

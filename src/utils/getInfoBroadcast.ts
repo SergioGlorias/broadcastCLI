@@ -1,5 +1,5 @@
-import { client } from "./commandHandler";
-import cl from "./colors";
+import { client } from "./commandHandler.js";
+import cl from "./colors.js";
 
 export const getBroadcast = (broadcastId: string) =>
   client

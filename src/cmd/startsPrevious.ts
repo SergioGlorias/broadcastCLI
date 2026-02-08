@@ -6,9 +6,9 @@ import {
   sleep,
   handleApiResponse,
   checkTokenScopes,
-} from "../utils/commandHandler";
-import { getBroadcast } from "../utils/getInfoBroadcast";
-import cl from "../utils/colors";
+} from "../utils/commandHandler.js";
+import { getBroadcast } from "../utils/getInfoBroadcast.js";
+import cl from "../utils/colors.js";
 
 const setStartsPrevious = async (
   rounds: components["schemas"]["BroadcastRoundInfo"][],

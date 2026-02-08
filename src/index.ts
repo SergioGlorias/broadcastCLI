@@ -6,9 +6,9 @@ import {
   Command,
   commands,
   packageJson,
-} from "./utils/commandHandler";
-import { showHelp, includeHelp } from "./utils/help";
-import cl from "./utils/colors";
+} from "./utils/commandHandler.js";
+import { showHelp, includeHelp } from "./utils/help.js";
+import cl from "./utils/colors.js";
 
 (async () => {
   // show version for --version or -v

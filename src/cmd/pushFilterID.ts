@@ -8,10 +8,10 @@ import {
   sleep,
   checkTokenScopes,
   packageJson,
-} from "../utils/commandHandler";
+} from "../utils/commandHandler.js";
 import { parsePgn, makePgn } from "chessops/pgn";
-import { getBroadcastRound } from "../utils/getInfoBroadcast";
-import cl from "../utils/colors";
+import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
+import cl from "../utils/colors.js";
 
 const pushPGN = async (
   round: components["schemas"]["BroadcastRoundInfo"],

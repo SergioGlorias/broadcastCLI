@@ -1,23 +1,24 @@
 import { argv } from "node:process";
 import createClient from "openapi-fetch";
-import cl from "./colors";
+import cl from "./colors.js";
+const __dirname = import.meta.dirname;
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { paths } from "@lichess-org/types";
-import { delayCommand } from "../cmd/delay";
-import { setPGNCommand } from "../cmd/setPGN";
-import { setPGNMultiCommand } from "../cmd/setPGNMulti";
-import { setLichessGamesCommand } from "../cmd/setLichessGames";
-import { fixScheduleCommand } from "../cmd/fixSchedule";
-import { startsPreviousCommand } from "../cmd/startsPrevious";
-import { periodCommand } from "../cmd/period";
-import { scoreCommand } from "../cmd/score";
-import { pushCommand } from "../cmd/push";
-import { pushFilterIDCommand } from "../cmd/pushFilterID";
-import { loginCommand } from "../cmd/login";
-import { getStoredCredentials } from "./credentials";
+import { delayCommand } from "../cmd/delay.js";
+import { setPGNCommand } from "../cmd/setPGN.js";
+import { setPGNMultiCommand } from "../cmd/setPGNMulti.js";
+import { setLichessGamesCommand } from "../cmd/setLichessGames.js";
+import { fixScheduleCommand } from "../cmd/fixSchedule.js";
+import { startsPreviousCommand } from "../cmd/startsPrevious.js";
+import { periodCommand } from "../cmd/period.js";
+import { scoreCommand } from "../cmd/score.js";
+import { pushCommand } from "../cmd/push.js";
+import { pushFilterIDCommand } from "../cmd/pushFilterID.js";
+import { loginCommand } from "../cmd/login.js";
+import { getStoredCredentials } from "./credentials.js";
 
 const getToken = (): string | undefined => {
   const stored = getStoredCredentials();

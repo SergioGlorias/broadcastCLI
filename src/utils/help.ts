@@ -1,5 +1,5 @@
-import { Command } from "./commandHandler";
-import cl from "./colors";
+import { Command } from "./commandHandler.js";
+import cl from "./colors.js";
 
 const helpLogin = [
   `  ${cl.underItalic("login [--logout]")}`,

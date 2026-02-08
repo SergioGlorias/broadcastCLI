@@ -9,6 +9,7 @@
     "lib": ["DOM", "ES2024"],
     "target": "es2024",
     "moduleResolution": "bundler",
+    "module": "es2022",
     "outDir": "./dist",
     "rootDir": "./src",
     "removeComments": true,

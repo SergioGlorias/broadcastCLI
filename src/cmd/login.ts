@@ -4,8 +4,8 @@ import {
   saveCredentials,
   clearCredentials,
   fetchTokenScopes,
-} from "../utils/credentials";
-import cl from "../utils/colors";
+} from "../utils/credentials.js";
+import cl from "../utils/colors.js";
 
 export const loginCommand = async (args: string[]): Promise<void> => {
   // Check if logout is requested
