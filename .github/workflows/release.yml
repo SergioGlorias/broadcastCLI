@@ -51,3 +51,10 @@ jobs:
           tag_name: ${{ github.event.inputs.version }}
           name: Release ${{ github.event.inputs.version }}
           body: ${{ github.event.inputs.description }}
+  
+  docker:
+    needs: release
+    permissions:
+      contents: read
+    uses: ./.github/workflows/image.yml
+    secrets: inherit
