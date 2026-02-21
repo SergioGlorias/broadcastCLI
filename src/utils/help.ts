@@ -94,6 +94,12 @@ const helpPushFilterID = [
   `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
 ].join("\n");
 
+const helpConvertNamesToID = [
+  `  ${cl.underItalic("convertNamesToID <roundId>")}`,
+  `     ${cl.gray("Convert Lichess Usernames source to Lichess Game IDs source for the specified broadcast round.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray("This command will fetch the source PGN, extract Lichess Game IDs from the PGN headers, and update the broadcast round to use these game IDs as the source.")}`,
+].join("\n");
+
 const msg = [
   `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
   ``,
@@ -120,6 +126,8 @@ const msg = [
   helpPush,
   ``,
   helpPushFilterID,
+  ``,
+  helpConvertNamesToID,
   ``,
   ``,
   `${cl.boldYellow("Examples:")}`,
@@ -149,6 +157,8 @@ const msg = [
   `     $ ${cl.underItalic("push")} ${cl.italic("round456 /path/to/localfile.pgn --loop 60")}`,
   `   ${cl.gray("# Push a PGN file from URL filtering by FIDE IDs in loop mode every 120 seconds")}`,
   `     $ ${cl.underItalic("pushFilterID")} ${cl.italic("round456 https://example.com/games.pgn 12345 67890 --loop 120")}`,
+  `   ${cl.gray("# Convert Lichess Usernames source to Lichess Game IDs source for a broadcast round")}`,
+  `     $ ${cl.underItalic("convertNamesToID")} ${cl.italic("round456")}`,
 ];
 
 export const showHelp = (cmd?: Command) => {
@@ -164,6 +174,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.Score]: helpScore,
     [Command.Push]: helpPush,
     [Command.PushFilterID]: helpPushFilterID,
+    [Command.ConvertNamesToID]: helpConvertNamesToID,
   };
 
   const range = cmd ? ranges[cmd] : undefined;
