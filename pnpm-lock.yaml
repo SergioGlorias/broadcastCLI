@@ -13,7 +13,7 @@ importers:
         version: 2.0.120
       '@types/node':
         specifier: ~24.10.4
-        version: 24.10.11
+        version: 24.10.13
       chessops:
         specifier: ^0.15.0
         version: 0.15.0
@@ -40,8 +40,8 @@ packages:
   '@lichess-org/types@2.0.120':
     resolution: {integrity: sha512-8bJzkiRNWRnlOsW6IKBKF6B+IrxFl6EWxDhx3E3omFWadJhE2o6QTzCgMfm3I4tF45wXxE8L2uAaO/MawLzXFQ==}
 
-  '@types/node@24.10.11':
-    resolution: {integrity: sha512-/Af7O8r1frCVgOz0I62jWUtMohJ0/ZQU/ZoketltOJPZpnb17yoNc9BSoVuV9qlaIXJiPNOpsfq4ByFajSArNQ==}
+  '@types/node@24.10.13':
+    resolution: {integrity: sha512-oH72nZRfDv9lADUBSo104Aq7gPHpQZc4BTx38r9xf9pg5LfP6EzSyH2n7qFmmxRQXh7YlUXODcYsg6PuTDSxGg==}
 
   chessops@0.15.0:
     resolution: {integrity: sha512-4Ps0O8/UO09tDGbze1mMilUSMZjVYMFtQvrhlCQV385cO0BgdUPUZsq/r1Qrf6UQ4J0i7XcMbRRvFRKu+Ith1w==}
@@ -75,7 +75,7 @@ snapshots:
 
   '@lichess-org/types@2.0.120': {}
 
-  '@types/node@24.10.11':
+  '@types/node@24.10.13':
     dependencies:
       undici-types: 7.16.0
 
