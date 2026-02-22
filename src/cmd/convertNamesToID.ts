@@ -3,7 +3,7 @@ import {
   msgCommonErrorHelp,
   checkTokenScopes,
   client,
-  handleApiResponse
+  handleApiResponse,
 } from "../utils/commandHandler.js";
 import { parsePgn } from "chessops/pgn";
 import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
@@ -27,20 +27,24 @@ const setGameIds = (roundInfo: any, gameIds: string) =>
     `Error setting game IDs for round ${cl.whiteBold(roundInfo.id)}`,
   );
 
-
 const getGameIdFromPgn = async (roundId: string) => {
-  const response = await client.GET("/api/broadcast/round/{broadcastRoundId}.pgn", {
-    params: { path: { broadcastRoundId: roundId } },
-    parseAs: "text",
-  });
-  
+  const response = await client.GET(
+    "/api/broadcast/round/{broadcastRoundId}.pgn",
+    {
+      params: { path: { broadcastRoundId: roundId } },
+      parseAs: "text",
+    },
+  );
+
   if (!response.response.ok) {
     console.error(cl.red("Failed to fetch PGN for the round."));
     exit(1);
   }
 
   const pgn = parsePgn(response.data as string);
-  const gamesWithIds = pgn.map((game) => game.headers.get("GameId") || null).filter(id => typeof id === "string") as string[];
+  const gamesWithIds = pgn
+    .map((game) => game.headers.get("GameId") || null)
+    .filter((id) => typeof id === "string") as string[];
 
   return gamesWithIds;
 };
@@ -72,4 +76,3 @@ export const convertNamesToIDCommand = async (args: string[]) => {
 
   await setGameIds(roundInfo, IdsString);
 };
-
