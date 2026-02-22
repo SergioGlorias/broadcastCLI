@@ -76,12 +76,15 @@ Commands:
      Options:
        --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
 
-  pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>] [--firstOngoing]
+  pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>]
      Upload a PGN file from a local path or URL to the specified broadcast round, filtering games by FIDE ID.
      Note: The PGN file must be accessible from the provided path or URL.
      Options:
        --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
-       --firstOngoing               Push the first ongoing games in each round.
+
+  convertNamesToID <roundId>
+     Convert Lichess Usernames source to Lichess Game IDs source for the specified broadcast round.
+     Note: This command will fetch the source PGN, extract Lichess Game IDs from the PGN headers, and update the broadcast round to use these game IDs as the source.
 
 
 Examples:
@@ -111,6 +114,8 @@ Examples:
      $ push round456 /path/to/localfile.pgn --loop 60
    # Push a PGN file from URL filtering by FIDE IDs in loop mode every 120 seconds
      $ pushFilterID round456 https://example.com/games.pgn 12345 67890 --loop 120
+   # Convert Lichess Usernames source to Lichess Game IDs source for a broadcast round
+     $ convertNamesToID round456
 ```
 
 ### Test Docker Build Locally
