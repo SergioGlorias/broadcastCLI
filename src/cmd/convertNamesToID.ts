@@ -31,6 +31,7 @@ const setGameIds = (roundInfo: any, gameIds: string) =>
 const getGameIdFromPgn = async (roundId: string) => {
   const response = await client.GET("/api/broadcast/round/{broadcastRoundId}.pgn", {
     params: { path: { broadcastRoundId: roundId } },
+    parseAs: "text",
   });
   
   if (!response.response.ok) {
@@ -38,7 +39,7 @@ const getGameIdFromPgn = async (roundId: string) => {
     exit(1);
   }
 
-  const pgn = parsePgn(await response.response.text());
+  const pgn = parsePgn(response.data as string);
   const gamesWithIds = pgn.map((game) => game.headers.get("GameId") || null).filter(id => typeof id === "string") as string[];
 
   return gamesWithIds;
