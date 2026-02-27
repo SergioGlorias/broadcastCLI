@@ -77,6 +77,11 @@ Commands:
      Convert Lichess Usernames source to Lichess Game IDs source for the specified broadcast round.
      Note: This command will fetch the source PGN, extract Lichess Game IDs from the PGN headers, and update the broadcast round to use these game IDs as the source.
 
+  pushReorder <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]
+     Upload a PGN file from a local path or URL to the specified broadcast round, reordering games by round number.
+     Note: The PGN file must be accessible from the provided path or URL. Games will be reordered based on the 'Round' header in the PGN.
+     Options:
+       --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
 
 Examples:
    # Login with your Lichess token (interactive)

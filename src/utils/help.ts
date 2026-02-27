@@ -100,6 +100,14 @@ const helpConvertNamesToID = [
   `     ${cl.bold("Note:")} ${cl.gray("This command will fetch the source PGN, extract Lichess Game IDs from the PGN headers, and update the broadcast round to use these game IDs as the source.")}`,
 ].join("\n");
 
+const helpPushReorder = [
+  `  ${cl.underItalic("pushReorder <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]")}`,
+  `     ${cl.gray("Upload a PGN file from a local path or URL to the specified broadcast round, reordering games by round number.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray("The PGN file must be accessible from the provided path or URL. Games will be reordered based on the 'Round' header in the PGN.")}`,
+  `     ${cl.bold("Options:")}`,
+  `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
+].join("\n");
+
 const msg = [
   `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
   ``,
@@ -129,6 +137,7 @@ const msg = [
   ``,
   helpConvertNamesToID,
   ``,
+  helpPushReorder,  
   ``,
   `${cl.boldYellow("Examples:")}`,
   `   ${cl.gray("# Login with your Lichess token (interactive)")}`,
@@ -175,6 +184,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.Push]: helpPush,
     [Command.PushFilterID]: helpPushFilterID,
     [Command.ConvertNamesToID]: helpConvertNamesToID,
+    [Command.PushReorder]: helpPushReorder,
   };
 
   const range = cmd ? ranges[cmd] : undefined;
