@@ -55,9 +55,7 @@ export const pushReorderCommand = async (args: string[]) => {
   const [roundId, pgnPath] = args.slice(0, 2);
   // Validate required args
   if (!roundId || !pgnPath) {
-    msgCommonErrorHelp(
-      "Round ID and PGN path are required.",
-    );
+    msgCommonErrorHelp("Round ID and PGN path are required.");
     exit(1);
   }
 

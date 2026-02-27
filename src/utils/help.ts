@@ -137,7 +137,7 @@ const msg = [
   ``,
   helpConvertNamesToID,
   ``,
-  helpPushReorder,  
+  helpPushReorder,
   ``,
   `${cl.boldYellow("Examples:")}`,
   `   ${cl.gray("# Login with your Lichess token (interactive)")}`,
