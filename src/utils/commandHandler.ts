@@ -21,6 +21,7 @@ import { loginCommand } from "../cmd/login.js";
 import { getStoredCredentials } from "./credentials.js";
 import { convertNamesToIDCommand } from "../cmd/convertNamesToID.js";
 import { pushReorderCommand } from "../cmd/pushReorder.js";
+import { bulkIDsMultiCommand } from "../cmd/bulkIDsMulti.js";
 
 const getToken = (): string | undefined => {
   const stored = getStoredCredentials();
@@ -61,6 +62,7 @@ export enum Command {
   PushFilterID = "pushFilterID",
   ConvertNamesToID = "convertNamesToID",
   PushReorder = "pushReorder",
+  BulkIDsMulti = "bulkIDsMulti",
 }
 
 export const commands = new Map([
@@ -77,6 +79,7 @@ export const commands = new Map([
   [Command.PushFilterID, pushFilterIDCommand],
   [Command.ConvertNamesToID, convertNamesToIDCommand],
   [Command.PushReorder, pushReorderCommand],
+  [Command.BulkIDsMulti, bulkIDsMultiCommand],
 ]);
 
 export const client = createClient<paths>({

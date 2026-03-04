@@ -108,6 +108,12 @@ const helpPushReorder = [
   `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
 ].join("\n");
 
+const helpBulkIDsMulti = [
+  `  ${cl.underItalic("bulkIDsMulti <bulkID> <broadcastRoundIds...>")}`,
+  `     ${cl.gray("Sets Lichess Game IDs for multiple broadcast rounds using a Bulk Pairing ID.")}`,
+  `     ${cl.gray("The command will fetch game IDs from the specified Bulk Pairing and distribute them across the provided broadcast round IDs.")}`,
+].join("\n");
+
 const msg = [
   `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
   ``,
@@ -139,6 +145,9 @@ const msg = [
   ``,
   helpPushReorder,
   ``,
+  helpBulkIDsMulti,
+  ``,
+  ``,
   `${cl.boldYellow("Examples:")}`,
   `   ${cl.gray("# Login with your Lichess token (interactive)")}`,
   `     $ ${cl.underItalic("login")}`,
@@ -168,6 +177,8 @@ const msg = [
   `     $ ${cl.underItalic("pushFilterID")} ${cl.italic("round456 https://example.com/games.pgn 12345 67890 --loop 120")}`,
   `   ${cl.gray("# Convert Lichess Usernames source to Lichess Game IDs source for a broadcast round")}`,
   `     $ ${cl.underItalic("convertNamesToID")} ${cl.italic("round456")}`,
+  `   ${cl.gray("# Set Lichess Game IDs from Bulk Parings for multiple rounds (roundId1, roundId2, roundId3) in a broadcast")}`,
+  `     $ ${cl.underItalic("bulkIDsMulti")} ${cl.italic("bulk123 roundId1 roundId2 roundId3")}`,
 ];
 
 export const showHelp = (cmd?: Command) => {
@@ -185,6 +196,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.PushFilterID]: helpPushFilterID,
     [Command.ConvertNamesToID]: helpConvertNamesToID,
     [Command.PushReorder]: helpPushReorder,
+    [Command.BulkIDsMulti]: helpBulkIDsMulti,
   };
 
   const range = cmd ? ranges[cmd] : undefined;

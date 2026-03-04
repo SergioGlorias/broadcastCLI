@@ -83,6 +83,11 @@ Commands:
      Options:
        --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
 
+  bulkIDsMulti <bulkID> <broadcastRoundIds...>
+     Sets Lichess Game IDs for multiple broadcast rounds using a Bulk Pairing ID.
+     The command will fetch game IDs from the specified Bulk Pairing and distribute them across the provided broadcast round IDs.
+
+
 Examples:
    # Login with your Lichess token (interactive)
      $ login
@@ -112,3 +117,5 @@ Examples:
      $ pushFilterID round456 https://example.com/games.pgn 12345 67890 --loop 120
    # Convert Lichess Usernames source to Lichess Game IDs source for a broadcast round
      $ convertNamesToID round456
+   # Set Lichess Game IDs from Bulk Parings for multiple rounds (roundId1, roundId2, roundId3) in a broadcast
+     $ bulkIDsMulti bulk123 roundId1 roundId2 roundId3
