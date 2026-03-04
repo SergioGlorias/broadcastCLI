@@ -32,19 +32,26 @@ const setLichessGames = (
   );
 
 const getBulkIds = (bulkID: string) =>
-  client.GET("/api/bulk-pairing/{id}", {
-    params: { path: { id: bulkID } },
-  })
+  client
+    .GET("/api/bulk-pairing/{id}", {
+      params: { path: { id: bulkID } },
+    })
     .then((response) => {
       const data = response.data;
-      let ids = data?.games.map(game => game.id).filter((id) => typeof id === "string") || [];
+      let ids =
+        data?.games
+          .map((game) => game.id)
+          .filter((id) => typeof id === "string") || [];
       return ids;
-    }).catch((error) => {
-      console.error(cl.red(`Error fetching bulk pairing data: ${error.message}`));
+    })
+    .catch((error) => {
+      console.error(
+        cl.red(`Error fetching bulk pairing data: ${error.message}`),
+      );
       return [];
     });
 
-const splitIdsIntoGroups = (broadcastsIds: string[], gameIds: string[]) => 
+const splitIdsIntoGroups = (broadcastsIds: string[], gameIds: string[]) =>
   gameIds.reduce(
     (groups: string[][], id, index) => {
       groups[index % broadcastsIds.length].push(id);
@@ -52,7 +59,6 @@ const splitIdsIntoGroups = (broadcastsIds: string[], gameIds: string[]) =>
     },
     broadcastsIds.map(() => [] as string[]),
   );
-
 
 export const bulkIDsMultiCommand = async (args: string[]) => {
   await checkTokenScopes();
@@ -67,13 +73,15 @@ export const bulkIDsMultiCommand = async (args: string[]) => {
   const gameIds = await getBulkIds(bulkID);
 
   if (gameIds.length === 0) {
-    console.error(cl.red(`No game IDs found for bulk ID ${cl.whiteBold(bulkID)}.`));
+    console.error(
+      cl.red(`No game IDs found for bulk ID ${cl.whiteBold(bulkID)}.`),
+    );
     exit(1);
   }
 
   const groupedIds = splitIdsIntoGroups(broadcastsIds, gameIds);
 
- for(let [index, group] of groupedIds.entries()) {
+  for (let [index, group] of groupedIds.entries()) {
     const roundId = broadcastsIds[index];
     const round = await getBroadcastRound(roundId);
     if (!round) {
@@ -84,7 +92,7 @@ export const bulkIDsMultiCommand = async (args: string[]) => {
       );
       continue;
     }
-    
+
     await setLichessGames(round, group.join(" "));
 
     await sleep(500); // Delay of 500ms between requests to avoid hitting rate limits
