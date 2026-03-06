@@ -48,6 +48,12 @@ Commands:
      Sets the games for the specified broadcast round using Lichess game IDs.
      Note: Maximum of 64 game IDs can be provided.
 
+  setLichessGamesMulti "<broadcastRoundIds...>" "<gameIds...>"
+     Sets the games for multiple broadcast rounds using Lichess game IDs.
+     The first argument is a space-separated list of broadcast round IDs, and the second argument is a space-separated list of game IDs.
+     The command will distribute the provided game IDs across the specified broadcast round IDs.
+     Note: Maximum of 64 game IDs can be provided. The number of game IDs should ideally be a multiple of the number of broadcast round IDs for even distribution.
+
   fixSchedule <broadcastId> <timeDiff> [--rounds <roundsToFix>]
      Fixes the schedule of rounds in the specified broadcast by applying a time difference.
      Note: The time difference should be in a format like "1h", "30m", "15s", etc.
@@ -112,6 +118,8 @@ Examples:
      $ setPGNMulti bcast123 https://example.com/pgns/round-{r}/game-{g}.pgn 12 --withFilter --onlyGames "1-5,7,9-12"
    # Set Lichess games for a broadcast round
      $ setLichessGames round456 gameId1 gameId2 gameId3
+   # Set Lichess games for multiple broadcast rounds
+     $ setLichessGamesMulti "roundId1 roundId2 roundId3" "gameId1 gameId2 gameId3"
    # Fix schedule of rounds 1 to 4 and all rounds after 8 by adding 15 minutes
      $ fixSchedule bcast123 15m --rounds 1-4,8+
    # Set startsAfterPrevious to true for all rounds in a broadcast

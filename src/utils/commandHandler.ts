@@ -22,6 +22,7 @@ import { getStoredCredentials } from "./credentials.js";
 import { convertNamesToIDCommand } from "../cmd/convertNamesToID.js";
 import { pushReorderCommand } from "../cmd/pushReorder.js";
 import { bulkIDsMultiCommand } from "../cmd/bulkIDsMulti.js";
+import { setLichessGamesMultiCommand } from "../cmd/setLichessGamesMulti.js";
 
 const getToken = (): string | undefined => {
   const stored = getStoredCredentials();
@@ -54,6 +55,7 @@ export enum Command {
   SetPGN = "setPGN",
   SetPGNMulti = "setPGNMulti",
   SetLichessGames = "setLichessGames",
+  SetLichessGamesMulti = "setLichessGamesMulti",
   FixSchedule = "fixSchedule",
   StartsPrevious = "startsPrevious",
   Period = "period",
@@ -71,6 +73,7 @@ export const commands = new Map([
   [Command.SetPGN, setPGNCommand],
   [Command.SetPGNMulti, setPGNMultiCommand],
   [Command.SetLichessGames, setLichessGamesCommand],
+  [Command.SetLichessGamesMulti, setLichessGamesMultiCommand],
   [Command.FixSchedule, fixScheduleCommand],
   [Command.StartsPrevious, startsPreviousCommand],
   [Command.Period, periodCommand],

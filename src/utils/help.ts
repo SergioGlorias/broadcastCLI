@@ -48,6 +48,14 @@ const helpSetLichessGames = [
   `     ${cl.bold("Note:")} ${cl.gray("Maximum of 64 game IDs can be provided.")}`,
 ].join("\n");
 
+const helpSetLichessGamesMulti = [
+  `  ${cl.underItalic("setLichessGamesMulti \"<broadcastRoundIds...>\" \"<gameIds...>\"")}`,
+  `     ${cl.gray("Sets the games for multiple broadcast rounds using Lichess game IDs.")}`,
+  `     ${cl.gray("The first argument is a space-separated list of broadcast round IDs, and the second argument is a space-separated list of game IDs.")}`,
+  `     ${cl.gray("The command will distribute the provided game IDs across the specified broadcast round IDs.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray("Maximum of 64 game IDs can be provided. The number of game IDs should ideally be a multiple of the number of broadcast round IDs for even distribution.")}`,
+].join("\n");
+
 const helpFixSchedule = [
   `  ${cl.underItalic("fixSchedule <broadcastId> <timeDiff> [--rounds <roundsToFix>]")}`,
   `     ${cl.gray("Fixes the schedule of rounds in the specified broadcast by applying a time difference.")}`,
@@ -129,6 +137,8 @@ const msg = [
   ``,
   helpSetLichessGames,
   ``,
+  helpSetLichessGamesMulti,
+  ``,
   helpFixSchedule,
   ``,
   helpStartsPrevious,
@@ -163,6 +173,8 @@ const msg = [
   `     $ ${cl.underItalic("setPGNMulti")} ${cl.italic('bcast123 https://example.com/pgns/round-{r}/game-{g}.pgn 12 --withFilter --onlyGames "1-5,7,9-12"')}`,
   `   ${cl.gray("# Set Lichess games for a broadcast round")}`,
   `     $ ${cl.underItalic("setLichessGames")} ${cl.italic("round456 gameId1 gameId2 gameId3")}`,
+  `   ${cl.gray("# Set Lichess games for multiple broadcast rounds")}`,
+  `     $ ${cl.underItalic("setLichessGamesMulti")} ${cl.italic("\"roundId1 roundId2 roundId3\" \"gameId1 gameId2 gameId3\"")}`,
   `   ${cl.gray("# Fix schedule of rounds 1 to 4 and all rounds after 8 by adding 15 minutes")}`,
   `     $ ${cl.underItalic("fixSchedule")} ${cl.italic("bcast123 15m --rounds 1-4,8+")}`,
   `   ${cl.gray("# Set startsAfterPrevious to true for all rounds in a broadcast")}`,
@@ -188,6 +200,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.SetPGN]: helpSetPGN,
     [Command.SetPGNMulti]: helpSetPGNMulti,
     [Command.SetLichessGames]: helpSetLichessGames,
+    [Command.SetLichessGamesMulti]: helpSetLichessGamesMulti,
     [Command.FixSchedule]: helpFixSchedule,
     [Command.StartsPrevious]: helpStartsPrevious,
     [Command.Period]: helpSetPeriod,
