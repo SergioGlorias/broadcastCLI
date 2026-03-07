@@ -9,6 +9,7 @@ import {
 } from "../utils/commandHandler.js";
 import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
 import cl from "../utils/colors.js";
+import { splitIdsIntoGroups } from "../utils/splitTools.js";
 
 const setLichessGames = (
   round: components["schemas"]["BroadcastRoundInfo"],
@@ -50,15 +51,6 @@ const getBulkIds = (bulkID: string) =>
       );
       return [];
     });
-
-const splitIdsIntoGroups = (broadcastsIds: string[], gameIds: string[]) =>
-  gameIds.reduce(
-    (groups: string[][], id, index) => {
-      groups[index % broadcastsIds.length].push(id);
-      return groups;
-    },
-    broadcastsIds.map(() => [] as string[]),
-  );
 
 export const bulkIDsMultiCommand = async (args: string[]) => {
   await checkTokenScopes();

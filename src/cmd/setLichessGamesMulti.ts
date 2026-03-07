@@ -9,6 +9,7 @@ import {
 } from "../utils/commandHandler.js";
 import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
 import cl from "../utils/colors.js";
+import { splitIdsIntoGroups } from "../utils/splitTools.js";
 
 const setLichessGames = (
   round: components["schemas"]["BroadcastRoundInfo"],
@@ -29,15 +30,6 @@ const setLichessGames = (
     }),
     `Successfully set games for round ${cl.whiteBold(round.id)} to ${cl.whiteBold(games)}.`,
     `Error setting games for round ${cl.whiteBold(round.id)}`,
-  );
-
-const splitIdsIntoGroups = (broadcastsIds: string[], gameIds: string[]) =>
-  gameIds.reduce(
-    (groups: string[][], id, index) => {
-      groups[index % broadcastsIds.length].push(id);
-      return groups;
-    },
-    broadcastsIds.map(() => [] as string[]),
   );
 
 export const setLichessGamesMultiCommand = async (args: string[]) => {
