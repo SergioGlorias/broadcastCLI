@@ -11,9 +11,6 @@ importers:
       '@lichess-org/types':
         specifier: ^2.0.109
         version: 2.0.129
-      '@types/node':
-        specifier: ~24.12.0
-        version: 24.12.0
       chessops:
         specifier: ^0.15.0
         version: 0.15.0
@@ -24,6 +21,9 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
     devDependencies:
+      '@types/node':
+        specifier: ~24.12.0
+        version: 24.12.0
       prettier:
         specifier: 3.8.1
         version: 3.8.1
