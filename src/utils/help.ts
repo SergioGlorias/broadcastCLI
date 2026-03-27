@@ -42,6 +42,16 @@ const helpSetPGNMulti = [
   `       --rounds <roundsToFix>      ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
 
+const helpSetForward = [
+  `  ${cl.underItalic("setPGN <broadcastId> <broadcastToForward> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]")}`,
+  `     ${cl.gray("Sets the other Broadcast to foward for all rounds in the specified broadcast.")}`,
+  `     ${cl.redBold("Required:")} ${cl.gray(`Your Lichess token needs the ${cl.whiteBold("web:mod")} scope to use this command. (Broadcast/Study Admin perm required)`)}`,
+  `     ${cl.bold("Options:")}`,
+  `       --withFilter             ${cl.gray("Apply round number filtering based on round number.")}`,
+  `       --slice <sliceFilter>    ${cl.gray("Apply slice filtering using the provided filter string.")}`,
+  `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
+].join("\n");
+
 const helpSetLichessGames = [
   `  ${cl.underItalic("setLichessGames <broadcastRoundId> <gameIds...>")}`,
   `     ${cl.gray("Sets the games for the specified broadcast round using Lichess game IDs.")}`,
@@ -135,6 +145,8 @@ const msg = [
   ``,
   helpSetPGNMulti,
   ``,
+  helpSetForward,
+  ``,
   helpSetLichessGames,
   ``,
   helpSetLichessGamesMulti,
@@ -199,6 +211,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.Delay]: helpDelay,
     [Command.SetPGN]: helpSetPGN,
     [Command.SetPGNMulti]: helpSetPGNMulti,
+    [Command.SetForward]: helpSetForward,
     [Command.SetLichessGames]: helpSetLichessGames,
     [Command.SetLichessGamesMulti]: helpSetLichessGamesMulti,
     [Command.FixSchedule]: helpFixSchedule,
