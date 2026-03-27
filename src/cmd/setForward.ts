@@ -68,12 +68,13 @@ export const setForwardCommand = async (args: string[]) => {
 
   const bward = await getBroadcast(forwardID);
   if (!bward?.rounds || bward.rounds.length === 0) {
-    msgCommonErrorHelp("No rounds found to forward for the specified broadcast.");
+    msgCommonErrorHelp(
+      "No rounds found to forward for the specified broadcast.",
+    );
     exit(1);
   }
 
-  const urlsToForward = 
-    bward.rounds.map(r => r.url)
+  const urlsToForward = bward.rounds.map((r) => r.url);
 
   // parse arg --rounds
   const roundsArgIndex = args.findIndex((arg) => arg === "--rounds");
