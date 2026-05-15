@@ -144,5 +144,6 @@ Examples:
 docker build -t broadcast-cli .
 
 docker run --rm -it broadcast-cli bash
-  > libroadcast
+# then
+$ libroadcast
 ```
