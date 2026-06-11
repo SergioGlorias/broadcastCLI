@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@lichess-org/types':
-        specifier: ^2.0.141
+        specifier: ^2.0.145
         version: 2.0.145
       chessops:
         specifier: ^0.15.0
