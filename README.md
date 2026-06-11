@@ -44,6 +44,14 @@ Commands:
        --onlyGames <sliceFilter>   Apply slice filtering using the provided filter string.
        --rounds <roundsToFix>      Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
+  setForward <broadcastId> <broadcastToForward> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]
+     Sets the other Broadcast to foward for all rounds in the specified broadcast.
+     Required: Your Lichess token needs the web:mod scope to use this command. (Broadcast/Study Admin perm required)
+     Options:
+       --withFilter             Apply round number filtering based on round number.
+       --slice <sliceFilter>    Apply slice filtering using the provided filter string.
+       --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
+
   setLichessGames <broadcastRoundId> <gameIds...>
      Sets the games for the specified broadcast round using Lichess game IDs.
      Note: Maximum of 64 game IDs can be provided.
@@ -73,6 +81,12 @@ Commands:
   score <broadcastId> <whiteWin> <whiteDraw> <blackWin> <blackDraw> [--rounds <roundsToFix>]
      Sets the custom scoring for all rounds in the specified broadcast.
      Note: Scores must be numbers between 0 and 10.
+     Options:
+       --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
+
+  teamScore <broadcastId> <teamWin> <teamDraw> [--rounds <roundsToFix>]
+     Sets the custom team scoring for all rounds in the specified broadcast.
+     Note: Scores for team win and team draw must be numbers between 0 and 10.
      Options:
        --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
