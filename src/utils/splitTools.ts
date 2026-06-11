@@ -1,7 +1,4 @@
-export const splitIdsIntoGroups = (
-  broadcastsIds: string[],
-  gameIds: string[],
-) => {
+export const splitIdsIntoGroups = (broadcastsIds: string[], gameIds: string[]) => {
   const chunkSize = 64;
   const groups: string[][] = broadcastsIds.map(() => []);
   for (let i = 0; i < broadcastsIds.length; i++) {

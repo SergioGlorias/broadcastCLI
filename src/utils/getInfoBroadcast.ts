@@ -1,35 +1,32 @@
-import { client } from "./commandHandler.js";
-import cl from "./colors.js";
+import { client } from './commandHandler.js';
+import cl from './colors.js';
 
 export const getBroadcast = (broadcastId: string) =>
   client
-    .GET("/api/broadcast/{broadcastTournamentId}", {
+    .GET('/api/broadcast/{broadcastTournamentId}', {
       params: {
         path: { broadcastTournamentId: broadcastId },
       },
     })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error(cl.red("Error fetching broadcast:"), error);
+    .then(response => response.data)
+    .catch(error => {
+      console.error(cl.red('Error fetching broadcast:'), error);
       return null;
     });
 
 export const getBroadcastRound = (roundId: string) =>
   client
-    .GET(
-      "/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}",
-      {
-        params: {
-          path: {
-            broadcastTournamentSlug: "-",
-            broadcastRoundSlug: "-",
-            broadcastRoundId: roundId,
-          },
+    .GET('/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}', {
+      params: {
+        path: {
+          broadcastTournamentSlug: '-',
+          broadcastRoundSlug: '-',
+          broadcastRoundId: roundId,
         },
       },
-    )
-    .then((response) => response.data?.round)
-    .catch((error) => {
-      console.error(cl.red("Error fetching broadcast round:"), error);
+    })
+    .then(response => response.data?.round)
+    .catch(error => {
+      console.error(cl.red('Error fetching broadcast round:'), error);
       return null;
     });

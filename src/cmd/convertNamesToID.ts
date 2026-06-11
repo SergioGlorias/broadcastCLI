@@ -1,17 +1,12 @@
-import { exit } from "node:process";
-import {
-  msgCommonErrorHelp,
-  checkTokenScopes,
-  client,
-  handleApiResponse,
-} from "../utils/commandHandler.js";
-import { parsePgn } from "chessops/pgn";
-import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
-import cl from "../utils/colors.js";
+import { exit } from 'node:process';
+import { msgCommonErrorHelp, checkTokenScopes, client, handleApiResponse } from '../utils/commandHandler.js';
+import { parsePgn } from 'chessops/pgn';
+import { getBroadcastRound } from '../utils/getInfoBroadcast.js';
+import cl from '../utils/colors.js';
 
 const setGameIds = (roundInfo: any, gameIds: string) =>
   handleApiResponse(
-    client.POST("/broadcast/round/{broadcastRoundId}/edit", {
+    client.POST('/broadcast/round/{broadcastRoundId}/edit', {
       params: {
         path: { broadcastRoundId: roundInfo.id },
         // @ts-ignore patch param is not yet documented
@@ -19,7 +14,7 @@ const setGameIds = (roundInfo: any, gameIds: string) =>
       },
       // @ts-ignore name of body properties due patch param is implicit
       body: {
-        syncSource: "ids",
+        syncSource: 'ids',
         syncIds: gameIds,
       },
     }),
@@ -28,23 +23,20 @@ const setGameIds = (roundInfo: any, gameIds: string) =>
   );
 
 const getGameIdFromPgn = async (roundId: string) => {
-  const response = await client.GET(
-    "/api/broadcast/round/{broadcastRoundId}.pgn",
-    {
-      params: { path: { broadcastRoundId: roundId } },
-      parseAs: "text",
-    },
-  );
+  const response = await client.GET('/api/broadcast/round/{broadcastRoundId}.pgn', {
+    params: { path: { broadcastRoundId: roundId } },
+    parseAs: 'text',
+  });
 
   if (!response.response.ok) {
-    console.error(cl.red("Failed to fetch PGN for the round."));
+    console.error(cl.red('Failed to fetch PGN for the round.'));
     exit(1);
   }
 
   const pgn = parsePgn(response.data as string);
   const gamesWithIds = pgn
-    .map((game) => game.headers.get("GameId") || null)
-    .filter((id) => typeof id === "string") as string[];
+    .map(game => game.headers.get('GameId') || null)
+    .filter(id => typeof id === 'string') as string[];
 
   return gamesWithIds;
 };
@@ -54,25 +46,25 @@ export const convertNamesToIDCommand = async (args: string[]) => {
   const [roundId] = args.slice(0, 1);
   // Validate required args
   if (!roundId) {
-    msgCommonErrorHelp("Round ID is required.");
+    msgCommonErrorHelp('Round ID is required.');
     exit(1);
   }
 
   const roundInfo = await getBroadcastRound(roundId);
 
   if (!roundInfo) {
-    console.error(cl.red("Round not found."));
+    console.error(cl.red('Round not found.'));
     exit(1);
   }
 
   const gameIds = await getGameIdFromPgn(roundId);
 
   if (gameIds.length === 0) {
-    console.error(cl.red("No games with GameId found in the PGN."));
+    console.error(cl.red('No games with GameId found in the PGN.'));
     exit(1);
   }
 
-  const IdsString = gameIds.join(" ");
+  const IdsString = gameIds.join(' ');
 
   await setGameIds(roundInfo, IdsString);
 };

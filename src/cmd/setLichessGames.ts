@@ -1,20 +1,12 @@
-import { exit } from "node:process";
-import { components } from "@lichess-org/types";
-import {
-  client,
-  msgCommonErrorHelp,
-  handleApiResponse,
-  checkTokenScopes,
-} from "../utils/commandHandler.js";
-import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
-import cl from "../utils/colors.js";
+import { exit } from 'node:process';
+import { components } from '@lichess-org/types';
+import { client, msgCommonErrorHelp, handleApiResponse, checkTokenScopes } from '../utils/commandHandler.js';
+import { getBroadcastRound } from '../utils/getInfoBroadcast.js';
+import cl from '../utils/colors.js';
 
-const setLichessGames = (
-  round: components["schemas"]["BroadcastRoundInfo"],
-  games: string,
-) =>
+const setLichessGames = (round: components['schemas']['BroadcastRoundInfo'], games: string) =>
   handleApiResponse(
-    client.POST("/broadcast/round/{broadcastRoundId}/edit", {
+    client.POST('/broadcast/round/{broadcastRoundId}/edit', {
       params: {
         path: { broadcastRoundId: round.id },
         // @ts-ignore patch param is not yet documented
@@ -22,7 +14,7 @@ const setLichessGames = (
       },
       // @ts-ignore name of body properties due patch param is implicit
       body: {
-        syncSource: "ids",
+        syncSource: 'ids',
         syncIds: games,
       },
     }),
@@ -34,20 +26,16 @@ export const setLichessGamesCommand = async (args: string[]) => {
   await checkTokenScopes();
   const bId = args.shift();
   // games ids are max 64 ids
-  const games = args.slice(0, 64).join(" ");
+  const games = args.slice(0, 64).join(' ');
   // Validate required args
   if (!bId || !games) {
-    msgCommonErrorHelp("Broadcast ID and games IDs are required.");
+    msgCommonErrorHelp('Broadcast ID and games IDs are required.');
     exit(1);
   }
 
   const round = await getBroadcastRound(bId);
   if (!round) {
-    console.error(
-      cl.red(
-        `Broadcast round with ID ${cl.whiteBold(bId)} not found or has no rounds.`,
-      ),
-    );
+    console.error(cl.red(`Broadcast round with ID ${cl.whiteBold(bId)} not found or has no rounds.`));
     exit(1);
   }
 

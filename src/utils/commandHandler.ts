@@ -1,30 +1,30 @@
-import { argv } from "node:process";
-import createClient from "openapi-fetch";
-import cl from "./colors.js";
+import { argv } from 'node:process';
+import createClient from 'openapi-fetch';
+import cl from './colors.js';
 const __dirname = import.meta.dirname;
 
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
-import { paths } from "@lichess-org/types";
-import { delayCommand } from "../cmd/delay.js";
-import { setPGNCommand } from "../cmd/setPGN.js";
-import { setPGNMultiCommand } from "../cmd/setPGNMulti.js";
-import { setForwardCommand } from "../cmd/setForward.js";
-import { setLichessGamesCommand } from "../cmd/setLichessGames.js";
-import { fixScheduleCommand } from "../cmd/fixSchedule.js";
-import { startsPreviousCommand } from "../cmd/startsPrevious.js";
-import { periodCommand } from "../cmd/period.js";
-import { scoreCommand } from "../cmd/score.js";
-import { teamScoreCommand } from "../cmd/teamScore.js";
-import { pushCommand } from "../cmd/push.js";
-import { pushFilterIDCommand } from "../cmd/pushFilterID.js";
-import { loginCommand } from "../cmd/login.js";
-import { getStoredCredentials } from "./credentials.js";
-import { convertNamesToIDCommand } from "../cmd/convertNamesToID.js";
-import { pushReorderCommand } from "../cmd/pushReorder.js";
-import { bulkIDsMultiCommand } from "../cmd/bulkIDsMulti.js";
-import { setLichessGamesMultiCommand } from "../cmd/setLichessGamesMulti.js";
+import { paths } from '@lichess-org/types';
+import { delayCommand } from '../cmd/delay.js';
+import { setPGNCommand } from '../cmd/setPGN.js';
+import { setPGNMultiCommand } from '../cmd/setPGNMulti.js';
+import { setForwardCommand } from '../cmd/setForward.js';
+import { setLichessGamesCommand } from '../cmd/setLichessGames.js';
+import { fixScheduleCommand } from '../cmd/fixSchedule.js';
+import { startsPreviousCommand } from '../cmd/startsPrevious.js';
+import { periodCommand } from '../cmd/period.js';
+import { scoreCommand } from '../cmd/score.js';
+import { teamScoreCommand } from '../cmd/teamScore.js';
+import { pushCommand } from '../cmd/push.js';
+import { pushFilterIDCommand } from '../cmd/pushFilterID.js';
+import { loginCommand } from '../cmd/login.js';
+import { getStoredCredentials } from './credentials.js';
+import { convertNamesToIDCommand } from '../cmd/convertNamesToID.js';
+import { pushReorderCommand } from '../cmd/pushReorder.js';
+import { bulkIDsMultiCommand } from '../cmd/bulkIDsMulti.js';
+import { setLichessGamesMultiCommand } from '../cmd/setLichessGamesMulti.js';
 
 const getToken = (): string | undefined => {
   const stored = getStoredCredentials();
@@ -36,9 +36,9 @@ const getToken = (): string | undefined => {
 const getDomain = (): string => {
   const stored = getStoredCredentials();
   if (stored?.lichessDomain) {
-    return stored.lichessDomain.replace(/\/$/, "") + "/";
+    return stored.lichessDomain.replace(/\/$/, '') + '/';
   }
-  return "https://lichess.org/";
+  return 'https://lichess.org/';
 };
 
 export const LICHESS_TOKEN = getToken();
@@ -46,29 +46,27 @@ const LICHESS_DOMAIN = getDomain();
 
 export const args = argv.slice(2);
 
-export const packageJson = JSON.parse(
-  readFileSync(join(__dirname, "../../package.json"), "utf-8"),
-);
+export const packageJson = JSON.parse(readFileSync(join(__dirname, '../../package.json'), 'utf-8'));
 
 // Commands names
 export enum Command {
-  Login = "login",
-  Delay = "delay",
-  SetPGN = "setPGN",
-  SetPGNMulti = "setPGNMulti",
-  SetForward = "setForward",
-  SetLichessGames = "setLichessGames",
-  SetLichessGamesMulti = "setLichessGamesMulti",
-  FixSchedule = "fixSchedule",
-  StartsPrevious = "startsPrevious",
-  Period = "period",
-  Score = "score",
-  TeamScore = "teamScore",
-  Push = "push",
-  PushFilterID = "pushFilterID",
-  ConvertNamesToID = "convertNamesToID",
-  PushReorder = "pushReorder",
-  BulkIDsMulti = "bulkIDsMulti",
+  Login = 'login',
+  Delay = 'delay',
+  SetPGN = 'setPGN',
+  SetPGNMulti = 'setPGNMulti',
+  SetForward = 'setForward',
+  SetLichessGames = 'setLichessGames',
+  SetLichessGamesMulti = 'setLichessGamesMulti',
+  FixSchedule = 'fixSchedule',
+  StartsPrevious = 'startsPrevious',
+  Period = 'period',
+  Score = 'score',
+  TeamScore = 'teamScore',
+  Push = 'push',
+  PushFilterID = 'pushFilterID',
+  ConvertNamesToID = 'convertNamesToID',
+  PushReorder = 'pushReorder',
+  BulkIDsMulti = 'bulkIDsMulti',
 }
 
 export const commands = new Map([
@@ -95,24 +93,21 @@ export const client = createClient<paths>({
   baseUrl: LICHESS_DOMAIN,
   headers: {
     Authorization: `Bearer ${LICHESS_TOKEN}`,
-    Accept: "application/json",
-    "User-Agent": packageJson.name + "/" + packageJson.version,
+    Accept: 'application/json',
+    'User-Agent': packageJson.name + '/' + packageJson.version,
   },
 });
 
 // sleep function to avoid rate limit issues
-export const sleep = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const msgCommonErrorHelp = (msg: string) => {
   console.error(cl.red(msg));
-  console.info(cl.blue("Use --help to see usage."));
+  console.info(cl.blue('Use --help to see usage.'));
 };
 
 // Helper to handle API responses consistently
-export const handleApiResponse = async <
-  T extends { response: { ok: boolean; statusText: string } },
->(
+export const handleApiResponse = async <T extends { response: { ok: boolean; statusText: string } }>(
   promise: Promise<T>,
   successMsg: string,
   errorContext: string,
@@ -122,11 +117,7 @@ export const handleApiResponse = async <
     if (response.response.ok) {
       console.log(cl.green(successMsg));
     } else {
-      console.error(
-        cl.red(
-          `${errorContext}: ${cl.whiteBold(response.response.statusText)}`,
-        ),
-      );
+      console.error(cl.red(`${errorContext}: ${cl.whiteBold(response.response.statusText)}`));
     }
   } catch (error) {
     console.error(cl.red(errorContext), error);
@@ -139,17 +130,17 @@ export const handleApiResponse = async <
 // if 1-4,6,8+ is provided, rounds 1 to 4, round 6 and all rounds after round 8 will be selected
 export const translateRoundsToFix = (arg: string): number[] => {
   const rounds: number[] = [];
-  const parts = arg.split(",");
+  const parts = arg.split(',');
 
   for (const part of parts) {
-    if (part.endsWith("+")) {
+    if (part.endsWith('+')) {
       const start = parseInt(part.slice(0, -1), 10);
       if (isNaN(start)) continue;
       for (let i = start; i <= 64; i++) {
         rounds.push(i);
       }
-    } else if (part.includes("-")) {
-      const [startStr, endStr] = part.split("-");
+    } else if (part.includes('-')) {
+      const [startStr, endStr] = part.split('-');
       const start = parseInt(startStr, 10);
       const end = parseInt(endStr, 10);
       if (isNaN(start) || isNaN(end)) continue;
@@ -166,8 +157,8 @@ export const translateRoundsToFix = (arg: string): number[] => {
 };
 
 export const checkTokenScopes = async (modRequired?: boolean) => {
-  const requiredScopes = ["study:read", "study:write"];
-  if (modRequired) requiredScopes.push("web:mod");
+  const requiredScopes = ['study:read', 'study:write'];
+  if (modRequired) requiredScopes.push('web:mod');
 
   // Try to get scopes from stored credentials first
   const stored = getStoredCredentials();
@@ -178,9 +169,9 @@ export const checkTokenScopes = async (modRequired?: boolean) => {
     scopes = stored.scopes;
   } else {
     // Fetch scopes from API if not cached
-    const response = await client.POST("/api/token/test", {
+    const response = await client.POST('/api/token/test', {
       headers: {
-        "Content-Type": "text/plain",
+        'Content-Type': 'text/plain',
       },
       body: LICHESS_TOKEN!,
       bodySerializer: (body: string) => body,
@@ -188,19 +179,13 @@ export const checkTokenScopes = async (modRequired?: boolean) => {
 
     const data = await response.data;
     const scopesStr = data?.[LICHESS_TOKEN!]?.scopes;
-    scopes = scopesStr ? scopesStr.split(",").map((s: string) => s.trim()) : [];
+    scopes = scopesStr ? scopesStr.split(',').map((s: string) => s.trim()) : [];
   }
 
-  const missingScopes = requiredScopes.filter(
-    (scope) => !scopes.includes(scope),
-  );
+  const missingScopes = requiredScopes.filter(scope => !scopes.includes(scope));
 
   if (missingScopes.length > 0) {
-    console.error(
-      cl.red(
-        `Error: Missing required token scopes: ${missingScopes.join(", ")}`,
-      ),
-    );
+    console.error(cl.red(`Error: Missing required token scopes: ${missingScopes.join(', ')}`));
     process.exit(1);
   }
 };

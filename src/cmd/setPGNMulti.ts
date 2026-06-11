@@ -1,5 +1,5 @@
-import { exit } from "node:process";
-import { components } from "@lichess-org/types";
+import { exit } from 'node:process';
+import { components } from '@lichess-org/types';
 import {
   client,
   msgCommonErrorHelp,
@@ -7,12 +7,12 @@ import {
   handleApiResponse,
   translateRoundsToFix,
   checkTokenScopes,
-} from "../utils/commandHandler.js";
-import { getBroadcast } from "../utils/getInfoBroadcast.js";
-import cl from "../utils/colors.js";
+} from '../utils/commandHandler.js';
+import { getBroadcast } from '../utils/getInfoBroadcast.js';
+import cl from '../utils/colors.js';
 
 const setPGN = async (
-  rounds: components["schemas"]["BroadcastRoundInfo"][],
+  rounds: components['schemas']['BroadcastRoundInfo'][],
   urlsRound: (gamesN: number, roundNum?: string | number) => string[],
   gamesNum: number,
   setRoundFilter: boolean,
@@ -20,21 +20,17 @@ const setPGN = async (
   roundsToFix?: number[],
 ) => {
   const roundsWithIndex = rounds.map((el, i) => ({ ...el, index: i }));
-  let filteredRounds = roundsWithIndex.filter(
-    (_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1),
-  );
+  let filteredRounds = roundsWithIndex.filter((_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1));
 
   if (filteredRounds.length === 0) filteredRounds = roundsWithIndex;
 
   for (const [_, round] of filteredRounds.entries()) {
     const rN = round.index + 1;
     const urls = urlsRound(gamesNum, rN)
-      .filter((_, i) =>
-        setSliceFilter ? setSliceFilter.includes(i + 1) : true,
-      )
-      .join("\n");
+      .filter((_, i) => (setSliceFilter ? setSliceFilter.includes(i + 1) : true))
+      .join('\n');
     await handleApiResponse(
-      client.POST("/broadcast/round/{broadcastRoundId}/edit", {
+      client.POST('/broadcast/round/{broadcastRoundId}/edit', {
         params: {
           path: { broadcastRoundId: round.id },
           // @ts-ignore patch param is not yet documented
@@ -42,7 +38,7 @@ const setPGN = async (
         },
         // @ts-ignore name of body properties due patch param is implicit
         body: {
-          syncSource: "urls",
+          syncSource: 'urls',
           syncUrls: urls,
           onlyRound: setRoundFilter ? rN : undefined,
         },
@@ -60,18 +56,18 @@ const setPGN = async (
 // if 1-4,6,8+ is provided, rounds 1 to 4, round 6 and all rounds after round 8 will be selected
 const translateGamesToAdd = (arg: string, gamesN: number): number[] | null => {
   const rounds: number[] = [];
-  if (arg.trim() === "") return null;
-  const parts = arg.split(",");
+  if (arg.trim() === '') return null;
+  const parts = arg.split(',');
 
   for (const part of parts) {
-    if (part.endsWith("+")) {
+    if (part.endsWith('+')) {
       const start = parseInt(part.slice(0, -1), 10);
       if (isNaN(start)) continue;
       for (let i = start; i <= gamesN; i++) {
         rounds.push(i);
       }
-    } else if (part.includes("-")) {
-      const [startStr, endStr] = part.split("-");
+    } else if (part.includes('-')) {
+      const [startStr, endStr] = part.split('-');
       const start = parseInt(startStr, 10);
       const end = parseInt(endStr, 10);
       if (isNaN(start) || isNaN(end)) continue;
@@ -92,25 +88,23 @@ export const setPGNMultiCommand = async (args: string[]) => {
   const [bId, sourcePGNs, gamesN] = args.slice(0, 3);
   // Validate required args
   if (!bId || !sourcePGNs || !gamesN) {
-    msgCommonErrorHelp(
-      "Broadcast ID, source PGN URLs, and number of games are required.",
-    );
+    msgCommonErrorHelp('Broadcast ID, source PGN URLs, and number of games are required.');
     exit(1);
   }
 
   const bcast = await getBroadcast(bId);
   if (!bcast?.rounds || bcast.rounds.length === 0) {
-    msgCommonErrorHelp("No rounds found for the specified broadcast.");
+    msgCommonErrorHelp('No rounds found for the specified broadcast.');
     exit(1);
   }
 
   let gamesNum = parseInt(gamesN, 10);
   if (isNaN(gamesNum) || gamesNum <= 0) {
-    msgCommonErrorHelp("Number of games must be a positive integer.");
+    msgCommonErrorHelp('Number of games must be a positive integer.');
     exit(1);
   }
 
-  if (bcast.rounds.length > 1 && !sourcePGNs.includes("{g}")) {
+  if (bcast.rounds.length > 1 && !sourcePGNs.includes('{g}')) {
     console.error(
       cl.red(
         'For broadcasts with multiple rounds, the source PGN URLs must include the "{g}" placeholder for round numbers.',
@@ -120,55 +114,41 @@ export const setPGNMultiCommand = async (args: string[]) => {
   }
 
   const urlRound = (gamesN: number, roundNum?: number | string) => {
-    let rN = roundNum
-      ? sourcePGNs.replaceAll("{r}", roundNum.toString())
-      : sourcePGNs;
+    let rN = roundNum ? sourcePGNs.replaceAll('{r}', roundNum.toString()) : sourcePGNs;
     let urls = [];
     for (let i = 1; i <= gamesN; i++) {
-      urls.push(rN.replaceAll("{g}", i.toString()));
+      urls.push(rN.replaceAll('{g}', i.toString()));
     }
     return urls;
   };
 
   try {
     const url = new URL(urlRound(gamesNum, 1)[0]);
-    if (!url.protocol.startsWith("http")) {
-      throw new Error("Invalid protocol");
+    if (!url.protocol.startsWith('http')) {
+      throw new Error('Invalid protocol');
     }
-    const isLCC = url.hostname === "view.livechesscloud.com";
+    const isLCC = url.hostname === 'view.livechesscloud.com';
     if (isLCC) {
-      console.error(cl.red("Invalid URL."));
+      console.error(cl.red('Invalid URL.'));
       exit(1);
     }
   } catch (error) {
-    console.error(
-      cl.red('Invalid URL. Must be http/https with "{}" as round placeholder.'),
-    );
+    console.error(cl.red('Invalid URL. Must be http/https with "{}" as round placeholder.'));
     exit(1);
   }
 
-  const setRoundFilter = args.includes("--withFilter");
+  const setRoundFilter = args.includes('--withFilter');
 
   // parse arg --rounds
-  const roundsArgIndex = args.findIndex((arg) => arg === "--rounds");
+  const roundsArgIndex = args.findIndex(arg => arg === '--rounds');
   let roundsToFix: number[] | undefined = undefined;
   if (roundsArgIndex !== -1 && roundsArgIndex + 1 < args.length) {
     const roundsArg = args[roundsArgIndex + 1];
     roundsToFix = roundsArg ? translateRoundsToFix(roundsArg) : undefined;
   }
 
-  const sliceIndex = args.indexOf("--onlyGames");
-  const setSliceFilter =
-    sliceIndex !== -1
-      ? translateGamesToAdd(args[sliceIndex + 1] || "", gamesNum)
-      : null;
+  const sliceIndex = args.indexOf('--onlyGames');
+  const setSliceFilter = sliceIndex !== -1 ? translateGamesToAdd(args[sliceIndex + 1] || '', gamesNum) : null;
 
-  await setPGN(
-    bcast.rounds,
-    urlRound,
-    gamesNum,
-    setRoundFilter,
-    setSliceFilter,
-    roundsToFix,
-  );
+  await setPGN(bcast.rounds, urlRound, gamesNum, setRoundFilter, setSliceFilter, roundsToFix);
 };

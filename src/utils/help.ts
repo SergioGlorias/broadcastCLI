@@ -1,150 +1,150 @@
-import { Command } from "./commandHandler.js";
-import cl from "./colors.js";
+import { Command } from './commandHandler.js';
+import cl from './colors.js';
 
 const helpLogin = [
-  `  ${cl.underItalic("login [--logout]")}`,
-  `     ${cl.gray("Save your Lichess token and domain for future use.")}`,
-  `     ${cl.gray("This allows you to use the CLI without setting environment variables.")}`,
-  `     ${cl.bold("Options:")}`,
-  `       --logout (-lo)   ${cl.gray("Clear saved credentials and log out.")}`,
-].join("\n");
+  `  ${cl.underItalic('login [--logout]')}`,
+  `     ${cl.gray('Save your Lichess token and domain for future use.')}`,
+  `     ${cl.gray('This allows you to use the CLI without setting environment variables.')}`,
+  `     ${cl.bold('Options:')}`,
+  `       --logout (-lo)   ${cl.gray('Clear saved credentials and log out.')}`,
+].join('\n');
 
 const helpDelay = [
-  `  ${cl.underItalic("delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>]")} `,
-  `     ${cl.gray("Sets the delay for all rounds in the specified broadcast.")}`,
-  `     ${cl.bold("Note:")}  ${cl.gray("The delay is specified in seconds. (max 3600 seconds = 1 hour)")}`,
-  `     ${cl.bold("Options:")}`,
-  `       --onlyDelay   ${cl.gray("Set only the delay without changing the start time.")}`,
-  `       --noDelay     ${cl.gray("Do not modify the delay, only adjust the start time.")}`,
+  `  ${cl.underItalic('delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>]')} `,
+  `     ${cl.gray('Sets the delay for all rounds in the specified broadcast.')}`,
+  `     ${cl.bold('Note:')}  ${cl.gray('The delay is specified in seconds. (max 3600 seconds = 1 hour)')}`,
+  `     ${cl.bold('Options:')}`,
+  `       --onlyDelay   ${cl.gray('Set only the delay without changing the start time.')}`,
+  `       --noDelay     ${cl.gray('Do not modify the delay, only adjust the start time.')}`,
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
-].join("\n");
+].join('\n');
 
 const helpSetPGN = [
-  `  ${cl.underItalic("setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]")}`,
-  `     ${cl.gray("Sets the source PGN URL for all rounds in the specified broadcast.")}`,
-  `     ${cl.italic("(optional)")} ${cl.gray('Use "{}" in the URL as a placeholder for the round number.')}`,
-  `     ${cl.bold("Note:")} ${cl.gray('For livechesscloud URLs, please ensure it ends with "/{}".')}`,
-  `     ${cl.bold("Options:")}`,
-  `       --withFilter             ${cl.gray("Apply round number filtering based on round number.")}`,
-  `       --slice <sliceFilter>    ${cl.gray("Apply slice filtering using the provided filter string.")}`,
+  `  ${cl.underItalic('setPGN <broadcastId> <sourcePGNUrl> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]')}`,
+  `     ${cl.gray('Sets the source PGN URL for all rounds in the specified broadcast.')}`,
+  `     ${cl.italic('(optional)')} ${cl.gray('Use "{}" in the URL as a placeholder for the round number.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('For livechesscloud URLs, please ensure it ends with "/{}".')}`,
+  `     ${cl.bold('Options:')}`,
+  `       --withFilter             ${cl.gray('Apply round number filtering based on round number.')}`,
+  `       --slice <sliceFilter>    ${cl.gray('Apply slice filtering using the provided filter string.')}`,
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
-].join("\n");
+].join('\n');
 
 const helpSetPGNMulti = [
-  `  ${cl.underItalic("setPGNMulti <broadcastId> <sourcePGNUrl> <gamesNum> [--withFilter] [--onlyGames <sliceFilter>] [--rounds <roundsToFix>]")}`,
-  `     ${cl.gray("Sets the source PGN URLs for all rounds in the specified broadcast.")}`,
-  `     ${cl.gray("Use {r} in the URL as a placeholder for the round number and {g} for the game number.")}`,
-  `     ${cl.gray("Use the gamesNum parameter to specify how many games per round.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray('For broadcasts with multiple rounds, the source PGN URLs must include the "{g}" placeholder for round numbers.')}`,
-  `     ${cl.bold("Options:")}`,
-  `       --withFilter                ${cl.gray("Apply round number filtering based on round number.")}`,
-  `       --onlyGames <sliceFilter>   ${cl.gray("Apply slice filtering using the provided filter string.")}`,
+  `  ${cl.underItalic('setPGNMulti <broadcastId> <sourcePGNUrl> <gamesNum> [--withFilter] [--onlyGames <sliceFilter>] [--rounds <roundsToFix>]')}`,
+  `     ${cl.gray('Sets the source PGN URLs for all rounds in the specified broadcast.')}`,
+  `     ${cl.gray('Use {r} in the URL as a placeholder for the round number and {g} for the game number.')}`,
+  `     ${cl.gray('Use the gamesNum parameter to specify how many games per round.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('For broadcasts with multiple rounds, the source PGN URLs must include the "{g}" placeholder for round numbers.')}`,
+  `     ${cl.bold('Options:')}`,
+  `       --withFilter                ${cl.gray('Apply round number filtering based on round number.')}`,
+  `       --onlyGames <sliceFilter>   ${cl.gray('Apply slice filtering using the provided filter string.')}`,
   `       --rounds <roundsToFix>      ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
-].join("\n");
+].join('\n');
 
 const helpSetForward = [
-  `  ${cl.underItalic("setForward <broadcastId> <broadcastToForward> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]")}`,
-  `     ${cl.gray("Sets the other Broadcast to foward for all rounds in the specified broadcast.")}`,
-  `     ${cl.redBold("Required:")} ${cl.gray(`Your Lichess token needs the ${cl.whiteBold("web:mod")} scope to use this command. (Broadcast/Study Admin perm required)`)}`,
-  `     ${cl.bold("Options:")}`,
-  `       --withFilter             ${cl.gray("Apply round number filtering based on round number.")}`,
-  `       --slice <sliceFilter>    ${cl.gray("Apply slice filtering using the provided filter string.")}`,
+  `  ${cl.underItalic('setForward <broadcastId> <broadcastToForward> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]')}`,
+  `     ${cl.gray('Sets the other Broadcast to foward for all rounds in the specified broadcast.')}`,
+  `     ${cl.redBold('Required:')} ${cl.gray(`Your Lichess token needs the ${cl.whiteBold('web:mod')} scope to use this command. (Broadcast/Study Admin perm required)`)}`,
+  `     ${cl.bold('Options:')}`,
+  `       --withFilter             ${cl.gray('Apply round number filtering based on round number.')}`,
+  `       --slice <sliceFilter>    ${cl.gray('Apply slice filtering using the provided filter string.')}`,
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
-].join("\n");
+].join('\n');
 
 const helpSetLichessGames = [
-  `  ${cl.underItalic("setLichessGames <broadcastRoundId> <gameIds...>")}`,
-  `     ${cl.gray("Sets the games for the specified broadcast round using Lichess game IDs.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray("Maximum of 64 game IDs can be provided.")}`,
-].join("\n");
+  `  ${cl.underItalic('setLichessGames <broadcastRoundId> <gameIds...>')}`,
+  `     ${cl.gray('Sets the games for the specified broadcast round using Lichess game IDs.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('Maximum of 64 game IDs can be provided.')}`,
+].join('\n');
 
 const helpSetLichessGamesMulti = [
   `  ${cl.underItalic('setLichessGamesMulti "<broadcastRoundIds...>" "<gameIds...>"')}`,
-  `     ${cl.gray("Sets the games for multiple broadcast rounds using Lichess game IDs.")}`,
-  `     ${cl.gray("The first argument is a space-separated list of broadcast round IDs, and the second argument is a space-separated list of game IDs.")}`,
-  `     ${cl.gray("The command will distribute the provided game IDs across the specified broadcast round IDs.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray("Maximum of 64 game IDs can be provided. The number of game IDs should ideally be a multiple of the number of broadcast round IDs for even distribution.")}`,
-].join("\n");
+  `     ${cl.gray('Sets the games for multiple broadcast rounds using Lichess game IDs.')}`,
+  `     ${cl.gray('The first argument is a space-separated list of broadcast round IDs, and the second argument is a space-separated list of game IDs.')}`,
+  `     ${cl.gray('The command will distribute the provided game IDs across the specified broadcast round IDs.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('Maximum of 64 game IDs can be provided. The number of game IDs should ideally be a multiple of the number of broadcast round IDs for even distribution.')}`,
+].join('\n');
 
 const helpFixSchedule = [
-  `  ${cl.underItalic("fixSchedule <broadcastId> <timeDiff> [--rounds <roundsToFix>]")}`,
-  `     ${cl.gray("Fixes the schedule of rounds in the specified broadcast by applying a time difference.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray('The time difference should be in a format like "1h", "30m", "15s", etc.')}`,
-  `     ${cl.bold("Options:")}`,
+  `  ${cl.underItalic('fixSchedule <broadcastId> <timeDiff> [--rounds <roundsToFix>]')}`,
+  `     ${cl.gray('Fixes the schedule of rounds in the specified broadcast by applying a time difference.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('The time difference should be in a format like "1h", "30m", "15s", etc.')}`,
+  `     ${cl.bold('Options:')}`,
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
-].join("\n");
+].join('\n');
 
 const helpStartsPrevious = [
-  `  ${cl.underItalic("startsPrevious <broadcastId> <startsPrevious>")}`,
-  `     ${cl.gray("Sets the startsAfterPrevious flag for all rounds in the specified broadcast.")}`,
-].join("\n");
+  `  ${cl.underItalic('startsPrevious <broadcastId> <startsPrevious>')}`,
+  `     ${cl.gray('Sets the startsAfterPrevious flag for all rounds in the specified broadcast.')}`,
+].join('\n');
 
 const helpSetPeriod = [
-  `  ${cl.underItalic("period <broadcastId> <periodInSeconds>")}`,
-  `     ${cl.gray("Sets the period between polling for all rounds in the specified broadcast.")}`,
-  `     ${cl.redBold("Required:")} ${cl.gray(`Your Lichess token needs the ${cl.whiteBold("web:mod")} scope to use this command. (Broadcast/Study Admin perm required)`)}`,
-  `     ${cl.bold("Note:")} ${cl.gray("The period is specified in seconds.")}`,
-  `     ${cl.bold("Options:")}`,
+  `  ${cl.underItalic('period <broadcastId> <periodInSeconds>')}`,
+  `     ${cl.gray('Sets the period between polling for all rounds in the specified broadcast.')}`,
+  `     ${cl.redBold('Required:')} ${cl.gray(`Your Lichess token needs the ${cl.whiteBold('web:mod')} scope to use this command. (Broadcast/Study Admin perm required)`)}`,
+  `     ${cl.bold('Note:')} ${cl.gray('The period is specified in seconds.')}`,
+  `     ${cl.bold('Options:')}`,
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
-].join("\n");
+].join('\n');
 
 const helpScore = [
-  `  ${cl.underItalic("score <broadcastId> <whiteWin> <whiteDraw> <blackWin> <blackDraw> [--rounds <roundsToFix>]")}`,
-  `     ${cl.gray("Sets the custom scoring for all rounds in the specified broadcast.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray("Scores must be numbers between 0 and 10.")}`,
-  `     ${cl.bold("Options:")}`,
+  `  ${cl.underItalic('score <broadcastId> <whiteWin> <whiteDraw> <blackWin> <blackDraw> [--rounds <roundsToFix>]')}`,
+  `     ${cl.gray('Sets the custom scoring for all rounds in the specified broadcast.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('Scores must be numbers between 0 and 10.')}`,
+  `     ${cl.bold('Options:')}`,
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
-].join("\n");
+].join('\n');
 
 const helpTeamScore = [
-  `  ${cl.underItalic("teamScore <broadcastId> <teamWin> <teamDraw> [--rounds <roundsToFix>]")}`,
-  `     ${cl.gray("Sets the custom team scoring for all rounds in the specified broadcast.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray("Scores for team win and team draw must be numbers between 0 and 10.")}`,
-  `     ${cl.bold("Options:")}`,
+  `  ${cl.underItalic('teamScore <broadcastId> <teamWin> <teamDraw> [--rounds <roundsToFix>]')}`,
+  `     ${cl.gray('Sets the custom team scoring for all rounds in the specified broadcast.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('Scores for team win and team draw must be numbers between 0 and 10.')}`,
+  `     ${cl.bold('Options:')}`,
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
-].join("\n");
+].join('\n');
 
 const helpPush = [
-  `  ${cl.underItalic("push <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]")}`,
-  `     ${cl.gray("Upload a PGN file from a local path or URL to the specified broadcast round.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray("The PGN file must be accessible from the provided path or URL.")}`,
-  `     ${cl.bold("Options:")}`,
-  `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
-].join("\n");
+  `  ${cl.underItalic('push <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]')}`,
+  `     ${cl.gray('Upload a PGN file from a local path or URL to the specified broadcast round.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('The PGN file must be accessible from the provided path or URL.')}`,
+  `     ${cl.bold('Options:')}`,
+  `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
+].join('\n');
 
 const helpPushFilterID = [
-  `  ${cl.underItalic("pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>]")}`,
-  `     ${cl.gray("Upload a PGN file from a local path or URL to the specified broadcast round, filtering games by FIDE ID.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray("The PGN file must be accessible from the provided path or URL.")}`,
-  `     ${cl.bold("Options:")}`,
-  `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
-].join("\n");
+  `  ${cl.underItalic('pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>]')}`,
+  `     ${cl.gray('Upload a PGN file from a local path or URL to the specified broadcast round, filtering games by FIDE ID.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('The PGN file must be accessible from the provided path or URL.')}`,
+  `     ${cl.bold('Options:')}`,
+  `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
+].join('\n');
 
 const helpConvertNamesToID = [
-  `  ${cl.underItalic("convertNamesToID <roundId>")}`,
-  `     ${cl.gray("Convert Lichess Usernames source to Lichess Game IDs source for the specified broadcast round.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray("This command will fetch the source PGN, extract Lichess Game IDs from the PGN headers, and update the broadcast round to use these game IDs as the source.")}`,
-].join("\n");
+  `  ${cl.underItalic('convertNamesToID <roundId>')}`,
+  `     ${cl.gray('Convert Lichess Usernames source to Lichess Game IDs source for the specified broadcast round.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('This command will fetch the source PGN, extract Lichess Game IDs from the PGN headers, and update the broadcast round to use these game IDs as the source.')}`,
+].join('\n');
 
 const helpPushReorder = [
-  `  ${cl.underItalic("pushReorder <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]")}`,
-  `     ${cl.gray("Upload a PGN file from a local path or URL to the specified broadcast round, reordering games by round number.")}`,
-  `     ${cl.bold("Note:")} ${cl.gray("The PGN file must be accessible from the provided path or URL. Games will be reordered based on the 'Round' header in the PGN.")}`,
-  `     ${cl.bold("Options:")}`,
-  `       --loop <intervalInSeconds>   ${cl.gray("Continuously push the PGN file at the specified interval in seconds.")}`,
-].join("\n");
+  `  ${cl.underItalic('pushReorder <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]')}`,
+  `     ${cl.gray('Upload a PGN file from a local path or URL to the specified broadcast round, reordering games by round number.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray("The PGN file must be accessible from the provided path or URL. Games will be reordered based on the 'Round' header in the PGN.")}`,
+  `     ${cl.bold('Options:')}`,
+  `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
+].join('\n');
 
 const helpBulkIDsMulti = [
-  `  ${cl.underItalic("bulkIDsMulti <bulkID> <broadcastRoundIds...>")}`,
-  `     ${cl.gray("Sets Lichess Game IDs for multiple broadcast rounds using a Bulk Pairing ID.")}`,
-  `     ${cl.gray("The command will fetch game IDs from the specified Bulk Pairing and distribute them across the provided broadcast round IDs.")}`,
-].join("\n");
+  `  ${cl.underItalic('bulkIDsMulti <bulkID> <broadcastRoundIds...>')}`,
+  `     ${cl.gray('Sets Lichess Game IDs for multiple broadcast rounds using a Bulk Pairing ID.')}`,
+  `     ${cl.gray('The command will fetch game IDs from the specified Bulk Pairing and distribute them across the provided broadcast round IDs.')}`,
+].join('\n');
 
 const msg = [
-  `${cl.boldYellow("Usage:")} ${cl.underItalic("<command> [options]")}`,
+  `${cl.boldYellow('Usage:')} ${cl.underItalic('<command> [options]')}`,
   ``,
   ``,
-  `${cl.boldYellow("Commands:")}`,
+  `${cl.boldYellow('Commands:')}`,
   helpLogin,
   ``,
   helpDelay,
@@ -180,39 +180,39 @@ const msg = [
   helpBulkIDsMulti,
   ``,
   ``,
-  `${cl.boldYellow("Examples:")}`,
-  `   ${cl.gray("# Login with your Lichess token (interactive)")}`,
-  `     $ ${cl.underItalic("login")}`,
-  `   ${cl.gray("# Login with token as argument")}`,
-  `     $ ${cl.underItalic("login")} ${cl.italic("lip_yourtoken https://lichess.org")}`,
-  `   ${cl.gray("# Logout and clear saved credentials")}`,
-  `     $ ${cl.underItalic("login")} ${cl.italic("--logout")}`,
-  `   ${cl.gray("# Set a 5-minute delay without changing start time")}`,
-  `     $ ${cl.underItalic("delay")} ${cl.italic("bcast123 300 --onlyDelay")}`,
-  `   ${cl.gray("# Set source PGN URL with round and slice filters")}`,
-  `     $ ${cl.underItalic("setPGN")} ${cl.italic('bcast123 https://example.com/pgns/round-{}/game.pgn --withFilter --slice "1-5,7,9-12"')}`,
-  `   ${cl.gray("# Set source PGN URLs for multiple games per round")}`,
-  `     $ ${cl.underItalic("setPGNMulti")} ${cl.italic('bcast123 https://example.com/pgns/round-{r}/game-{g}.pgn 12 --withFilter --onlyGames "1-5,7,9-12"')}`,
-  `   ${cl.gray("# Set Lichess games for a broadcast round")}`,
-  `     $ ${cl.underItalic("setLichessGames")} ${cl.italic("round456 gameId1 gameId2 gameId3")}`,
-  `   ${cl.gray("# Set Lichess games for multiple broadcast rounds")}`,
-  `     $ ${cl.underItalic("setLichessGamesMulti")} ${cl.italic('"roundId1 roundId2 roundId3" "gameId1 gameId2 gameId3"')}`,
-  `   ${cl.gray("# Fix schedule of rounds 1 to 4 and all rounds after 8 by adding 15 minutes")}`,
-  `     $ ${cl.underItalic("fixSchedule")} ${cl.italic("bcast123 15m --rounds 1-4,8+")}`,
-  `   ${cl.gray("# Set startsAfterPrevious to true for all rounds in a broadcast")}`,
-  `     $ ${cl.underItalic("startsPrevious")} ${cl.italic("bcast123 true")}`,
-  `   ${cl.gray("# Set polling period to 10 seconds for all rounds in a broadcast")}`,
-  `     $ ${cl.underItalic("period")} ${cl.italic("bcast123 10")}`,
-  `   ${cl.gray("# Set custom scoring for all rounds in a broadcast")}`,
-  `     $ ${cl.underItalic("score")} ${cl.italic("bcast123 1.0 0.5 1.0 0.5")}`,
-  `   ${cl.gray("# Push a PGN file in loop mode every 60 seconds")}`,
-  `     $ ${cl.underItalic("push")} ${cl.italic("round456 /path/to/localfile.pgn --loop 60")}`,
-  `   ${cl.gray("# Push a PGN file from URL filtering by FIDE IDs in loop mode every 120 seconds")}`,
-  `     $ ${cl.underItalic("pushFilterID")} ${cl.italic("round456 https://example.com/games.pgn 12345 67890 --loop 120")}`,
-  `   ${cl.gray("# Convert Lichess Usernames source to Lichess Game IDs source for a broadcast round")}`,
-  `     $ ${cl.underItalic("convertNamesToID")} ${cl.italic("round456")}`,
-  `   ${cl.gray("# Set Lichess Game IDs from Bulk Parings for multiple rounds (roundId1, roundId2, roundId3) in a broadcast")}`,
-  `     $ ${cl.underItalic("bulkIDsMulti")} ${cl.italic("bulk123 roundId1 roundId2 roundId3")}`,
+  `${cl.boldYellow('Examples:')}`,
+  `   ${cl.gray('# Login with your Lichess token (interactive)')}`,
+  `     $ ${cl.underItalic('login')}`,
+  `   ${cl.gray('# Login with token as argument')}`,
+  `     $ ${cl.underItalic('login')} ${cl.italic('lip_yourtoken https://lichess.org')}`,
+  `   ${cl.gray('# Logout and clear saved credentials')}`,
+  `     $ ${cl.underItalic('login')} ${cl.italic('--logout')}`,
+  `   ${cl.gray('# Set a 5-minute delay without changing start time')}`,
+  `     $ ${cl.underItalic('delay')} ${cl.italic('bcast123 300 --onlyDelay')}`,
+  `   ${cl.gray('# Set source PGN URL with round and slice filters')}`,
+  `     $ ${cl.underItalic('setPGN')} ${cl.italic('bcast123 https://example.com/pgns/round-{}/game.pgn --withFilter --slice "1-5,7,9-12"')}`,
+  `   ${cl.gray('# Set source PGN URLs for multiple games per round')}`,
+  `     $ ${cl.underItalic('setPGNMulti')} ${cl.italic('bcast123 https://example.com/pgns/round-{r}/game-{g}.pgn 12 --withFilter --onlyGames "1-5,7,9-12"')}`,
+  `   ${cl.gray('# Set Lichess games for a broadcast round')}`,
+  `     $ ${cl.underItalic('setLichessGames')} ${cl.italic('round456 gameId1 gameId2 gameId3')}`,
+  `   ${cl.gray('# Set Lichess games for multiple broadcast rounds')}`,
+  `     $ ${cl.underItalic('setLichessGamesMulti')} ${cl.italic('"roundId1 roundId2 roundId3" "gameId1 gameId2 gameId3"')}`,
+  `   ${cl.gray('# Fix schedule of rounds 1 to 4 and all rounds after 8 by adding 15 minutes')}`,
+  `     $ ${cl.underItalic('fixSchedule')} ${cl.italic('bcast123 15m --rounds 1-4,8+')}`,
+  `   ${cl.gray('# Set startsAfterPrevious to true for all rounds in a broadcast')}`,
+  `     $ ${cl.underItalic('startsPrevious')} ${cl.italic('bcast123 true')}`,
+  `   ${cl.gray('# Set polling period to 10 seconds for all rounds in a broadcast')}`,
+  `     $ ${cl.underItalic('period')} ${cl.italic('bcast123 10')}`,
+  `   ${cl.gray('# Set custom scoring for all rounds in a broadcast')}`,
+  `     $ ${cl.underItalic('score')} ${cl.italic('bcast123 1.0 0.5 1.0 0.5')}`,
+  `   ${cl.gray('# Push a PGN file in loop mode every 60 seconds')}`,
+  `     $ ${cl.underItalic('push')} ${cl.italic('round456 /path/to/localfile.pgn --loop 60')}`,
+  `   ${cl.gray('# Push a PGN file from URL filtering by FIDE IDs in loop mode every 120 seconds')}`,
+  `     $ ${cl.underItalic('pushFilterID')} ${cl.italic('round456 https://example.com/games.pgn 12345 67890 --loop 120')}`,
+  `   ${cl.gray('# Convert Lichess Usernames source to Lichess Game IDs source for a broadcast round')}`,
+  `     $ ${cl.underItalic('convertNamesToID')} ${cl.italic('round456')}`,
+  `   ${cl.gray('# Set Lichess Game IDs from Bulk Parings for multiple rounds (roundId1, roundId2, roundId3) in a broadcast')}`,
+  `     $ ${cl.underItalic('bulkIDsMulti')} ${cl.italic('bulk123 roundId1 roundId2 roundId3')}`,
 ];
 
 export const showHelp = (cmd?: Command) => {
@@ -237,7 +237,7 @@ export const showHelp = (cmd?: Command) => {
   };
 
   const range = cmd ? ranges[cmd] : undefined;
-  console.info(range ? range : msg.join("\n"));
+  console.info(range ? range : msg.join('\n'));
 };
 
-export const includeHelp = (str: string) => ["--help", "-h"].includes(str);
+export const includeHelp = (str: string) => ['--help', '-h'].includes(str);

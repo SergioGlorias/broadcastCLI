@@ -1,22 +1,19 @@
-import { exit } from "node:process";
-import { components } from "@lichess-org/types";
+import { exit } from 'node:process';
+import { components } from '@lichess-org/types';
 import {
   client,
   msgCommonErrorHelp,
   handleApiResponse,
   checkTokenScopes,
   sleep,
-} from "../utils/commandHandler.js";
-import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
-import cl from "../utils/colors.js";
-import { splitIdsIntoGroups } from "../utils/splitTools.js";
+} from '../utils/commandHandler.js';
+import { getBroadcastRound } from '../utils/getInfoBroadcast.js';
+import cl from '../utils/colors.js';
+import { splitIdsIntoGroups } from '../utils/splitTools.js';
 
-const setLichessGames = (
-  round: components["schemas"]["BroadcastRoundInfo"],
-  games: string,
-) =>
+const setLichessGames = (round: components['schemas']['BroadcastRoundInfo'], games: string) =>
   handleApiResponse(
-    client.POST("/broadcast/round/{broadcastRoundId}/edit", {
+    client.POST('/broadcast/round/{broadcastRoundId}/edit', {
       params: {
         path: { broadcastRoundId: round.id },
         // @ts-ignore patch param is not yet documented
@@ -24,7 +21,7 @@ const setLichessGames = (
       },
       // @ts-ignore name of body properties due patch param is implicit
       body: {
-        syncSource: "ids",
+        syncSource: 'ids',
         syncIds: games,
       },
     }),
@@ -34,21 +31,16 @@ const setLichessGames = (
 
 const getBulkIds = (bulkID: string) =>
   client
-    .GET("/api/bulk-pairing/{id}", {
+    .GET('/api/bulk-pairing/{id}', {
       params: { path: { id: bulkID } },
     })
-    .then((response) => {
+    .then(response => {
       const data = response.data;
-      let ids =
-        data?.games
-          .map((game) => game.id)
-          .filter((id) => typeof id === "string") || [];
+      let ids = data?.games.map(game => game.id).filter(id => typeof id === 'string') || [];
       return ids;
     })
-    .catch((error) => {
-      console.error(
-        cl.red(`Error fetching bulk pairing data: ${error.message}`),
-      );
+    .catch(error => {
+      console.error(cl.red(`Error fetching bulk pairing data: ${error.message}`));
       return [];
     });
 
@@ -58,16 +50,14 @@ export const bulkIDsMultiCommand = async (args: string[]) => {
   const broadcastsIds = args;
   // Validate required args
   if (!bulkID || !broadcastsIds) {
-    msgCommonErrorHelp("Broadcast ID and rounds IDs are required.");
+    msgCommonErrorHelp('Broadcast ID and rounds IDs are required.');
     exit(1);
   }
 
   const gameIds = await getBulkIds(bulkID);
 
   if (gameIds.length === 0) {
-    console.error(
-      cl.red(`No game IDs found for bulk ID ${cl.whiteBold(bulkID)}.`),
-    );
+    console.error(cl.red(`No game IDs found for bulk ID ${cl.whiteBold(bulkID)}.`));
     exit(1);
   }
 
@@ -77,15 +67,11 @@ export const bulkIDsMultiCommand = async (args: string[]) => {
     const roundId = broadcastsIds[index];
     const round = await getBroadcastRound(roundId);
     if (!round) {
-      console.error(
-        cl.red(
-          `Broadcast round with ID ${cl.whiteBold(roundId)} not found or has no rounds.`,
-        ),
-      );
+      console.error(cl.red(`Broadcast round with ID ${cl.whiteBold(roundId)} not found or has no rounds.`));
       continue;
     }
 
-    await setLichessGames(round, group.join(" "));
+    await setLichessGames(round, group.join(' '));
 
     await sleep(500); // Delay of 500ms between requests to avoid hitting rate limits
   }

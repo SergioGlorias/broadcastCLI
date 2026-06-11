@@ -1,15 +1,9 @@
-import {
-  existsSync,
-  readFileSync,
-  writeFileSync,
-  mkdirSync,
-  unlinkSync,
-} from "node:fs";
-import { join } from "node:path";
-import { homedir } from "node:os";
+import { existsSync, readFileSync, writeFileSync, mkdirSync, unlinkSync } from 'node:fs';
+import { join } from 'node:path';
+import { homedir } from 'node:os';
 
-const CONFIG_DIR = join(homedir(), ".libroadcast");
-const CREDENTIALS_FILE = join(CONFIG_DIR, "credentials.json");
+const CONFIG_DIR = join(homedir(), '.libroadcast');
+const CREDENTIALS_FILE = join(CONFIG_DIR, 'credentials.json');
 
 interface Credentials {
   lichessToken: string;
@@ -34,7 +28,7 @@ export const getStoredCredentials = (): Credentials | null => {
     if (!existsSync(CREDENTIALS_FILE)) {
       return null;
     }
-    const content = readFileSync(CREDENTIALS_FILE, "utf-8");
+    const content = readFileSync(CREDENTIALS_FILE, 'utf-8');
     return JSON.parse(content) as Credentials;
   } catch (error) {
     return null;
@@ -46,11 +40,7 @@ export const getStoredCredentials = (): Credentials | null => {
  */
 export const saveCredentials = (credentials: Credentials): void => {
   ensureConfigDir();
-  writeFileSync(
-    CREDENTIALS_FILE,
-    JSON.stringify(credentials, null, 2),
-    "utf-8",
-  );
+  writeFileSync(CREDENTIALS_FILE, JSON.stringify(credentials, null, 2), 'utf-8');
 };
 
 /**
@@ -69,19 +59,16 @@ export const clearCredentials = (): void => {
 /**
  * Fetch token scopes from Lichess API
  */
-export const fetchTokenScopes = async (
-  token: string,
-  domain: string,
-): Promise<string[]> => {
+export const fetchTokenScopes = async (token: string, domain: string): Promise<string[]> => {
   try {
     // Ensure domain ends with /
-    const normalizedDomain = domain.replace(/\/$/, "") + "/";
+    const normalizedDomain = domain.replace(/\/$/, '') + '/';
     const url = `${normalizedDomain}api/token/test`;
 
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "text/plain",
+        'Content-Type': 'text/plain',
       },
       body: token,
     });
@@ -92,7 +79,7 @@ export const fetchTokenScopes = async (
 
     const data = (await response.json()) as Record<string, { scopes: string }>;
     const scopes = data[token]?.scopes;
-    return scopes ? scopes.split(",").map((s) => s.trim()) : [];
+    return scopes ? scopes.split(',').map(s => s.trim()) : [];
   } catch (error) {
     throw new Error(
       `Failed to fetch token scopes: ${error instanceof Error ? error.message : String(error)}`,

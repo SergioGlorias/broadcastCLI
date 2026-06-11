@@ -1,29 +1,25 @@
-import { exit } from "node:process";
-import { components } from "@lichess-org/types";
-import {
-  msgCommonErrorHelp,
-  sleep,
-  checkTokenScopes,
-} from "../utils/commandHandler.js";
-import { parsePgn, makePgn } from "chessops/pgn";
-import { getBroadcastRound } from "../utils/getInfoBroadcast.js";
-import cl from "../utils/colors.js";
-import { loopChecker, pushPGN, readPGNFromURL } from "../utils/pushTools.js";
+import { exit } from 'node:process';
+import { components } from '@lichess-org/types';
+import { msgCommonErrorHelp, sleep, checkTokenScopes } from '../utils/commandHandler.js';
+import { parsePgn, makePgn } from 'chessops/pgn';
+import { getBroadcastRound } from '../utils/getInfoBroadcast.js';
+import cl from '../utils/colors.js';
+import { loopChecker, pushPGN, readPGNFromURL } from '../utils/pushTools.js';
 
 const sortPgn = (pgn: string) => {
   const parsed = parsePgn(pgn);
   let sortedGames = parsed.sort((a, b) => {
-    const roundA = parseInt(a.headers.get("Round")?.split(".")[1] || "0", 10);
-    const roundB = parseInt(b.headers.get("Round")?.split(".")[1] || "0", 10);
+    const roundA = parseInt(a.headers.get('Round')?.split('.')[1] || '0', 10);
+    const roundB = parseInt(b.headers.get('Round')?.split('.')[1] || '0', 10);
     return roundA - roundB;
   });
-  return sortedGames.map((game) => makePgn(game)).join("\n\n");
+  return sortedGames.map(game => makePgn(game)).join('\n\n');
 };
 
-let lastPGN = "";
+let lastPGN = '';
 
 const loop = async (
-  roundInfo: components["schemas"]["BroadcastRoundInfo"],
+  roundInfo: components['schemas']['BroadcastRoundInfo'],
   pgnPath: string,
   loopTimer: number,
 ) => {
@@ -31,11 +27,7 @@ const loop = async (
     const pgnContent = await readPGNFromURL(pgnPath);
 
     if (!pgnContent) {
-      console.error(
-        cl.red(
-          `Failed to read PGN content. Retrying in ${loopTimer} seconds...`,
-        ),
-      );
+      console.error(cl.red(`Failed to read PGN content. Retrying in ${loopTimer} seconds...`));
       await sleep(loopTimer * 1000);
       continue;
     }
@@ -55,14 +47,14 @@ export const pushReorderCommand = async (args: string[]) => {
   const [roundId, pgnPath] = args.slice(0, 2);
   // Validate required args
   if (!roundId || !pgnPath) {
-    msgCommonErrorHelp("Round ID and PGN path are required.");
+    msgCommonErrorHelp('Round ID and PGN path are required.');
     exit(1);
   }
 
   const roundInfo = await getBroadcastRound(roundId);
 
   if (!roundInfo) {
-    console.error(cl.red("Round not found."));
+    console.error(cl.red('Round not found.'));
     exit(1);
   }
 
@@ -70,11 +62,9 @@ export const pushReorderCommand = async (args: string[]) => {
 
   if (loopTimer) {
     console.log(
-      cl.green(
-        `Starting loop to push reordered PGN every ${cl.whiteBold(loopTimer.toString())} seconds...`,
-      ),
+      cl.green(`Starting loop to push reordered PGN every ${cl.whiteBold(loopTimer.toString())} seconds...`),
     );
-    console.log(cl.blue("Press Ctrl+C to stop."));
+    console.log(cl.blue('Press Ctrl+C to stop.'));
     await loop(roundInfo, pgnPath, loopTimer);
   } else {
     const pgnContent = await readPGNFromURL(pgnPath);

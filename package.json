@@ -2,16 +2,32 @@
   "name": "libroadcast-cli",
   "version": "2.12.0",
   "description": "CLI to help with broadcast maintenance on Lichess",
-  "main": "dist/index.js",
   "keywords": [
-    "lichess",
     "broadcast",
-    "cli"
+    "cli",
+    "lichess"
   ],
-  "author": "Sérgio Glórias",
+  "homepage": "https://github.com/SergioGlorias/broadcastCLI",
+  "bugs": {
+    "url": "https://github.com/SergioGlorias/broadcastCLI/issues"
+  },
   "license": "MIT",
-  "packageManager": "pnpm@11.5.3+sha512.7ac1c919341c213a34dc0d02afb7143c5c26ac26ee8c4782deea821b8ac64d2134a081fd8941dae6e29bbb48f58dfc2b7fbceeccc07cb2f09d219d342a4969ed",
+  "author": "Sérgio Glórias",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SergioGlorias/broadcastCLI.git"
+  },
+  "bin": {
+    "libroadcast": "./dist/index.js"
+  },
   "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "pnpm build && node ./dist/index.js",
+    "format": "oxfmt ./src/**/*.ts ./package.json",
+    "lint": "oxfmt --check ./src/**/*.ts ./package.json"
+  },
   "dependencies": {
     "@lichess-org/types": "^2.0.145",
     "chessops": "^0.15.0",
@@ -19,28 +35,12 @@
     "openapi-fetch": "^0.17.0"
   },
   "devDependencies": {
-    "@types/node": "~25.9.3",
-    "prettier": "3.8.4",
+    "@types/node": "~25.9.2",
+    "oxfmt": "^0.54.0",
     "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=25.9.0"
   },
-  "bin": {
-    "libroadcast": "./dist/index.js"
-  },
-  "scripts": {
-    "build": "tsc",
-    "start": "pnpm build && node ./dist/index.js",
-    "format": "prettier --write ./src/**/*.ts ./package.json",
-    "lint": "prettier --check ./src/**/*.ts ./package.json"
-  },
-  "repository": {
-    "url": "https://github.com/SergioGlorias/broadcastCLI.git",
-    "type": "git"
-  },
-  "bugs": {
-    "url": "https://github.com/SergioGlorias/broadcastCLI/issues"
-  },
-  "homepage": "https://github.com/SergioGlorias/broadcastCLI"
+  "packageManager": "pnpm@11.5.3+sha512.7ac1c919341c213a34dc0d02afb7143c5c26ac26ee8c4782deea821b8ac64d2134a081fd8941dae6e29bbb48f58dfc2b7fbceeccc07cb2f09d219d342a4969ed"
 }

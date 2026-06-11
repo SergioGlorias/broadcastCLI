@@ -1,25 +1,23 @@
-import { exit } from "node:process";
-import { components } from "@lichess-org/types";
+import { exit } from 'node:process';
+import { components } from '@lichess-org/types';
 import {
   client,
   msgCommonErrorHelp,
   sleep,
   handleApiResponse,
   checkTokenScopes,
-} from "../utils/commandHandler.js";
-import { getBroadcast } from "../utils/getInfoBroadcast.js";
-import cl from "../utils/colors.js";
+} from '../utils/commandHandler.js';
+import { getBroadcast } from '../utils/getInfoBroadcast.js';
+import cl from '../utils/colors.js';
 
 const setStartsPrevious = async (
-  rounds: components["schemas"]["BroadcastRoundInfo"][],
+  rounds: components['schemas']['BroadcastRoundInfo'][],
   startsPrevious: boolean,
 ) => {
-  const roundfilter = rounds.filter(
-    (r) => r.startsAfterPrevious !== startsPrevious && !r.startsAt,
-  );
+  const roundfilter = rounds.filter(r => r.startsAfterPrevious !== startsPrevious && !r.startsAt);
   for (const round of roundfilter) {
     await handleApiResponse(
-      client.POST("/broadcast/round/{broadcastRoundId}/edit", {
+      client.POST('/broadcast/round/{broadcastRoundId}/edit', {
         params: {
           path: { broadcastRoundId: round.id },
           // @ts-ignore patch param is not yet documented
@@ -43,17 +41,17 @@ export const startsPreviousCommand = async (args: string[]) => {
   const [broadcastId, startsPrevious] = args.slice(0, 2);
   // Validate required args
   if (!broadcastId || !startsPrevious) {
-    msgCommonErrorHelp("Broadcast ID and startsPrevious are required.");
+    msgCommonErrorHelp('Broadcast ID and startsPrevious are required.');
     exit(1);
   }
   const startsPreviousBool =
-    startsPrevious.toLowerCase() === "true" ||
-    startsPrevious === "1" ||
-    startsPrevious.toLowerCase() === "yes";
+    startsPrevious.toLowerCase() === 'true' ||
+    startsPrevious === '1' ||
+    startsPrevious.toLowerCase() === 'yes';
 
   const broadcast = await getBroadcast(broadcastId);
   if (!broadcast?.rounds || broadcast.rounds.length === 0) {
-    console.error(cl.red("No rounds found for the specified broadcast."));
+    console.error(cl.red('No rounds found for the specified broadcast.'));
     exit(1);
   }
   await setStartsPrevious(broadcast.rounds, startsPreviousBool);

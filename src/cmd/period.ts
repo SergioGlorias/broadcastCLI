@@ -1,5 +1,5 @@
-import { exit } from "node:process";
-import { components } from "@lichess-org/types";
+import { exit } from 'node:process';
+import { components } from '@lichess-org/types';
 import {
   client,
   msgCommonErrorHelp,
@@ -7,25 +7,23 @@ import {
   handleApiResponse,
   translateRoundsToFix,
   checkTokenScopes,
-} from "../utils/commandHandler.js";
-import { getBroadcast } from "../utils/getInfoBroadcast.js";
-import cl from "../utils/colors.js";
+} from '../utils/commandHandler.js';
+import { getBroadcast } from '../utils/getInfoBroadcast.js';
+import cl from '../utils/colors.js';
 
 const setPeriodRounds = async (
-  rounds: components["schemas"]["BroadcastRoundInfo"][],
+  rounds: components['schemas']['BroadcastRoundInfo'][],
   period: number,
   roundsToFix?: number[],
 ) => {
   // Filter rounds based on criteria
-  let filteredRounds = rounds.filter(
-    (_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1),
-  );
+  let filteredRounds = rounds.filter((_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1));
 
   if (filteredRounds.length === 0) filteredRounds = rounds;
 
   for (const round of filteredRounds) {
     await handleApiResponse(
-      client.POST("/broadcast/round/{broadcastRoundId}/edit", {
+      client.POST('/broadcast/round/{broadcastRoundId}/edit', {
         params: {
           path: { broadcastRoundId: round.id },
           // @ts-ignore patch param is not yet documented
@@ -49,18 +47,18 @@ export const periodCommand = async (args: string[]) => {
   const [broadcastId, period] = args.slice(0, 2);
   // Validate required args
   if (!broadcastId || !period) {
-    msgCommonErrorHelp("Broadcast ID and period are required.");
+    msgCommonErrorHelp('Broadcast ID and period are required.');
     exit(1);
   }
   const periodNum = parseInt(period, 10);
   // Validate period is a number between 2s and 60s
   if (isNaN(periodNum) || periodNum < 2 || periodNum > 60) {
-    msgCommonErrorHelp("Period must be a number between 2 and 60 seconds.");
+    msgCommonErrorHelp('Period must be a number between 2 and 60 seconds.');
     exit(1);
   }
 
   // parse arg --rounds
-  const roundsArgIndex = args.findIndex((arg) => arg === "--rounds");
+  const roundsArgIndex = args.findIndex(arg => arg === '--rounds');
   let roundsToFix: number[] | undefined = undefined;
   if (roundsArgIndex !== -1 && roundsArgIndex + 1 < args.length) {
     const roundsArg = args[roundsArgIndex + 1];
@@ -69,7 +67,7 @@ export const periodCommand = async (args: string[]) => {
 
   const broadcast = await getBroadcast(broadcastId);
   if (!broadcast?.rounds || broadcast.rounds.length === 0) {
-    console.error(cl.red("No rounds found for the specified broadcast."));
+    console.error(cl.red('No rounds found for the specified broadcast.'));
     exit(1);
   }
   await setPeriodRounds(broadcast.rounds, periodNum, roundsToFix);

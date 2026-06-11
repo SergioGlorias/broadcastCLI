@@ -1,5 +1,5 @@
-import { exit } from "node:process";
-import { components } from "@lichess-org/types";
+import { exit } from 'node:process';
+import { components } from '@lichess-org/types';
 import {
   client,
   msgCommonErrorHelp,
@@ -7,29 +7,29 @@ import {
   handleApiResponse,
   translateRoundsToFix,
   checkTokenScopes,
-} from "../utils/commandHandler.js";
-import { getBroadcast } from "../utils/getInfoBroadcast.js";
-import cl from "../utils/colors.js";
-import { parse as ms } from "ms";
+} from '../utils/commandHandler.js';
+import { getBroadcast } from '../utils/getInfoBroadcast.js';
+import cl from '../utils/colors.js';
+import { parse as ms } from 'ms';
 
 const fixScheduleRounds = async (
-  rounds: components["schemas"]["BroadcastRoundInfo"][],
+  rounds: components['schemas']['BroadcastRoundInfo'][],
   timeDiff: number,
   roundsToFix?: number[],
 ) => {
   // Filter rounds based on criteria
   rounds = rounds
     .filter((_, i) => !roundsToFix?.length || roundsToFix.includes(i + 1))
-    .filter((el) => el.startsAt !== undefined);
+    .filter(el => el.startsAt !== undefined);
 
   if (rounds.length === 0) {
-    console.error(cl.red("No rounds to fix after applying filters."));
+    console.error(cl.red('No rounds to fix after applying filters.'));
     exit(1);
   }
 
   for (const round of rounds) {
     await handleApiResponse(
-      client.POST("/broadcast/round/{broadcastRoundId}/edit", {
+      client.POST('/broadcast/round/{broadcastRoundId}/edit', {
         params: {
           path: { broadcastRoundId: round.id },
           // @ts-ignore patch param is not yet documented
@@ -52,7 +52,7 @@ export const fixScheduleCommand = async (args: string[]) => {
   await checkTokenScopes();
   const [broadcastId, timeDiffStr] = args.slice(0, 2);
   if (!broadcastId || !timeDiffStr) {
-    msgCommonErrorHelp("Broadcast ID and time difference are required.");
+    msgCommonErrorHelp('Broadcast ID and time difference are required.');
     exit(1);
   }
 
@@ -60,9 +60,7 @@ export const fixScheduleCommand = async (args: string[]) => {
 
   if (isNaN(timeDiff)) {
     console.error(
-      cl.red(
-        "Error: Time difference must be a valid duration string (e.g., '1h', '30m', '15s').",
-      ),
+      cl.red("Error: Time difference must be a valid duration string (e.g., '1h', '30m', '15s')."),
     );
     exit(1);
   }
@@ -72,7 +70,7 @@ export const fixScheduleCommand = async (args: string[]) => {
     )} ms) to broadcast ${cl.whiteBold(broadcastId)}.`,
   );
   // parse arg --rounds
-  const roundsArgIndex = args.findIndex((arg) => arg === "--rounds");
+  const roundsArgIndex = args.findIndex(arg => arg === '--rounds');
   let roundsToFix: number[] | undefined = undefined;
   if (roundsArgIndex !== -1 && roundsArgIndex + 1 < args.length) {
     const roundsArg = args[roundsArgIndex + 1];
@@ -81,13 +79,7 @@ export const fixScheduleCommand = async (args: string[]) => {
 
   const broadcast = await getBroadcast(broadcastId);
   if (!broadcast?.rounds || broadcast.rounds.length === 0) {
-    console.error(
-      cl.red(
-        `Broadcast with ID ${cl.whiteBold(
-          broadcastId,
-        )} not found or has no rounds.`,
-      ),
-    );
+    console.error(cl.red(`Broadcast with ID ${cl.whiteBold(broadcastId)} not found or has no rounds.`));
     exit(1);
   }
   await fixScheduleRounds(broadcast.rounds, timeDiff, roundsToFix);
