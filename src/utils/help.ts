@@ -43,7 +43,7 @@ const helpSetPGNMulti = [
 ].join("\n");
 
 const helpSetForward = [
-  `  ${cl.underItalic("setPGN <broadcastId> <broadcastToForward> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]")}`,
+  `  ${cl.underItalic("setForward <broadcastId> <broadcastToForward> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]")}`,
   `     ${cl.gray("Sets the other Broadcast to foward for all rounds in the specified broadcast.")}`,
   `     ${cl.redBold("Required:")} ${cl.gray(`Your Lichess token needs the ${cl.whiteBold("web:mod")} scope to use this command. (Broadcast/Study Admin perm required)`)}`,
   `     ${cl.bold("Options:")}`,
@@ -92,6 +92,14 @@ const helpScore = [
   `  ${cl.underItalic("score <broadcastId> <whiteWin> <whiteDraw> <blackWin> <blackDraw> [--rounds <roundsToFix>]")}`,
   `     ${cl.gray("Sets the custom scoring for all rounds in the specified broadcast.")}`,
   `     ${cl.bold("Note:")} ${cl.gray("Scores must be numbers between 0 and 10.")}`,
+  `     ${cl.bold("Options:")}`,
+  `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
+].join("\n");
+
+const helpTeamScore = [
+  `  ${cl.underItalic("teamScore <broadcastId> <teamWin> <teamDraw> [--rounds <roundsToFix>]")}`,
+  `     ${cl.gray("Sets the custom team scoring for all rounds in the specified broadcast.")}`,
+  `     ${cl.bold("Note:")} ${cl.gray("Scores for team win and team draw must be numbers between 0 and 10.")}`,
   `     ${cl.bold("Options:")}`,
   `       --rounds <roundsToFix>   ${cl.gray("Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.")}`,
 ].join("\n");
@@ -159,6 +167,8 @@ const msg = [
   ``,
   helpScore,
   ``,
+  helpTeamScore,
+  ``,
   helpPush,
   ``,
   helpPushFilterID,
@@ -218,6 +228,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.StartsPrevious]: helpStartsPrevious,
     [Command.Period]: helpSetPeriod,
     [Command.Score]: helpScore,
+    [Command.TeamScore]: helpTeamScore,
     [Command.Push]: helpPush,
     [Command.PushFilterID]: helpPushFilterID,
     [Command.ConvertNamesToID]: helpConvertNamesToID,

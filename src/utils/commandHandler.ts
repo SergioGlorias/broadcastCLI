@@ -16,6 +16,7 @@ import { fixScheduleCommand } from "../cmd/fixSchedule.js";
 import { startsPreviousCommand } from "../cmd/startsPrevious.js";
 import { periodCommand } from "../cmd/period.js";
 import { scoreCommand } from "../cmd/score.js";
+import { teamScoreCommand } from "../cmd/teamScore.js";
 import { pushCommand } from "../cmd/push.js";
 import { pushFilterIDCommand } from "../cmd/pushFilterID.js";
 import { loginCommand } from "../cmd/login.js";
@@ -62,6 +63,7 @@ export enum Command {
   StartsPrevious = "startsPrevious",
   Period = "period",
   Score = "score",
+  TeamScore = "teamScore",
   Push = "push",
   PushFilterID = "pushFilterID",
   ConvertNamesToID = "convertNamesToID",
@@ -81,6 +83,7 @@ export const commands = new Map([
   [Command.StartsPrevious, startsPreviousCommand],
   [Command.Period, periodCommand],
   [Command.Score, scoreCommand],
+  [Command.TeamScore, teamScoreCommand],
   [Command.Push, pushCommand],
   [Command.PushFilterID, pushFilterIDCommand],
   [Command.ConvertNamesToID, convertNamesToIDCommand],
