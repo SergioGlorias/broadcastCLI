@@ -35,7 +35,7 @@
     "openapi-fetch": "^0.17.0"
   },
   "devDependencies": {
-    "@types/node": "~25.9.2",
+    "@types/node": "~26.0.0",
     "oxfmt": "^0.54.0",
     "typescript": "^6.0.3"
   },
