@@ -6,23 +6,23 @@ permissions:
 on:
   push:
     paths:
-      - "**.ts"
-      - "**.json"
-      - ".github/workflows/lint.yml"
-      - ".node-version"
+      - '**.ts'
+      - '**.json'
+      - '.github/workflows/lint.yml'
+      - '.node-version'
   pull_request:
     branches:
       - main
     paths:
-      - "**.ts"
-      - "**.json"
-      - ".github/workflows/lint.yml"
-      - ".node-version"
+      - '**.ts'
+      - '**.json'
+      - '.github/workflows/lint.yml'
+      - '.node-version'
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-node
       - name: Run Prettier Lint
         run: pnpm run lint

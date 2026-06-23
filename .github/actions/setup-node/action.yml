@@ -5,15 +5,15 @@ inputs:
   fetch-depth:
     description: Number of commits to fetch
     required: false
-    default: "1"
+    default: '1'
   registry-url:
     description: Registry URL for npm
     required: false
-    default: ""
+    default: ''
   ref:
     description: Git ref to checkout
     required: false
-    default: ""
+    default: ''
 
 runs:
   using: composite

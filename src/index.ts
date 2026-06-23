@@ -1,21 +1,13 @@
 #!/usr/bin/env node
-import { exit } from "node:process";
-import {
-  LICHESS_TOKEN,
-  args,
-  Command,
-  commands,
-  packageJson,
-} from "./utils/commandHandler.js";
-import { showHelp, includeHelp } from "./utils/help.js";
-import cl from "./utils/colors.js";
+import { exit } from 'node:process';
+import { LICHESS_TOKEN, args, Command, commands, packageJson } from './utils/commandHandler.js';
+import { showHelp, includeHelp } from './utils/help.js';
+import cl from './utils/colors.js';
 
 (async () => {
   // show version for --version or -v
-  if (args.includes("--version") || args.includes("-v")) {
-    console.log(
-      `${cl.whiteBold(packageJson.name)} ${cl.underItalic(`v${packageJson.version}`)}`
-    );
+  if (args.includes('--version') || args.includes('-v')) {
+    console.log(`${cl.whiteBold(packageJson.name)} ${cl.underItalic(`v${packageJson.version}`)}`);
     exit(0);
   }
 
@@ -32,7 +24,7 @@ import cl from "./utils/colors.js";
     exit(0);
   }
   if (!handler) {
-    console.error(`${cl.red("Error:")} Command handler not found.`);
+    console.error(`${cl.red('Error:')} Command handler not found.`);
     exit(1);
   }
 
@@ -42,9 +34,9 @@ import cl from "./utils/colors.js";
     return;
   }
 
-  if (!LICHESS_TOKEN?.trim() || !LICHESS_TOKEN.startsWith("lip_")) {
+  if (!LICHESS_TOKEN?.trim() || !LICHESS_TOKEN.startsWith('lip_')) {
     console.error(
-      `${cl.blue("Use the 'login' command to save your credentials: ")}${cl.whiteBold("libroadcast login")}`
+      `${cl.blue("Use the 'login' command to save your credentials: ")}${cl.whiteBold('libroadcast login')}`,
     );
     exit(1);
   }

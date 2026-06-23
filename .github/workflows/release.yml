@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version tag (e.g. v1.2.3)"
+        description: 'Version tag (e.g. v1.2.3)'
         required: true
       description:
-        description: "Description"
+        description: 'Description'
         required: false
-        default: ""
+        default: ''
 
 permissions:
   id-token: write # Required for OIDC
@@ -22,7 +22,7 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: |
           [[ "${{ github.event.inputs.version }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-.*)?$ ]] || \
           (echo "Version must start with 'v' and match 'v<major>.<minor>.<patch>'" && exit 1)
@@ -51,7 +51,7 @@ jobs:
           tag_name: ${{ github.event.inputs.version }}
           name: Release ${{ github.event.inputs.version }}
           body: ${{ github.event.inputs.description }}
-  
+
   image:
     needs: release
     permissions:

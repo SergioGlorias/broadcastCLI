@@ -1,6 +1,6 @@
 {
   "name": "libroadcast-cli",
-  "version": "2.13.0",
+  "version": "1.14.0",
   "description": "CLI to help with broadcast maintenance on Lichess",
   "keywords": [
     "broadcast",
@@ -29,14 +29,15 @@
     "lint": "oxfmt --check ./src/**/*.ts ./package.json"
   },
   "dependencies": {
-    "@lichess-org/types": "^2.0.145",
+    "@lichess-org/types": "^2.0.146",
     "chessops": "^0.15.0",
+    "dayjs": "^1.11.21",
     "ms": "3.0.0-canary.202508261828",
     "openapi-fetch": "^0.17.0"
   },
   "devDependencies": {
-    "@types/node": "~25.9.2",
-    "oxfmt": "^0.54.0",
+    "@types/node": "~26.0.0",
+    "oxfmt": "^0.56.0",
     "typescript": "^6.0.3"
   },
   "engines": {
