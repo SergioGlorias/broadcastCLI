@@ -34,9 +34,13 @@ const setScoreRounds = async (
         },
         // @ts-ignore name of body properties due patch param is implicit
         body: {
+          // @ts-ignore name of body properties due patch param is implicit
           'customScoring.black.draw': blackDraw,
+          // @ts-ignore name of body properties due patch param is implicit
           'customScoring.black.win': blackWin,
+          // @ts-ignore name of body properties due patch param is implicit
           'customScoring.white.draw': whiteDraw,
+          // @ts-ignore name of body properties due patch param is implicit
           'customScoring.white.win': whiteWin,
         },
       }),
