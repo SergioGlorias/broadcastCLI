@@ -29,7 +29,7 @@
     "lint": "oxfmt --check ./src/**/*.ts ./package.json"
   },
   "dependencies": {
-    "@lichess-org/types": "^2.0.145",
+    "@lichess-org/types": "^2.0.146",
     "chessops": "^0.15.0",
     "dayjs": "^1.11.21",
     "ms": "3.0.0-canary.202508261828",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "~26.0.0",
-    "oxfmt": "^0.54.0",
+    "oxfmt": "^0.56.0",
     "typescript": "^6.0.3"
   },
   "engines": {
