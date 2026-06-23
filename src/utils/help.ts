@@ -112,6 +112,14 @@ const helpPush = [
   `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
 ].join('\n');
 
+const helpPushLCC = [
+  `  ${cl.underItalic('pushLCC <roundId> <LCCid> [--loop <intervalInSeconds>]')}`,
+  `     ${cl.gray('Upload a LiveChessCloud to the specified broadcast round.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('The PGN file must be accessible from the provided path or URL.')}`,
+  `     ${cl.bold('Options:')}`,
+  `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
+].join('\n');
+
 const helpPushFilterID = [
   `  ${cl.underItalic('pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>]')}`,
   `     ${cl.gray('Upload a PGN file from a local path or URL to the specified broadcast round, filtering games by FIDE ID.')}`,
@@ -170,6 +178,8 @@ const msg = [
   helpTeamScore,
   ``,
   helpPush,
+  ``,
+  helpPushLCC,
   ``,
   helpPushFilterID,
   ``,
@@ -230,6 +240,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.Score]: helpScore,
     [Command.TeamScore]: helpTeamScore,
     [Command.Push]: helpPush,
+    [Command.PushLCC]: helpPushLCC,
     [Command.PushFilterID]: helpPushFilterID,
     [Command.ConvertNamesToID]: helpConvertNamesToID,
     [Command.PushReorder]: helpPushReorder,

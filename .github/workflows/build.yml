@@ -6,18 +6,18 @@ permissions:
 on:
   push:
     paths:
-      - "**.ts"
-      - "**.json"
-      - ".github/workflows/build.yml"
-      - ".node-version"
+      - '**.ts'
+      - '**.json'
+      - '.github/workflows/build.yml'
+      - '.node-version'
   pull_request:
     branches:
       - main
     paths:
-      - "**.ts"
-      - "**.json"
-      - ".github/workflows/build.yml"
-      - ".node-version"
+      - '**.ts'
+      - '**.json'
+      - '.github/workflows/build.yml'
+      - '.node-version'
 
 jobs:
   build:

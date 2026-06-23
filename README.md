@@ -17,7 +17,7 @@ Commands:
      Options:
        --logout (-lo)   Clear saved credentials and log out.
 
-  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>] 
+  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>]
      Sets the delay for all rounds in the specified broadcast.
      Note:  The delay is specified in seconds. (max 3600 seconds = 1 hour)
      Options:

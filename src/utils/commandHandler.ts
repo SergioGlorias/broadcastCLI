@@ -19,6 +19,7 @@ import { scoreCommand } from '../cmd/score.js';
 import { teamScoreCommand } from '../cmd/teamScore.js';
 import { pushCommand } from '../cmd/push.js';
 import { pushFilterIDCommand } from '../cmd/pushFilterID.js';
+import { pushLCCCommand } from '../cmd/pushLCC.js';
 import { loginCommand } from '../cmd/login.js';
 import { getStoredCredentials } from './credentials.js';
 import { convertNamesToIDCommand } from '../cmd/convertNamesToID.js';
@@ -64,6 +65,7 @@ export enum Command {
   TeamScore = 'teamScore',
   Push = 'push',
   PushFilterID = 'pushFilterID',
+  PushLCC = 'pushLCC',
   ConvertNamesToID = 'convertNamesToID',
   PushReorder = 'pushReorder',
   BulkIDsMulti = 'bulkIDsMulti',
@@ -83,6 +85,7 @@ export const commands = new Map([
   [Command.Score, scoreCommand],
   [Command.TeamScore, teamScoreCommand],
   [Command.Push, pushCommand],
+  [Command.PushLCC, pushLCCCommand],
   [Command.PushFilterID, pushFilterIDCommand],
   [Command.ConvertNamesToID, convertNamesToIDCommand],
   [Command.PushReorder, pushReorderCommand],
