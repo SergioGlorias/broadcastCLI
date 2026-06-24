@@ -110,17 +110,21 @@ const validateMovesInPGN = (pgn: string) => {
   }
 
   console.log(cl.green(`✓ PGN validation completed. ${results.length} games processed.`));
-  console.table(
-    results.reduce((acc: Record<number, object>, { gameIndex, ...rest }) => {
-      acc[gameIndex] = rest;
-      return acc;
-    }, {}),
-  );
-
+  if (results.some(r => r.status !== 'Valid')) {
+    const resultsWithIssues = results.filter(r => r.status !== 'Valid');
+    console.log(cl.red(`⚠️ Found ${resultsWithIssues.length} games with issues:`));
+    console.table(
+      resultsWithIssues.reduce((acc: Record<number, object>, { gameIndex, ...rest }) => {
+        acc[gameIndex] = rest;
+        return acc;
+      }, {}),
+    );
+  }
   return cleanPgnLines.join('\n\n');
 };
 
 export const readPGNFromURL = async (pgnURL: string, validateMoves?: boolean) => {
+  let pgnText = '';
   // url can be a file path or a web URL
   if (pgnURL.startsWith('http://') || pgnURL.startsWith('https://')) {
     // Fetch from web URL
@@ -134,9 +138,8 @@ export const readPGNFromURL = async (pgnURL: string, validateMoves?: boolean) =>
       console.error(cl.red(`Failed to fetch PGN from URL: ${response.statusText}`));
       return undefined;
     }
-    const pgnText = validateMoves ? validateMovesInPGN(await response.text()) : await response.text();
 
-    return pgnText;
+    pgnText = await response.text();
   } else {
     // Assume it's a file path
     const resolvedPath = path.resolve(pgnURL);
@@ -145,7 +148,15 @@ export const readPGNFromURL = async (pgnURL: string, validateMoves?: boolean) =>
       return undefined;
     });
     if (!stats) return undefined;
-    return stats.toString();
+    pgnText = stats.toString();
+  }
+
+  if (validateMoves) {
+    console.log(cl.blue('Validating moves in PGN from URL...'));
+    return validateMovesInPGN(pgnText);
+  } else {
+    console.log(cl.blue('Reading PGN from URL...'));
+    return pgnText;
   }
 };
 
