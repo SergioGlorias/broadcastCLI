@@ -1112,8 +1112,7 @@ export function gameToPgn(
   for (const move of game.moves) {
     const [san, timeStringInSecs] = move.split(' ');
     const mv = permitIllegalMoves ? undefined : parseSan(pos, san);
-    if (!permitIllegalMoves)
-      if (!mv || !pos.isLegal(mv)) break;
+    if (!permitIllegalMoves) if (!mv || !pos.isLegal(mv)) break;
     let comments: string[] = [];
     if (timeStringInSecs !== undefined && !timeStringInSecs.startsWith('+')) {
       const time = dayjs.duration(parseInt(timeStringInSecs), 'seconds');
@@ -1163,7 +1162,7 @@ const loop = async (
   roundInfo: components['schemas']['BroadcastRoundInfo'],
   lccId: string,
   loopTimer: number,
-  permitIllegalMoves?: boolean
+  permitIllegalMoves?: boolean,
 ) => {
   while (true) {
     const lccContent = await fetchLcc(lccId, permitIllegalMoves);
