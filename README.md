@@ -17,7 +17,7 @@ Commands:
      Options:
        --logout (-lo)   Clear saved credentials and log out.
 
-  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>]
+  delay <broadcastId> <delayInSeconds> [--onlyDelay] [--noDelay] [--rounds <roundsToFix>] 
      Sets the delay for all rounds in the specified broadcast.
      Note:  The delay is specified in seconds. (max 3600 seconds = 1 hour)
      Options:
@@ -90,27 +90,37 @@ Commands:
      Options:
        --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
-  push <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]
+  push <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>] [--validate-moves]
      Upload a PGN file from a local path or URL to the specified broadcast round.
      Note: The PGN file must be accessible from the provided path or URL.
      Options:
        --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
+       --validate-moves   Validate the moves in the PGN file.
+
+  pushLCC <roundId> <LCCid> [--loop <intervalInSeconds>] [--permit-illegal]
+     Upload a LiveChessCloud to the specified broadcast round.
+     Note: The PGN file must be accessible from the provided path or URL.
+     Options:
+       --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
+       --permit-illegal   Permit illegal moves in the PGN file.
 
   pushFilterID <roundId> <PGNFromPathOrUrl> <FideIds...> [--loop <intervalInSeconds>]
      Upload a PGN file from a local path or URL to the specified broadcast round, filtering games by FIDE ID.
      Note: The PGN file must be accessible from the provided path or URL.
      Options:
        --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
+       --validate-moves   Validate the moves in the PGN file.
 
   convertNamesToID <roundId>
      Convert Lichess Usernames source to Lichess Game IDs source for the specified broadcast round.
      Note: This command will fetch the source PGN, extract Lichess Game IDs from the PGN headers, and update the broadcast round to use these game IDs as the source.
 
-  pushReorder <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]
+  pushReorder <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>] [--validate-moves]
      Upload a PGN file from a local path or URL to the specified broadcast round, reordering games by round number.
      Note: The PGN file must be accessible from the provided path or URL. Games will be reordered based on the 'Round' header in the PGN.
      Options:
        --loop <intervalInSeconds>   Continuously push the PGN file at the specified interval in seconds.
+       --validate-moves   Validate the moves in the PGN file.
 
   bulkIDsMulti <bulkID> <broadcastRoundIds...>
      Sets Lichess Game IDs for multiple broadcast rounds using a Bulk Pairing ID.
