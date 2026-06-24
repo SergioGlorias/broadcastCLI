@@ -105,19 +105,21 @@ const helpTeamScore = [
 ].join('\n');
 
 const helpPush = [
-  `  ${cl.underItalic('push <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]')}`,
+  `  ${cl.underItalic('push <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>] [--validate-moves]')}`,
   `     ${cl.gray('Upload a PGN file from a local path or URL to the specified broadcast round.')}`,
   `     ${cl.bold('Note:')} ${cl.gray('The PGN file must be accessible from the provided path or URL.')}`,
   `     ${cl.bold('Options:')}`,
   `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
+  `       --validate-moves   ${cl.gray('Validate the moves in the PGN file.')}`,
 ].join('\n');
 
 const helpPushLCC = [
-  `  ${cl.underItalic('pushLCC <roundId> <LCCid> [--loop <intervalInSeconds>]')}`,
+  `  ${cl.underItalic('pushLCC <roundId> <LCCid> [--loop <intervalInSeconds>] [--permit-illegal]')}`,
   `     ${cl.gray('Upload a LiveChessCloud to the specified broadcast round.')}`,
   `     ${cl.bold('Note:')} ${cl.gray('The PGN file must be accessible from the provided path or URL.')}`,
   `     ${cl.bold('Options:')}`,
   `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
+  `       --permit-illegal   ${cl.gray('Permit illegal moves in the PGN file.')}`,
 ].join('\n');
 
 const helpPushFilterID = [
@@ -126,6 +128,7 @@ const helpPushFilterID = [
   `     ${cl.bold('Note:')} ${cl.gray('The PGN file must be accessible from the provided path or URL.')}`,
   `     ${cl.bold('Options:')}`,
   `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
+  `       --validate-moves   ${cl.gray('Validate the moves in the PGN file.')}`,
 ].join('\n');
 
 const helpConvertNamesToID = [
@@ -135,11 +138,12 @@ const helpConvertNamesToID = [
 ].join('\n');
 
 const helpPushReorder = [
-  `  ${cl.underItalic('pushReorder <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>]')}`,
+  `  ${cl.underItalic('pushReorder <roundId> <PGNFromPathOrUrl> [--loop <intervalInSeconds>] [--validate-moves]')}`,
   `     ${cl.gray('Upload a PGN file from a local path or URL to the specified broadcast round, reordering games by round number.')}`,
   `     ${cl.bold('Note:')} ${cl.gray("The PGN file must be accessible from the provided path or URL. Games will be reordered based on the 'Round' header in the PGN.")}`,
   `     ${cl.bold('Options:')}`,
   `       --loop <intervalInSeconds>   ${cl.gray('Continuously push the PGN file at the specified interval in seconds.')}`,
+  `       --validate-moves   ${cl.gray('Validate the moves in the PGN file.')}`,
 ].join('\n');
 
 const helpBulkIDsMulti = [
