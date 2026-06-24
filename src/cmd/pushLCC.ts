@@ -1066,6 +1066,7 @@ export function gameToPgn(
   pairing: Pairing,
   boardIndex: number,
   tournament: Tournament,
+  permitIllegalMoves: boolean | undefined,
 
   round: number,
   game: Game,
@@ -1097,6 +1098,7 @@ export function gameToPgn(
     headers.set('TimeControl', tournament.timecontrol);
   }
   headers.set('Round', `${round}.${boardIndex + 1}`);
+
   // Build initial position (use chess960 FEN if provided, otherwise standard initial FEN)
   const initialFen =
     tournament.chess960 == 'ANY'
@@ -1109,8 +1111,9 @@ export function gameToPgn(
   const mainline: Array<{ comments: string[]; san: string }> = [];
   for (const move of game.moves) {
     const [san, timeStringInSecs] = move.split(' ');
-    const mv = parseSan(pos, san);
-    if (!mv || !pos.isLegal(mv)) break;
+    const mv = permitIllegalMoves ? undefined : parseSan(pos, san);
+    if (!permitIllegalMoves)
+      if (!mv || !pos.isLegal(mv)) break;
     let comments: string[] = [];
     if (timeStringInSecs !== undefined && !timeStringInSecs.startsWith('+')) {
       const time = dayjs.duration(parseInt(timeStringInSecs), 'seconds');
@@ -1120,7 +1123,9 @@ export function gameToPgn(
       comments.push(`[%clk ${hours}:${minutes}:${seconds}]`);
     }
     mainline.push({ comments, san });
-    pos.play(mv);
+    if (!permitIllegalMoves && mv) {
+      pos.play(mv);
+    }
   }
   const chessGame: ChessGame<PgnNodeData> = {
     headers: headers,
@@ -1130,7 +1135,7 @@ export function gameToPgn(
   return makePgn(chessGame);
 }
 
-export default async function fetchLcc(id: string): Promise<string> {
+export default async function fetchLcc(id: string, permitIllegalMoves?: boolean): Promise<string> {
   const match = id.match(/^([0-9a-z\-]+)\/([0-9]+)$/);
   if (!match) throw `Invalid lcc URL: ${id}`;
   const tournamentId = match[1];
@@ -1149,7 +1154,7 @@ export default async function fetchLcc(id: string): Promise<string> {
   for (const [boardIndex, game] of games.entries()) {
     const pairing = roundInfo.pairings[boardIndex];
     if (!pairing.white || !pairing.black) continue;
-    pgn += gameToPgn(pairing, boardIndex, tournament, round, game) + '\n\n';
+    pgn += gameToPgn(pairing, boardIndex, tournament, permitIllegalMoves, round, game) + '\n\n';
   }
   return pgn;
 }
@@ -1158,9 +1163,10 @@ const loop = async (
   roundInfo: components['schemas']['BroadcastRoundInfo'],
   lccId: string,
   loopTimer: number,
+  permitIllegalMoves?: boolean
 ) => {
   while (true) {
-    const lccContent = await fetchLcc(lccId);
+    const lccContent = await fetchLcc(lccId, permitIllegalMoves);
     if (lccContent && lccContent !== lastPGN) {
       await pushPGN(roundInfo, lccContent);
       lastPGN = lccContent;
@@ -1187,12 +1193,14 @@ export const pushLCCCommand = async (args: string[]) => {
 
   const loopTimer = loopChecker(args);
 
+  const permitIllegalMoves = args.includes('--permit-illegal');
+
   if (loopTimer) {
     console.log(cl.green(`Starting loop to push PGN every ${cl.whiteBold(loopTimer.toString())} seconds...`));
     console.log(cl.blue('Press Ctrl+C to stop.'));
-    await loop(roundInfo, lccId, loopTimer);
+    await loop(roundInfo, lccId, loopTimer, permitIllegalMoves);
   } else {
-    const lccContent = await fetchLcc(lccId);
+    const lccContent = await fetchLcc(lccId, permitIllegalMoves);
     if (lccContent) await pushPGN(roundInfo, lccContent);
   }
 };
