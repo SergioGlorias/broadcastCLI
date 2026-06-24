@@ -4,6 +4,10 @@ import cl from './colors.js';
 import path from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { exit } from 'node:process';
+import { parsePgn, makePgn, PgnNodeData, Game, ChildNode, Node } from 'chessops/pgn';
+import { Chess } from 'chessops/chess';
+import { parseFen } from 'chessops/fen';
+import { parseSan } from 'chessops/san';
 
 export const pushPGN = async (round: components['schemas']['BroadcastRoundInfo'], pgn: string) => {
   try {
@@ -41,7 +45,82 @@ export const pushPGN = async (round: components['schemas']['BroadcastRoundInfo']
   }
 };
 
-export const readPGNFromURL = async (pgnURL: string) => {
+const validateMovesInPGN = (pgn: string) => {
+  const parsed = parsePgn(pgn);
+  const results: Array<{
+    gameIndex: number;
+    white: string;
+    black: string;
+    legalMoves: number;
+    totalMoves: number;
+    status: string;
+  }> = [];
+  const cleanPgnLines: string[] = [];
+
+  for (let gameIndex = 0; gameIndex < parsed.length; gameIndex++) {
+    const game = parsed[gameIndex];
+    const white = game.headers.get('White') || 'Unknown';
+    const black = game.headers.get('Black') || 'Unknown';
+
+    // Get initial position (use FEN if available, otherwise standard initial position)
+    const initialFen = game.headers.get('FEN') ?? 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+    const setup = parseFen(initialFen).unwrap();
+    const pos = Chess.fromSetup(setup).unwrap();
+
+    // Validate moves sequentially, stop at first illegal move
+    let legalMoves = 0;
+    let totalMoves = 0;
+    let status = 'Valid';
+    const validatedMoves: PgnNodeData[] = [];
+
+    for (const move of game.moves.mainline()) {
+      totalMoves++;
+      const mv = parseSan(pos, move.san);
+      if (!mv || !pos.isLegal(mv)) {
+        status = `Illegal move at ply ${totalMoves}: ${move.san}`;
+        break;
+      }
+      validatedMoves.push(move);
+      pos.play(mv);
+      legalMoves++;
+    }
+
+    results.push({ gameIndex: gameIndex + 1, white, black, legalMoves, totalMoves, status });
+
+    // Build clean game with only legal moves (reconstruct Node tree)
+    let movesNode = new Node();
+    for (const moveData of validatedMoves) {
+      const childNode = new ChildNode(moveData);
+      movesNode.children = [childNode];
+      movesNode = childNode;
+    }
+
+    const cleanGame: Game<PgnNodeData> = {
+      headers: game.headers,
+      moves: new Node(),
+    };
+    // Rebuild the moves tree with validated moves
+    let node = cleanGame.moves;
+    for (const moveData of validatedMoves) {
+      const newNode = new ChildNode(moveData);
+      node.children = [newNode];
+      node = newNode;
+    }
+    cleanPgnLines.push(makePgn(cleanGame));
+  }
+
+  console.log(cl.green(`✓ PGN validation completed. ${results.length} games processed.`));
+  console.table(
+    results.reduce((acc: Record<number, object>, { gameIndex, ...rest }) => {
+      acc[gameIndex] = rest;
+      return acc;
+    }, {}),
+  );
+
+  return cleanPgnLines.join('\n\n');
+};
+
+export const readPGNFromURL = async (pgnURL: string, validateMoves?: boolean) => {
   // url can be a file path or a web URL
   if (pgnURL.startsWith('http://') || pgnURL.startsWith('https://')) {
     // Fetch from web URL
@@ -55,7 +134,7 @@ export const readPGNFromURL = async (pgnURL: string) => {
       console.error(cl.red(`Failed to fetch PGN from URL: ${response.statusText}`));
       return undefined;
     }
-    const pgnText = await response.text();
+    const pgnText = validateMoves ? validateMovesInPGN(await response.text()) : await response.text();
 
     return pgnText;
   } else {

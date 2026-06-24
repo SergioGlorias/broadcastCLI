@@ -11,9 +11,10 @@ const loop = async (
   roundInfo: components['schemas']['BroadcastRoundInfo'],
   pgnPath: string,
   loopTimer: number,
+  validateMoves?: boolean,
 ) => {
   while (true) {
-    const pgnContent = await readPGNFromURL(pgnPath);
+    const pgnContent = await readPGNFromURL(pgnPath, validateMoves);
     if (pgnContent && pgnContent !== lastPGN) {
       await pushPGN(roundInfo, pgnContent);
       lastPGN = pgnContent;
@@ -40,12 +41,14 @@ export const pushCommand = async (args: string[]) => {
 
   const loopTimer = loopChecker(args);
 
+  const validateMoves = args.includes('--validate-moves');
+
   if (loopTimer) {
     console.log(cl.green(`Starting loop to push PGN every ${cl.whiteBold(loopTimer.toString())} seconds...`));
     console.log(cl.blue('Press Ctrl+C to stop.'));
-    await loop(roundInfo, pgnPath, loopTimer);
+    await loop(roundInfo, pgnPath, loopTimer, validateMoves);
   } else {
-    const pgnContent = await readPGNFromURL(pgnPath);
+    const pgnContent = await readPGNFromURL(pgnPath, validateMoves);
     if (pgnContent) await pushPGN(roundInfo, pgnContent);
   }
 };

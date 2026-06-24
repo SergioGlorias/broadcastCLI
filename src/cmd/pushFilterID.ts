@@ -44,9 +44,10 @@ const loop = async (
   pgnPath: string,
   loopTimer: number,
   filterIds: number[],
+  validateMoves?: boolean,
 ) => {
   while (true) {
-    const pgnContent = await readPGNFromURL(pgnPath);
+    const pgnContent = await readPGNFromURL(pgnPath, validateMoves);
 
     if (!pgnContent) {
       console.error(cl.red(`Failed to read PGN content. Retrying in ${loopTimer} seconds...`));
@@ -86,12 +87,14 @@ export const pushFilterIDCommand = async (args: string[]) => {
 
   const loopTimer = loopChecker(args);
 
+  const validateMoves = args.includes('--validate-moves');
+
   if (loopTimer) {
     console.log(cl.green(`Starting loop to push PGN every ${cl.whiteBold(loopTimer.toString())} seconds...`));
     console.log(cl.blue('Press Ctrl+C to stop.'));
-    await loop(roundInfo, pgnPath, loopTimer, filterIds);
+    await loop(roundInfo, pgnPath, loopTimer, filterIds, validateMoves);
   } else {
-    const pgnContent = await readPGNFromURL(pgnPath);
+    const pgnContent = await readPGNFromURL(pgnPath, validateMoves);
 
     if (!pgnContent) {
       console.error(cl.red(`Failed to read PGN content.`));
