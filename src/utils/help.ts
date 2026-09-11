@@ -256,7 +256,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.ConvertNamesToID]: helpConvertNamesToID,
     [Command.PushReorder]: helpPushReorder,
     [Command.BulkIDsMulti]: helpBulkIDsMulti,
-    [Command.GetPlayers]: helpGetPlayers
+    [Command.GetPlayers]: helpGetPlayers,
   };
 
   const range = cmd ? ranges[cmd] : undefined;
