@@ -1,4 +1,4 @@
-FROM node:25-trixie-slim
+FROM node:26-bookworm-slim
 
 WORKDIR /app
 
