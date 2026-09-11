@@ -158,6 +158,12 @@ const helpGetPlayers = [
   `     ${cl.bold('Note:')} ${cl.gray('The style parameter determines the format of the player information returned.')}`,
 ].join('\n');
 
+const helpMoveRound = [
+  `  ${cl.underItalic('moveRound <roundId> <up|down> <times>')}`,
+  `     ${cl.gray('Move a broadcast round up or down in the order of rounds.')}`,
+  `     ${cl.redBold('Required:')} ${cl.gray(`Your Lichess token needs the ${cl.whiteBold('web:mod')} scope to use this command. (Broadcast/Study Admin perm required)`)}`,
+].join('\n');
+
 const msg = [
   `${cl.boldYellow('Usage:')} ${cl.underItalic('<command> [options]')}`,
   ``,
@@ -257,6 +263,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.PushReorder]: helpPushReorder,
     [Command.BulkIDsMulti]: helpBulkIDsMulti,
     [Command.GetPlayers]: helpGetPlayers,
+    [Command.MoveRound]: helpMoveRound,
   };
 
   const range = cmd ? ranges[cmd] : undefined;

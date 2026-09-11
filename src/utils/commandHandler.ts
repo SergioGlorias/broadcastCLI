@@ -27,6 +27,7 @@ import { pushReorderCommand } from '../cmd/pushReorder.js';
 import { bulkIDsMultiCommand } from '../cmd/bulkIDsMulti.js';
 import { setLichessGamesMultiCommand } from '../cmd/setLichessGamesMulti.js';
 import { getPlayersCommand } from '../cmd/getPlayers.js';
+import { moveRoundCommand } from '../cmd/moveRound.js';
 
 const getToken = (): string | undefined => {
   const stored = getStoredCredentials();
@@ -71,6 +72,7 @@ export enum Command {
   PushReorder = 'pushReorder',
   BulkIDsMulti = 'bulkIDsMulti',
   GetPlayers = 'getPlayers',
+  MoveRound = 'moveRound',
 }
 
 export const commands = new Map([
@@ -93,6 +95,7 @@ export const commands = new Map([
   [Command.PushReorder, pushReorderCommand],
   [Command.BulkIDsMulti, bulkIDsMultiCommand],
   [Command.GetPlayers, getPlayersCommand],
+  [Command.MoveRound, moveRoundCommand],
 ]);
 
 export const client = createClient<paths>({

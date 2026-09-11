@@ -117,6 +117,9 @@ Commands:
      Sets Lichess Game IDs for multiple broadcast rounds using a Bulk Pairing ID.
      The command will fetch game IDs from the specified Bulk Pairing and distribute them across the provided broadcast round IDs.
 
+  getPlayers <broadcastId> <style>
+     Retrieve player information for a specific broadcast.
+     Note: The style parameter determines the format of the player information returned.
 
 Examples:
    # Login with your Lichess token (interactive)
