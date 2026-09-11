@@ -1,6 +1,12 @@
 import { exit } from 'node:process';
 import { components } from '@lichess-org/types';
-import { msgCommonErrorHelp, checkTokenScopes, handleApiResponse, client, sleep } from '../utils/commandHandler.js';
+import {
+  msgCommonErrorHelp,
+  checkTokenScopes,
+  handleApiResponse,
+  client,
+  sleep,
+} from '../utils/commandHandler.js';
 import { getBroadcastRound } from '../utils/getInfoBroadcast.js';
 import cl from '../utils/colors.js';
 
@@ -19,7 +25,7 @@ const moveRound = async (
         },
         body: {
           // @ts-ignore move is not yet documented
-          move: direction
+          move: direction,
         },
       }),
       `Successfully moved round ${cl.whiteBold(round.id)} ${direction ? 'up' : 'down'}.`,
