@@ -26,6 +26,7 @@ import { convertNamesToIDCommand } from '../cmd/convertNamesToID.js';
 import { pushReorderCommand } from '../cmd/pushReorder.js';
 import { bulkIDsMultiCommand } from '../cmd/bulkIDsMulti.js';
 import { setLichessGamesMultiCommand } from '../cmd/setLichessGamesMulti.js';
+import { getPlayersCommand } from '../cmd/getPlayers.js';
 
 const getToken = (): string | undefined => {
   const stored = getStoredCredentials();
@@ -69,6 +70,7 @@ export enum Command {
   ConvertNamesToID = 'convertNamesToID',
   PushReorder = 'pushReorder',
   BulkIDsMulti = 'bulkIDsMulti',
+  GetPlayers = 'getPlayers',
 }
 
 export const commands = new Map([
@@ -90,6 +92,7 @@ export const commands = new Map([
   [Command.ConvertNamesToID, convertNamesToIDCommand],
   [Command.PushReorder, pushReorderCommand],
   [Command.BulkIDsMulti, bulkIDsMultiCommand],
+  [Command.GetPlayers, getPlayersCommand],
 ]);
 
 export const client = createClient<paths>({

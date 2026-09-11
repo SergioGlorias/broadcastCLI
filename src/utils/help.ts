@@ -152,6 +152,12 @@ const helpBulkIDsMulti = [
   `     ${cl.gray('The command will fetch game IDs from the specified Bulk Pairing and distribute them across the provided broadcast round IDs.')}`,
 ].join('\n');
 
+const helpGetPlayers = [
+  `  ${cl.underItalic('getPlayers <broadcastId> <style>')}`,
+  `     ${cl.gray('Retrieve player information for a specific broadcast.')}`,
+  `     ${cl.bold('Note:')} ${cl.gray('The style parameter determines the format of the player information returned.')}`,
+].join('\n');
+
 const msg = [
   `${cl.boldYellow('Usage:')} ${cl.underItalic('<command> [options]')}`,
   ``,
@@ -193,6 +199,7 @@ const msg = [
   ``,
   helpBulkIDsMulti,
   ``,
+  helpGetPlayers,
   ``,
   `${cl.boldYellow('Examples:')}`,
   `   ${cl.gray('# Login with your Lichess token (interactive)')}`,
@@ -249,6 +256,7 @@ export const showHelp = (cmd?: Command) => {
     [Command.ConvertNamesToID]: helpConvertNamesToID,
     [Command.PushReorder]: helpPushReorder,
     [Command.BulkIDsMulti]: helpBulkIDsMulti,
+    [Command.GetPlayers]: helpGetPlayers
   };
 
   const range = cmd ? ranges[cmd] : undefined;
