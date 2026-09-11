@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "~26.5.0",
-    "oxfmt": "^0.56.0",
+    "oxfmt": "^0.67.0",
     "typescript": "^6.0.3"
   },
   "engines": {
