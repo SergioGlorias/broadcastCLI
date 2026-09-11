@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@lichess-org/types':
-        specifier: ^2.0.146
-        version: 2.0.146
+        specifier: ^2.0.171
+        version: 2.0.171
       chessops:
-        specifier: ^0.15.0
-        version: 0.15.0
+        specifier: ^0.15.1
+        version: 0.15.1
       dayjs:
-        specifier: ^1.11.21
-        version: 1.11.21
+        specifier: ^1.11.23
+        version: 1.11.23
       ms:
         specifier: 3.0.0-canary.202508261828
         version: 3.0.0-canary.202508261828
@@ -25,8 +25,8 @@ importers:
         version: 0.17.0
     devDependencies:
       '@types/node':
-        specifier: ~26.0.0
-        version: 26.0.0
+        specifier: ~26.0.1
+        version: 26.0.1
       oxfmt:
         specifier: ^0.56.0
         version: 0.56.0
@@ -40,8 +40,8 @@ packages:
     resolution: {integrity: sha512-ECvpsyZYknoRD0peG1K+UkX5llld3TyK1Ot9Cq2epSoWK19nyzpGKVl98sadSmohu5wHNuiDl+Ex9SVdcIjiFg==}
     engines: {node: '>= 22'}
 
-  '@lichess-org/types@2.0.146':
-    resolution: {integrity: sha512-YnxJ/GSFDPOCzLQorTLtp/mCrg8Na8xef/ZfCBhXB6A+DCiK61sTc34go5KmNw0qHtGZ/BIzJnBmAU6c/DsxZA==}
+  '@lichess-org/types@2.0.171':
+    resolution: {integrity: sha512-0nwf7heQ5EM0njiW0s1DlwFoditppeT0CFgyRYGhEC6rYNdr3ugLZCBQBt7t0s7LqB5SM7OBsv65ASY+UDOQFg==}
 
   '@oxfmt/binding-android-arm-eabi@0.56.0':
     resolution: {integrity: sha512-CSCxi7ovYojgfdPOdUb9T508HKeAdDIKeRGg7x8IZwVJrWz9gVgX7MbUnFqtQAE4QvoNo07mj2JlwnOzJw4qqA==}
@@ -165,14 +165,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@types/node@26.0.0':
-    resolution: {integrity: sha512-vf2YFi1iY9lHGwNJMs01biZFbKJkrZR1T6/MlzjhJLPdntOHLhTrDSnSVcdtvjihi4VQNlrFRIxLsDBlQpAipA==}
+  '@types/node@26.0.1':
+    resolution: {integrity: sha512-fc3KiUoBt6kie0N9bIW3E47vZsuaMf0PM2AaUpLCLT0s/LvX1nxAim6Fc049cNxODPpGm6qRAuUOB86SkRuPQw==}
 
-  chessops@0.15.0:
-    resolution: {integrity: sha512-4Ps0O8/UO09tDGbze1mMilUSMZjVYMFtQvrhlCQV385cO0BgdUPUZsq/r1Qrf6UQ4J0i7XcMbRRvFRKu+Ith1w==}
+  chessops@0.15.1:
+    resolution: {integrity: sha512-hQDwv90AFkrPEsRJBebh3ZE+xDga25TCCv4lavNT2plZmd33UKNFYaZsE+7rafMbnBRrDEWUVsSYFqY3qCIGZw==}
 
-  dayjs@1.11.21:
-    resolution: {integrity: sha512-98IT+HOahAisibz/yjKbzuOBwYcjJ7BCLPzARyHiyEBmRz4fatF+KPJszEHXsGYjUG234aH/cOjW1wwTbKUZlA==}
+  dayjs@1.11.23:
+    resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
 
   ms@3.0.0-canary.202508261828:
     resolution: {integrity: sha512-NotsCoUCIUkojWCzQff4ttdCfIPoA1UGZsyQbi7KmqkNRfKCrvga8JJi2PknHymHOuor0cJSn/ylj52Cbt2IrQ==}
@@ -213,7 +213,7 @@ snapshots:
 
   '@badrap/result@0.3.1': {}
 
-  '@lichess-org/types@2.0.146': {}
+  '@lichess-org/types@2.0.171': {}
 
   '@oxfmt/binding-android-arm-eabi@0.56.0':
     optional: true
@@ -272,15 +272,15 @@ snapshots:
   '@oxfmt/binding-win32-x64-msvc@0.56.0':
     optional: true
 
-  '@types/node@26.0.0':
+  '@types/node@26.0.1':
     dependencies:
       undici-types: 8.3.0
 
-  chessops@0.15.0:
+  chessops@0.15.1:
     dependencies:
       '@badrap/result': 0.3.1
 
-  dayjs@1.11.21: {}
+  dayjs@1.11.23: {}
 
   ms@3.0.0-canary.202508261828: {}
 
