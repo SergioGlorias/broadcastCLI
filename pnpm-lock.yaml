@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@lichess-org/types':
         specifier: ^2.0.171
-        version: 2.0.171
+        version: 2.0.175
       chessops:
         specifier: ^0.15.1
         version: 0.15.1
@@ -40,8 +40,8 @@ packages:
     resolution: {integrity: sha512-ECvpsyZYknoRD0peG1K+UkX5llld3TyK1Ot9Cq2epSoWK19nyzpGKVl98sadSmohu5wHNuiDl+Ex9SVdcIjiFg==}
     engines: {node: '>= 22'}
 
-  '@lichess-org/types@2.0.171':
-    resolution: {integrity: sha512-0nwf7heQ5EM0njiW0s1DlwFoditppeT0CFgyRYGhEC6rYNdr3ugLZCBQBt7t0s7LqB5SM7OBsv65ASY+UDOQFg==}
+  '@lichess-org/types@2.0.175':
+    resolution: {integrity: sha512-xGyEZHokdNyO5/rTPIn3DS7QxTQt0Xhc5xNIccA65L/nnMNGIdgPtw/Wne5zEGauJ0fFmL9avKbS8OE9iBxbZA==}
 
   '@oxfmt/binding-android-arm-eabi@0.67.0':
     resolution: {integrity: sha512-2olh3ioEmc4gRzQm7jxyB1b/PFBoFvTq8KdgYySeNpysDtA6DEg2Mvya4/I6flhL7G0eOrE8RD7JCNCIMhE16Q==}
@@ -333,7 +333,7 @@ snapshots:
 
   '@badrap/result@0.3.1': {}
 
-  '@lichess-org/types@2.0.171': {}
+  '@lichess-org/types@2.0.175': {}
 
   '@oxfmt/binding-android-arm-eabi@0.67.0':
     optional: true
