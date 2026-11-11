@@ -70,7 +70,9 @@ export const setForwardMultiCommand = async (args: string[]) => {
   for (const forwardID of bIds) {
     const bward = await getBroadcast(forwardID);
     if (!bward?.rounds || bward.rounds.length === 0) {
-      console.error(cl.red(`No rounds found to forward for the specified broadcast ID ${cl.whiteBold(forwardID)}.`));
+      console.error(
+        cl.red(`No rounds found to forward for the specified broadcast ID ${cl.whiteBold(forwardID)}.`),
+      );
       continue;
     }
 
