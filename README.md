@@ -52,6 +52,14 @@ Commands:
        --slice <sliceFilter>    Apply slice filtering using the provided filter string.
        --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
 
+  setForwardMulti <broadcastId> <broadcastsToForward> [--withFilter] [--slice <sliceFilter>] [--rounds <roundsToFix>]
+     Sets the others Broadcasts to foward for all rounds in the specified broadcast.
+     Required: Your Lichess token needs the web:mod scope to use this command. (Broadcast/Study Admin perm required)
+     Options:
+       --withFilter             Apply round number filtering based on round number.
+       --slice <sliceFilter>    Apply slice filtering using the provided filter string.
+       --rounds <roundsToFix>   Specify which rounds to fix using formats like '1-4', '8+', '3,5,7', etc.
+
   setLichessGames <broadcastRoundId> <gameIds...>
      Sets the games for the specified broadcast round using Lichess game IDs.
      Note: Maximum of 64 game IDs can be provided.

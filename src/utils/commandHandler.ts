@@ -11,6 +11,7 @@ import { delayCommand } from '../cmd/delay.js';
 import { setPGNCommand } from '../cmd/setPGN.js';
 import { setPGNMultiCommand } from '../cmd/setPGNMulti.js';
 import { setForwardCommand } from '../cmd/setForward.js';
+import { setForwardMultiCommand } from '../cmd/setForwardMulti.js';
 import { setLichessGamesCommand } from '../cmd/setLichessGames.js';
 import { fixScheduleCommand } from '../cmd/fixSchedule.js';
 import { startsPreviousCommand } from '../cmd/startsPrevious.js';
@@ -58,6 +59,7 @@ export enum Command {
   SetPGN = 'setPGN',
   SetPGNMulti = 'setPGNMulti',
   SetForward = 'setForward',
+  SetForwardMulti = 'setForwardMulti',
   SetLichessGames = 'setLichessGames',
   SetLichessGamesMulti = 'setLichessGamesMulti',
   FixSchedule = 'fixSchedule',
@@ -81,6 +83,7 @@ export const commands = new Map([
   [Command.SetPGN, setPGNCommand],
   [Command.SetPGNMulti, setPGNMultiCommand],
   [Command.SetForward, setForwardCommand],
+  [Command.SetForwardMulti, setForwardMultiCommand],
   [Command.SetLichessGames, setLichessGamesCommand],
   [Command.SetLichessGamesMulti, setLichessGamesMultiCommand],
   [Command.FixSchedule, fixScheduleCommand],
